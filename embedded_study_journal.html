@@ -2127,24 +2127,7 @@ int main() {
 
     const DEFAULT_MEMOS = [{"id": "memo_init_1", "content": "🛡️【反 AI 依赖铁律】\n坚持憋满 15 分钟再问！三遍手敲法，调试器单步跟踪替代 AI 直接看答案，代码朗读 20 行逐行讲清内存发生了什么，纸笔推演不可偷懒！", "color": "green", "createdAt": "2026-11-10 核心准则"}, {"id": "memo_init_2", "content": "📋【每日打卡固定流程】\n1. 信号与系统重修（最高优先）\n2. C 语言手敲 20 分钟（三遍手敲法）\n3. 朗读代码讲内存，纸笔推演一次\n4. 模拟面试走一轮，背诵 45 秒自我介绍", "color": "blue", "createdAt": "2026-11-15 学习节奏"}, {"id": "memo_init_3", "content": "💡【STM32H747 工业机柜监护双核分工】\n- Cortex-M7 (480MHz)：专职运行高精度传感器采集、DSP 滤波算法与 RS485/Modbus 工业总线通信\n- Cortex-M4 (240MHz)：专职运行环境阈值告警逻辑、OLED 本地交互与继电器保护控制\n- 核间通信：通过 OpenAMP 共享 SRAM 区域互通数据，安全解耦！", "color": "yellow", "createdAt": "2026-11-21 项目架构"}, {"id": "memo_init_4", "content": "⚠️【数组名与指针辨析关键】\n- 数组名在常规表达式中退化为指向第 0 个元素的指针常量（如 a 相当于 &a[0]）\n- 但在遇到 sizeof(a) 和取地址 &a 时坚决不退化！&a 的类型是 int (*)[10]，对其加 1 会跨越整个数组内存！", "color": "pink", "createdAt": "2026-11-20 踩坑总结"}];
 
-    const DEFAULT_CHECKED_IDS = ["0_1", "0_2", "0_3", "1_1", "1_2", "2_1", "2_2", "3_1", "3_2", "3_3", "sig_c0_1", "sig_c0_2", "sig_c1_1", "sig_c1_2", "sig_c2_1", "sig_c2_2", "real_p1", "real_p2", "real_p3", "real_p4", "real_p5", "real_p6", "real_p7", "real_p8", "real_extra1", "real_extra2"];\nfor (int i = 0; i <= 10; i++) { // 错误！i=10 时越界！\n    a[i] = 0;\n}",
-        right: "int a[10];\nfor (int i = 0; i < 10; i++) { // 正确：最大有效下标是 9\n    a[i] = 0;\n}",
-        note: "C 语言中定义大小为 N 的数组，有效下标区间严格为 0 到 N-1。访问 a[N] 会踩踏其他内存！",
-        mastered: false,
-        createdAt: "2026-11-22"
-      },
-      {
-        id: "k_init_4",
-        type: "key",
-        chapter: "第9章 指针",
-        title: "* 号的双重含义：声明时的'身份标牌' vs 运算时的'开门解引用'",
-        wrong: "int *p; // 以为这里的 * 是运算\n*p = 10; // 野指针未赋值就解引用写入，直接崩溃！",
-        right: "int a = 100;\nint *p = &a; // 这里的 * 只是表示 p 是个指针类型变量\n*p = 200;    // 这里的 *p 是解引用：顺着地址修改 a 里面的值为 200",
-        note: "声明里的 * 代表身份（指针），执行语句里的 * 代表动作（顺藤摸瓜找内存）。",
-        mastered: false,
-        createdAt: "2026-11-22"
-      }
-    ];
+    const DEFAULT_CHECKED_IDS = ["0_1", "0_2", "0_3", "1_1", "1_2", "2_1", "2_2", "3_1", "3_2", "3_3", "sig_c0_1", "sig_c0_2", "sig_c1_1", "sig_c1_2", "sig_c2_1", "sig_c2_2", "real_p1", "real_p2", "real_p3", "real_p4", "real_p5", "real_p6", "real_p7", "real_p8", "real_extra1", "real_extra2"];
 
     let state = {
       checkedIds: [],
