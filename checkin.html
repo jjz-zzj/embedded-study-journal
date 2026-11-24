@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学习打卡</title>
+<style>
+:root{
+  --bg:#ffffff; --surface:#f7f7f5; --line:#e3e2dd;
+  --text:#2c2c2a; --muted:#6b6a65;
+  --accent:#185fa5; --accent-soft:#e6f1fb;
+  --ok:#3b6d11; --warn:#854f0b; --warn-soft:#faeeda;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:20px;font-weight:500;margin:0 0 4px}
+h2{font-size:15px;font-weight:500;margin:0 0 12px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.stat{flex:1;min-width:120px;background:var(--accent-soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat .n{font-size:22px;font-weight:500;color:var(--accent)}
+.stat .l{font-size:12px;color:var(--muted)}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row input[type=checkbox]{width:17px;height:17px;accent-color:var(--ok);flex:none}
+.row label{flex:1;cursor:pointer}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px;flex:none}
+.del{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 6px}
+.del:hover{color:#a32d2d}
+textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;background:#fff;color:var(--text)}
+input[type=text]{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;background:#fff;color:var(--text);flex:1;min-width:0}
+button{font:inherit;border:1px solid var(--line);border-radius:8px;padding:8px 14px;background:#fff;color:var(--text);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:hover{filter:brightness(.97)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.hint{background:var(--warn-soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:#633806;margin-bottom:16px}
+.hist{font-size:13px}
+.hist .d{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.hist .d:last-child{border-bottom:0}
+.hist .date{width:100px;color:var(--muted);flex:none}
+.hist .cnt{width:52px;color:var(--ok);flex:none}
+.hist .note{color:var(--muted);flex:1;word-break:break-all}
+.empty{color:var(--muted);font-size:13px}
+.foot{color:var(--muted);font-size:12px;margin-top:20px;text-align:center}
+</style>
+</head>
+<body>
+<div style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 20px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+  <div><b>姜俊哲的嵌入式学习系统</b></div>
+  <div style="display:flex;gap:12px">
+    <a href="index.html" style="color:#185fa5;text-decoration:none;font-weight:500">🏠 综合手帐门户</a>
+    <a href="checkin.html" style="color:#185fa5;text-decoration:none;font-weight:500">✅ 独立学习打卡</a>
+    <a href="https://github.com/jjz-zzj/embedded-study-journal" target="_blank" style="color:#6b6a65;text-decoration:none">📦 GitHub 仓库</a>
+  </div>
+</div>
+<div class="wrap">
+  <h1>学习打卡</h1>
+  <p class="sub" id="today"></p>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="streak">0</div><div class="l">连续打卡天数</div></div>
+    <div class="stat"><div class="n" id="total">0</div><div class="l">累计打卡天数</div></div>
+    <div class="stat"><div class="n" id="todayCnt">0/0</div><div class="l">今日完成</div></div>
+  </div>
+
+  <div class="hint">反 AI 依赖规矩：憋满 15 分钟再问 · 三遍手敲法 · 纸笔推演 · 调试器替代 AI · 代码朗读 20 行</div>
+
+  <div class="card">
+    <h2>今日打卡</h2>
+    <div id="taskList"></div>
+    <div style="margin-top:12px">
+      <textarea id="note" placeholder="今天做了什么 / 卡在哪 / 明天先做什么"></textarea>
+      <div class="bar">
+        <button class="primary" id="save">保存今日记录</button>
+        <span id="saveMsg" style="color:var(--muted);font-size:13px;align-self:center"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>打卡项管理</h2>
+    <div class="bar" style="margin-top:0">
+      <input type="text" id="newTask" placeholder="新增一项，例如：Modbus 03 帧手写一遍">
+      <button id="add">添加</button>
+    </div>
+    <div id="manageList" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h2>最近 14 天</h2>
+    <div class="hist" id="history"></div>
+  </div>
+
+  <div class="card">
+    <h2>数据</h2>
+    <div class="bar" style="margin-top:0">
+      <button id="exportMd">导出 Markdown</button>
+      <button id="exportJson">备份 JSON</button>
+      <button id="importJson">导入备份</button>
+      <button id="clear">清空全部</button>
+      <input type="file" id="fileInput" accept=".json" style="display:none">
+    </div>
+    <p class="empty" style="margin-top:10px">数据只存在这台设备的浏览器里，不上传。换设备前记得导出备份。</p>
+  </div>
+
+  <div class="foot">学习打卡 · 本地存储 · 无网络依赖</div>
+</div>
+
+<script>
+(function(){
+  var KEY = 'wb_study_checkin_v1';
+  var DEFAULT_TASKS = [
+    {id:'t1', text:'信号与系统重修（最高优先）', group:'日常'},
+    {id:'t2', text:'C 语言手敲 20 分钟（三遍手敲法）', group:'日常'},
+    {id:'t3', text:'代码朗读 20 行，逐行讲内存发生了什么', group:'日常'},
+    {id:'t4', text:'纸笔推演一次（不用 AI、不开 Copilot）', group:'日常'},
+    {id:'t5', text:'核实简历四组数据：晶振/TH1、MPU6050、PID 5 参数、100h', group:'本周'},
+    {id:'t6', text:'45 秒自我介绍念 2 遍', group:'本周'},
+    {id:'t7', text:'模拟面试走一轮', group:'本周'}
+  ];
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+  function dstr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function today(){ return dstr(new Date()); }
+  function shift(dateStr, delta){
+    var p = dateStr.split('-');
+    var d = new Date(+p[0], +p[1]-1, +p[2]);
+    d.setDate(d.getDate()+delta);
+    return dstr(d);
+  }
+  function normalize(o){
+    if(!o || !Array.isArray(o.tasks)) return null;
+    var days = {};
+    Object.keys(o.days || {}).forEach(function(k){
+      var d = o.days[k] || {};
+      days[k] = {done: Array.isArray(d.done) ? d.done : [], note: String(d.note || '')};
+    });
+    o.days = days;
+    return o;
+  }
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(!raw) {
+        var preset = {"tasks": [{"id": "t1", "text": "信号与系统重修（最高优先）", "group": "日常"}, {"id": "t2", "text": "C 语言手敲 20 分钟（三遍手敲法）", "group": "日常"}, {"id": "t3", "text": "代码朗读 20 行，逐行讲内存发生了什么", "group": "日常"}, {"id": "t4", "text": "纸笔推演一次（不用 AI、不开 Copilot）", "group": "日常"}, {"id": "t5", "text": "核实简历四组数据：晶振/TH1、MPU6050、PID 5 参数、100h", "group": "本周"}, {"id": "t6", "text": "45 秒自我介绍念 2 遍", "group": "本周"}, {"id": "t7", "text": "模拟面试走一轮", "group": "本周"}], "days": {"2026-11-10": {"done": ["t1", "t2", "t3", "t4"], "note": "搭环境与编译 hello.c，手写编译验证通过，开启第一天打卡。"}, "2026-11-11": {"done": ["t2", "t3", "t4", "t5"], "note": "数据类型与位宽练习，完成 P1 个人信息卡片与 P2 类型字节数探测器。"}, "2026-11-12": {"done": ["t1", "t2", "t3"], "note": "9/5 整数除法截断与 printf 控制，完成 P3 圆几何计算与 P4 温度换算表。"}, "2026-11-13": {"done": ["t2", "t4"], "note": "控制流深化，完成 P5 三数最大值三目与 if 辨析，Keil 声明规范。"}, "2026-11-14": {"done": ["t2", "t3"], "note": "完成 P6 简易计算器，彻底解决 switch 字符残留与 scanf 误多读一次陷阱。"}, "2026-11-15": {"done": ["t2", "t4"], "note": "高光时刻：P7 成绩统计一次性全对！循环边界与 max 初值完美避坑。"}, "2026-11-16": {"done": ["t1", "t2"], "note": "完成 P8 位操作四大铁律，解决 else 里 return 0 阻断后续代码问题。"}, "2026-11-17": {"done": ["t2", "t3", "t4"], "note": "加练 8 位寄存器调试台，实现 0x%02X 格式化与温度定点化存储。"}, "2026-11-18": {"done": ["t1", "t2"], "note": "消除 VS 编译器警告 C4189、C4244、C4702，达到 -Wall -Wextra 零警告。"}, "2026-11-19": {"done": ["t2", "t3", "t4"], "note": "值传递与 static 局部变量验证，亲眼验证形参副本与静态区累计。"}, "2026-11-20": {"done": ["t1", "t2", "t5"], "note": "Modbus RTU 串口帧模拟与指针地址退化，验证 sizeof(frame) 与 sizeof(buf)。"}, "2026-11-21": {"done": ["t1", "t2", "t6"], "note": "H747 双核项目定位思考，ESP32 点灯练习，45秒自我介绍念诵。"}, "2026-11-22": {"done": ["t1", "t2", "t4"], "note": "信号与系统时域连续/离散卷积复习，C 语言流程控制巩固。"}, "2026-11-23": {"done": ["t1", "t2", "t3"], "note": "do...while 循环累加（1~100求和）手写实测，归档至 week01/FileName.c。"}, "2026-11-24": {"done": ["t1", "t2"], "note": "启动信号处理与系统全课程，搭建公网学习打卡与手帐系统。"}}};
+        localStorage.setItem(KEY, JSON.stringify(preset));
+        return preset;
+      }
+      return normalize(JSON.parse(raw)) || {"tasks": [{"id": "t1", "text": "信号与系统重修（最高优先）", "group": "日常"}, {"id": "t2", "text": "C 语言手敲 20 分钟（三遍手敲法）", "group": "日常"}, {"id": "t3", "text": "代码朗读 20 行，逐行讲内存发生了什么", "group": "日常"}, {"id": "t4", "text": "纸笔推演一次（不用 AI、不开 Copilot）", "group": "日常"}, {"id": "t5", "text": "核实简历四组数据：晶振/TH1、MPU6050、PID 5 参数、100h", "group": "本周"}, {"id": "t6", "text": "45 秒自我介绍念 2 遍", "group": "本周"}, {"id": "t7", "text": "模拟面试走一轮", "group": "本周"}], "days": {"2026-11-10": {"done": ["t1", "t2", "t3", "t4"], "note": "搭环境与编译 hello.c，手写编译验证通过，开启第一天打卡。"}, "2026-11-11": {"done": ["t2", "t3", "t4", "t5"], "note": "数据类型与位宽练习，完成 P1 个人信息卡片与 P2 类型字节数探测器。"}, "2026-11-12": {"done": ["t1", "t2", "t3"], "note": "9/5 整数除法截断与 printf 控制，完成 P3 圆几何计算与 P4 温度换算表。"}, "2026-11-13": {"done": ["t2", "t4"], "note": "控制流深化，完成 P5 三数最大值三目与 if 辨析，Keil 声明规范。"}, "2026-11-14": {"done": ["t2", "t3"], "note": "完成 P6 简易计算器，彻底解决 switch 字符残留与 scanf 误多读一次陷阱。"}, "2026-11-15": {"done": ["t2", "t4"], "note": "高光时刻：P7 成绩统计一次性全对！循环边界与 max 初值完美避坑。"}, "2026-11-16": {"done": ["t1", "t2"], "note": "完成 P8 位操作四大铁律，解决 else 里 return 0 阻断后续代码问题。"}, "2026-11-17": {"done": ["t2", "t3", "t4"], "note": "加练 8 位寄存器调试台，实现 0x%02X 格式化与温度定点化存储。"}, "2026-11-18": {"done": ["t1", "t2"], "note": "消除 VS 编译器警告 C4189、C4244、C4702，达到 -Wall -Wextra 零警告。"}, "2026-11-19": {"done": ["t2", "t3", "t4"], "note": "值传递与 static 局部变量验证，亲眼验证形参副本与静态区累计。"}, "2026-11-20": {"done": ["t1", "t2", "t5"], "note": "Modbus RTU 串口帧模拟与指针地址退化，验证 sizeof(frame) 与 sizeof(buf)。"}, "2026-11-21": {"done": ["t1", "t2", "t6"], "note": "H747 双核项目定位思考，ESP32 点灯练习，45秒自我介绍念诵。"}, "2026-11-22": {"done": ["t1", "t2", "t4"], "note": "信号与系统时域连续/离散卷积复习，C 语言流程控制巩固。"}, "2026-11-23": {"done": ["t1", "t2", "t3"], "note": "do...while 循环累加（1~100求和）手写实测，归档至 week01/FileName.c。"}, "2026-11-24": {"done": ["t1", "t2"], "note": "启动信号处理与系统全课程，搭建公网学习打卡与手帐系统。"}}};
+    }catch(e){ return {tasks: DEFAULT_TASKS.slice(), days:{}}; }
+  }
+  function persist(o){
+    try{ localStorage.setItem(KEY, JSON.stringify(o)); return true; }
+    catch(e){ return false; }
+  }
+  function el(tag, cls, txt){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(txt !== undefined && txt !== null) e.textContent = txt;
+    return e;
+  }
+
+  var data = load();
+  var T = today();
+  function day(){ return data.days[T] || {done:[], note:''}; }
+  function isChecked(k){
+    var d = data.days[k];
+    return !!(d && d.done && d.done.length > 0);
+  }
+
+  function renderStats(){
+    document.getElementById('todayCnt').textContent = day().done.length + '/' + data.tasks.length;
+    document.getElementById('total').textContent = Object.keys(data.days).filter(isChecked).length;
+    var s = 0, cur = T;
+    if(!isChecked(cur)) cur = shift(cur, -1);
+    while(isChecked(cur)){ s++; cur = shift(cur, -1); }
+    document.getElementById('streak').textContent = s;
+  }
+
+  function renderTasks(){
+    var box = document.getElementById('taskList');
+    box.innerHTML = '';
+    if(data.tasks.length === 0){ box.appendChild(el('p','empty','还没有打卡项，在下面添加一条。')); return; }
+    var d = day();
+    data.tasks.forEach(function(t){
+      var row = el('div','row');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = d.done.indexOf(t.id) >= 0;
+      cb.id = 'cb_' + t.id;
+      var lb = document.createElement('label');
+      lb.htmlFor = cb.id;
+      lb.textContent = t.text;
+      row.appendChild(cb);
+      row.appendChild(lb);
+      row.appendChild(el('span','tag', t.group || '自定义'));
+      box.appendChild(row);
+    });
+  }
+
+  function renderManage(){
+    var box = document.getElementById('manageList');
+    box.innerHTML = '';
+    data.tasks.forEach(function(t){
+      var row = el('div','row');
+      row.appendChild(el('span','tag', t.group || '自定义'));
+      var s = el('span','', t.text); s.style.flex = '1';
+      row.appendChild(s);
+      var b = el('button','del','删除');
+      b.onclick = function(){
+        if(!confirm('删除「' + t.text + '」？')) return;
+        data.tasks = data.tasks.filter(function(x){ return x.id !== t.id; });
+        Object.keys(data.days).forEach(function(k){
+          data.days[k].done = data.days[k].done.filter(function(id){ return id !== t.id; });
+        });
+        persist(data); renderAll();
+      };
+      row.appendChild(b);
+      box.appendChild(row);
+    });
+  }
+
+  function renderHistory(){
+    var box = document.getElementById('history');
+    box.innerHTML = '';
+    var rows = [];
+    for(var i=0;i<14;i++){
+      var k = shift(T,-i);
+      if(data.days[k]) rows.push({date:k, rec:data.days[k]});
+    }
+    if(rows.length === 0){ box.appendChild(el('p','empty','还没有记录，先勾几项保存一次。')); return; }
+    rows.forEach(function(r){
+      var d = el('div','d');
+      d.appendChild(el('span','date', r.date));
+      d.appendChild(el('span','cnt', r.rec.done.length + '/' + data.tasks.length));
+      d.appendChild(el('span','note', r.rec.note || ''));
+      box.appendChild(d);
+    });
+  }
+
+  function renderAll(){
+    renderStats(); renderTasks(); renderManage(); renderHistory();
+    document.getElementById('note').value = day().note || '';
+    document.getElementById('saveMsg').textContent = '';
+  }
+
+  document.getElementById('today').textContent = '今天是 ' + T + ' · 勾完点保存，数据留在本机';
+
+  document.getElementById('save').onclick = function(){
+    var done = [];
+    data.tasks.forEach(function(t){
+      var cb = document.getElementById('cb_' + t.id);
+      if(cb && cb.checked) done.push(t.id);
+    });
+    data.days[T] = {done:done, note:document.getElementById('note').value};
+    var ok = persist(data);
+    document.getElementById('saveMsg').textContent = ok ? '已保存' : '保存失败：浏览器禁止本地存储';
+    renderStats(); renderHistory();
+  };
+
+  document.getElementById('add').onclick = function(){
+    var inp = document.getElementById('newTask');
+    var v = inp.value.trim();
+    if(!v) return;
+    data.tasks.push({id:'u' + Date.now(), text:v, group:'自定义'});
+    inp.value = ''; persist(data); renderAll();
+  };
+  document.getElementById('newTask').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') document.getElementById('add').click();
+  });
+
+  function download(name, text, type){
+    var b = new Blob([text], {type:type || 'text/plain;charset=utf-8'});
+    var u = URL.createObjectURL(b);
+    var a = document.createElement('a');
+    a.href = u; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(u); }, 1000);
+  }
+
+  document.getElementById('exportMd').onclick = function(){
+    var lines = ['# 学习打卡记录', '', '| 日期 | 完成 | 备注 |', '|---|---|---|'];
+    Object.keys(data.days).sort().forEach(function(k){
+      var r = data.days[k];
+      var names = r.done.map(function(id){
+        var t = data.tasks.filter(function(x){ return x.id === id; })[0];
+        return t ? t.text : id;
+      }).join('；');
+      var note = String(r.note || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+      lines.push('| ' + k + ' | ' + (names || '—') + ' | ' + note + ' |');
+    });
+    download('学习打卡记录.md', lines.join('\n'), 'text/markdown;charset=utf-8');
+  };
+  document.getElementById('exportJson').onclick = function(){
+    download('打卡备份.json', JSON.stringify(data, null, 2), 'application/json;charset=utf-8');
+  };
+  document.getElementById('importJson').onclick = function(){ document.getElementById('fileInput').click(); };
+  document.getElementById('fileInput').onchange = function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      var o = null;
+      try{ o = normalize(JSON.parse(rd.result)); }catch(err){ o = null; }
+      if(!o){ alert('文件格式不对'); return; }
+      if(!confirm('导入会覆盖当前数据，确定？')) return;
+      data = o; persist(data); renderAll();
+    };
+    rd.readAsText(f);
+    e.target.value = '';
+  };
+  document.getElementById('clear').onclick = function(){
+    if(!confirm('清空全部打卡记录和自定义项？此操作不可撤销。')) return;
+    data = {tasks: DEFAULT_TASKS.slice(), days:{}};
+    persist(data); renderAll();
+  };
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

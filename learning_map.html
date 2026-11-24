@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>嵌入式方向 C 语言学习地图</title>
+<style>
+:root{
+  --bg:#fff; --surface:#f7f7f5; --line:#e3e2dd;
+  --text:#2c2c2a; --muted:#6b6a65;
+  --blue:#185fa5; --blue-soft:#e6f1fb;
+  --green:#3b6d11; --green-soft:#eaf3de;
+  --amber:#854f0b; --amber-soft:#faeeda;
+  --red:#a32d2d; --red-soft:#fcebeb;
+  --purple:#534ab7; --purple-soft:#eeedfe;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:940px;margin:0 auto;padding:28px 20px 64px}
+h1{font-size:22px;font-weight:500;margin:0 0 6px}
+h2{font-size:16px;font-weight:500;margin:0 0 14px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 22px}
+section{margin-bottom:28px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.stat{flex:1;min-width:140px;background:var(--blue-soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat .n{font-size:21px;font-weight:500;color:var(--blue)}
+.stat .l{font-size:12px;color:var(--muted)}
+.phases{display:flex;gap:8px;flex-wrap:wrap}
+.phase{flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.phase.on{background:var(--green-soft);border-color:var(--green)}
+.phase .p{font-size:13px;font-weight:500}
+.phase .d{font-size:11px;color:var(--muted);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.item{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff}
+.item .t{font-size:13px;font-weight:500;margin-bottom:4px}
+.item .k{font-size:12px;color:var(--blue);margin-bottom:4px}
+.item .p{font-size:12px;color:var(--muted)}
+.item.solo{background:var(--green-soft)}
+.item.extra{background:var(--purple-soft)}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.node{background:var(--green-soft);border:1px solid var(--green);border-radius:8px;padding:6px 10px;font-size:12px;color:#27500a}
+.node.todo{background:#f1efe8;border-color:#888780;color:#5f5e5a;border-style:dashed}
+.arw{color:var(--muted);font-size:12px}
+.pit{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pit:last-child{border-bottom:0}
+.pit .when{width:120px;flex:none;font-size:12px;color:var(--muted)}
+.pit .what{flex:1;font-size:13px}
+.tag{display:inline-block;font-size:11px;border-radius:5px;padding:1px 6px;margin:0 4px 4px 0;background:var(--red-soft);color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--muted)}
+code{font-family:Consolas,"Courier New",monospace;font-size:12px;background:var(--surface);padding:1px 4px;border-radius:4px}
+pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px;line-height:1.7;margin:10px 0 0}
+.note{font-size:12px;color:var(--muted);margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+</style>
+</head>
+<body>
+<div style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 20px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+  <div><b>姜俊哲的嵌入式学习系统</b></div>
+  <div style="display:flex;gap:12px">
+    <a href="index.html" style="color:#185fa5;text-decoration:none;font-weight:500">🏠 综合手帐门户</a>
+    <a href="checkin.html" style="color:#185fa5;text-decoration:none;font-weight:500">✅ 独立学习打卡</a>
+    <a href="https://github.com/jjz-zzj/embedded-study-journal" target="_blank" style="color:#6b6a65;text-decoration:none">📦 GitHub 仓库</a>
+  </div>
+</div>
+<div class="wrap">
+
+  <h1>嵌入式方向 C 语言学习地图</h1>
+  <p class="sub">姜俊哲 · 中南大学测控技术与仪器 2027 届 · 起点 2026-10-26 · 目标：嵌入式软件</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">10</div><div class="l">已完成练习（P1–P8 + 2 项加练）</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">手写 C 源文件</div></div>
+    <div class="stat"><div class="n">24 周</div><div class="l">总计划 · 当前第 1 阶段</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">AI 代写代码（全部手写）</div></div>
+  </div>
+
+  <section>
+    <h2>阶段进度</h2>
+    <div class="phases">
+      <div class="phase on"><div class="p">阶段一 · 语法地基（1–5 周）</div><div class="d">P1–P8 已完成，函数进行中，实际进度超前</div></div>
+      <div class="phase"><div class="p">阶段二 · 核心进阶（6–10 周）</div><div class="d">指针、内存、结构体、链表、位运算深入</div></div>
+      <div class="phase"><div class="p">阶段三 · 上板（11–16 周）</div><div class="d">STM32 裸机、串口/I2C/SPI/ADC、FreeRTOS</div></div>
+      <div class="phase"><div class="p">阶段四 · 项目（17–24 周）</div><div class="d">成型项目 + 面经 + 春招</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>已完成的练习</h2>
+    <div class="grid">
+      <div class="item"><div class="t">P1 · 个人信息卡片</div><div class="k">printf 宽度与精度、scanf 的 &amp;、%19s</div><div class="p">踩坑：%.2f 用在 scanf、%f 配 double、%1f 把字母 l 敲成数字 1</div></div>
+      <div class="item"><div class="t">P2 · 类型字节数探测器</div><div class="k">sizeof 是编译期运算符、%zu、limits.h</div><div class="p">踩坑：%d 打 UINT_MAX 得 -1；-INT_MIN 绕回自己是 UB</div></div>
+      <div class="item"><div class="t">P3 · 圆的几何计算</div><div class="k">const double、整数除法截断、%.3f</div><div class="p">踩坑：9/5 = 1；%.3f 与 %3f 的区别；PI 精度不够导致 6.284</div></div>
+      <div class="item"><div class="t">P4 · 温度换算表</div><div class="k">for 循环、off-by-one、列宽设计</div><div class="p">收获：宽度 = 该列最长内容的字符数，宁可多不可少</div></div>
+      <div class="item"><div class="t">P5 · 三数最大值</div><div class="k">三目 ?: 是表达式、if 是语句</div><div class="p">踩坑：声明要放块开头（C89 / Keil C51）；边界值 5 5 5</div></div>
+      <div class="item"><div class="t">P6 · 简单计算器</div><div class="k">switch / break / default / " %c"</div><div class="p">踩坑：为检查返回值又多读一次 scanf，程序卡住等第四次输入</div></div>
+      <div class="item solo"><div class="t">P7 · 成绩统计</div><div class="k">数组、i &lt; n、max 用 scores[0] 打底、sum/5.0</div><div class="p">唯一一次全对：预警的每个坑都避开了</div></div>
+      <div class="item"><div class="t">P8 · 位操作</div><div class="k">|= 置位 / &amp;=~ 清零 / ^= 翻转 / &gt;&gt;n&amp;1 读位</div><div class="p">踩坑：else 里 return 0 让后面全不可达；scanf 又多读一次</div></div>
+      <div class="item extra"><div class="t">加练 · 8 位寄存器调试台</div><div class="k">功能码分发、进制格式化、0x%02X、×10 存温度、函数重构</div><div class="p">坑：i&gt;0 漏 bit0、循环次数用错变量、内外层共用 i、case 贯穿、\n 连漏六次</div></div>
+      <div class="item extra"><div class="t">实验 · 值传递与 static</div><div class="k">栈帧、参数副本、作用域 vs 生命周期</div><div class="p">亲眼验证：函数里 v=11 而 main 里 a=10；static 的 b 累计 1/2/3</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>知识依赖链</h2>
+    <div class="card">
+      <div class="chain">
+        <span class="node">数据类型与位宽</span><span class="arw">→</span>
+        <span class="node">格式符与 IO</span><span class="arw">→</span>
+        <span class="node">运算符</span><span class="arw">→</span>
+        <span class="node">控制流</span><span class="arw">→</span>
+        <span class="node">数组与循环</span><span class="arw">→</span>
+        <span class="node">位运算与寄存器</span><span class="arw">→</span>
+        <span class="node">函数与栈帧</span><span class="arw">→</span>
+        <span class="node todo">指针（第 6 周）</span><span class="arw">→</span>
+        <span class="node todo">结构体 / 文件 IO</span>
+      </div>
+      <p class="note">绿色为已掌握，虚线为待学。新概念一律挂在已会的知识点上，不凭空引入。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>坑位地图 · 真正长本事的地方</h2>
+    <div class="card">
+      <div class="pit"><div class="when">10/26 – 11/06<br>类型与格式</div><div class="what">
+        <span class="tag">%.2f → %f → %1f</span><span class="tag">%d 打 UINT_MAX = -1</span><span class="tag">9/5 = 1</span><span class="tag">%zu</span>
+        <br>同一块内存的两种解读、整数除法截断、格式符必须与类型严格对应。
+      </div></div>
+      <div class="pit"><div class="when">11/07 – 11/08<br>输入与边界</div><div class="what">
+        <span class="tag">scanf 多读一次</span><span class="tag">else 里 return 0</span><span class="tag">%19s 右对齐补空格</span>
+        <br>输入流是消费性的，检查返回值要就地做，不是再调一次函数。
+      </div></div>
+      <div class="pit"><div class="when">11/09<br>结构与重构</div><div class="what">
+        <span class="tag">i&gt;0 漏最低位</span><span class="tag">n / x 搞反</span><span class="tag">内外层共用 i 死循环</span><span class="tag">case 3 贯穿到 case 4</span><span class="tag">\n 连漏六次</span><span class="tag">C4244 / C4702 / C4189</span>
+        <br>循环边界、变量语义、共享状态被意外改写、switch fall-through、警告清零。
+      </div></div>
+      <p class="note">复习不是平均重做八题，而是按踩坑次数分配时间。跨题复发的坑（scanf 多读一次，P6 → P8）最该盯。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>仓库文件索引</h2>
+    <div class="card">
+      <table>
+        <tr><th>路径</th><th>内容</th></tr>
+        <tr><td><code>code/week01/FileName.c</code></td><td>8 位寄存器调试台：位操作四件套、switch 功能码分发、自定义 <code>print_bits</code>、进制与温度格式化</td></tr>
+        <tr><td><code>code/week04/函数.c</code></td><td>值传递与 <code>static</code> 局部变量实验，连调三次观察副本与静态区</td></tr>
+        <tr><td><code>notes/第1周练习清单.md</code></td><td>P1–P8 题目、思路提示、本周自检 7 题</td></tr>
+        <tr><td><code>index.html</code></td><td>本页（学习地图）</td></tr>
+        <tr><td><code>.gitignore</code></td><td>排除 VS 生成物与临时文件</td></tr>
+      </table>
+      <p class="note">两份 <code>.c</code> 保持 VS 保存的 GBK 编码，本地编译正常；将来推到 GitHub 网页预览中文会乱码，届时再补 UTF-8 副本或 <code>.gitattributes</code>。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Git 状态</h2>
+    <div class="card">
+      <p style="margin:0 0 8px">仓库已初始化、文件已暂存。首次提交需要设置身份（仓库级，不改全局配置）：</p>
+      <pre>git config user.name "姜俊哲"
+git config user.email "你的邮箱"
+git commit -m "init: 第1周练习清单 + P1-P8 手写代码 + 学习地图"</pre>
+      <p class="note">以后每完成一题提交一次，提交信息写清做了什么，例如 <code>feat: 抽出 print_bits 消除重复打印</code>。这样提交历史本身就是学习轨迹。</p>
+    </div>
+  </section>
+
+  <div class="foot">全部代码手写 · 反 AI 依赖：15 分钟法则 / 三遍手敲 / 纸笔推演 / 调试器替代 AI / 代码朗读</div>
+</div>
+</body>
+</html>

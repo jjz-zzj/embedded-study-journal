@@ -173,7 +173,13 @@
               </p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <button onclick="exportDataJson()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">
+          <a href="checkin.html" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1 transition-colors">
+            <span>✅</span> 原版打卡独立页 &UpperRightArrow;
+          </a>
+          <a href="learning_map.html" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-slate-800 text-white shadow-sm flex items-center gap-1 transition-colors">
+            <span>🗺️</span> 原版地图独立页 &UpperRightArrow;
+          </a>
+          <button onclick="exportDataJson()"  class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">
                 <span>📥</span> 导出打卡数据 (JSON)
               </button>
               <label class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] hover:bg-slate-100 text-[var(--foreground,#0f172a)] shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">
@@ -215,7 +221,10 @@
 
     <!-- 导航标签页 -->
     <div class="flex items-center gap-2 border-b border-[var(--card-border,#e2e8f0)] pb-2 text-sm overflow-x-auto custom-scrollbar">
-        <button onclick="switchTab('jjz')" id="tabBtn-jjz" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors bg-[var(--primary,#0284c7)] text-white shadow-sm flex items-center gap-1.5">
+        <button onclick="switchTab('checkin')" id="tabBtn-checkin" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors bg-[var(--primary,#0284c7)] text-white shadow-sm flex items-center gap-1.5">
+          <span>✅</span> 每日学习打卡 (原版看板) <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold" id="badge_streak">15天</span>
+        </button>
+        <button onclick="switchTab('jjz')" id="tabBtn-jjz" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
           <span>🎯</span> 姜俊哲 · 实战与代码 <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">10/10</span>
         </button>
         <button onclick="switchTab('wengkai')" id="tabBtn-wengkai" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
@@ -241,7 +250,104 @@
     <!-- 标签 1：翁恺 C 语言完整 1~12 章全图谱 -->
     
     <!-- 标签 0：姜俊哲 · 实战打卡与手写代码 -->
-    <section id="tab-jjz" class="tab-content block space-y-6">
+    
+    <!-- 标签：今日学习打卡 (原版看板) -->
+    <section id="tab-checkin" class="tab-content block space-y-5">
+      
+      <!-- 统计指标 -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="p-4 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-blue-50/70 dark:bg-blue-950/30">
+          <div class="text-2xl font-bold text-blue-700 dark:text-blue-300" id="portal_streak">15</div>
+          <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">连续打卡天数 (天)</div>
+        </div>
+        <div class="p-4 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-emerald-50/70 dark:bg-emerald-950/30">
+          <div class="text-2xl font-bold text-emerald-700 dark:text-emerald-300" id="portal_total">15</div>
+          <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">累计打卡天数 (天)</div>
+        </div>
+        <div class="p-4 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-purple-50/70 dark:bg-purple-950/30">
+          <div class="text-2xl font-bold text-purple-700 dark:text-purple-300" id="portal_todayCnt">0/7</div>
+          <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">今日完成进度</div>
+        </div>
+      </div>
+
+      <!-- 反 AI 依赖提示 -->
+      <div class="p-3.5 rounded-xl border border-amber-300/80 bg-amber-50/70 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200 text-xs font-medium leading-relaxed flex items-center gap-2">
+        <span>⚡</span>
+        <span><b>反 AI 依赖铁律</b>：憋满 15 分钟再问 · 三遍手敲法 · 纸笔推演 · 调试器替代 AI · 代码朗读 20 行</span>
+      </div>
+
+      <!-- 今日打卡 -->
+      <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+            <span>✅</span> 今日打卡任务
+          </h2>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]" id="portal_today_date"></span>
+        </div>
+
+        <div id="portal_taskList" class="space-y-2"></div>
+
+        <div class="pt-2 border-t border-[var(--card-border,#e2e8f0)] space-y-2.5">
+          <label class="block text-xs font-semibold text-[var(--foreground,#0f172a)]">今日学习复盘 / 备忘：</label>
+          <textarea id="portal_note" placeholder="今天做了什么 / 卡在哪 / 明天先做什么" class="w-full min-h-[75px] rounded-xl border border-[var(--card-border,#e2e8f0)] p-3 text-xs bg-[var(--background,#f8fafc)] text-[var(--foreground,#0f172a)] outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <button id="portal_save" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-colors cursor-pointer flex items-center gap-1.5">
+              <span>💾</span> 保存今日打卡记录
+            </button>
+            <span id="portal_saveMsg" class="text-xs text-emerald-600 font-semibold"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 打卡项管理与最近 14 天 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        
+        <!-- 最近 14 天历史 -->
+        <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>📅</span> 最近 14 天打卡轨迹
+            </h2>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 font-semibold">连载记录</span>
+          </div>
+          <div class="max-h-80 overflow-y-auto custom-scrollbar pr-1" id="portal_history"></div>
+        </div>
+
+        <!-- 自定义打卡项管理 & 数据管理 -->
+        <div class="space-y-4">
+          <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm space-y-3">
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>⚙️</span> 打卡项自定义管理
+            </h2>
+            <div class="flex gap-2">
+              <input type="text" id="portal_newTask" placeholder="新增一项，如：Modbus 03帧手写" class="flex-1 rounded-xl border border-[var(--card-border,#e2e8f0)] px-3 py-1.5 text-xs bg-[var(--background,#f8fafc)] outline-none focus:ring-2 focus:ring-blue-500">
+              <button id="portal_add" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-white hover:bg-slate-900 transition-colors">添加</button>
+            </div>
+            <div id="portal_manageList" class="max-h-40 overflow-y-auto custom-scrollbar space-y-1.5"></div>
+          </div>
+
+          <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm space-y-3">
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>📦</span> 数据导入导出与备份
+            </h2>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <button id="portal_exportJson" class="px-3 py-1.5 rounded-lg border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] hover:bg-slate-100 font-medium">备份 JSON</button>
+              <button id="portal_importJson" class="px-3 py-1.5 rounded-lg border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] hover:bg-slate-100 font-medium">导入备份</button>
+              <button id="portal_exportMd" class="px-3 py-1.5 rounded-lg border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] hover:bg-slate-100 font-medium">导出 Markdown</button>
+              <button id="portal_clear" class="px-3 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 border border-rose-200 font-medium">重置数据</button>
+              <input type="file" id="portal_fileInput" accept=".json" class="hidden">
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground,#64748b)]">
+              与桌面原版 <code>学习打卡.html</code> 数据格式完全兼容（同 key：<code>wb_study_checkin_v1</code>），支持任意跨端互通！
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="tab-jjz" class="tab-content hidden space-y-6">
       
       <!-- 阶段进度 -->
       <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
@@ -2914,6 +3020,295 @@ int main() {
     }
 
     
+    
+    // ==========================================
+    // 学习打卡系统 (与桌面学习打卡.html 100% 互通)
+    // ==========================================
+    const WB_KEY = 'wb_study_checkin_v1';
+    const WB_DEFAULT_TASKS = [
+      {id:'t1', text:'信号与系统重修（最高优先）', group:'日常'},
+      {id:'t2', text:'C 语言手敲 20 分钟（三遍手敲法）', group:'日常'},
+      {id:'t3', text:'代码朗读 20 行，逐行讲内存发生了什么', group:'日常'},
+      {id:'t4', text:'纸笔推演一次（不用 AI、不开 Copilot）', group:'日常'},
+      {id:'t5', text:'核实简历四组数据：晶振/TH1、MPU6050、PID 5 参数、100h', group:'本周'},
+      {id:'t6', text:'45 秒自我介绍念 2 遍', group:'本周'},
+      {id:'t7', text:'模拟面试走一轮', group:'本周'}
+    ];
+
+    const PRESET_DAYS_DATA = {
+      "2026-11-10": {"done": ["t1", "t2", "t3", "t4"], "note": "搭环境与编译 hello.c，手写编译验证通过，开启第一天打卡。"},
+      "2026-11-11": {"done": ["t2", "t3", "t4", "t5"], "note": "数据类型与位宽练习，完成 P1 个人信息卡片与 P2 类型字节数探测器。"},
+      "2026-11-12": {"done": ["t1", "t2", "t3"], "note": "9/5 整数除法截断与 printf 控制，完成 P3 圆几何计算与 P4 温度换算表。"},
+      "2026-11-13": {"done": ["t2", "t4"], "note": "控制流深化，完成 P5 三数最大值三目与 if 辨析，Keil 声明规范。"},
+      "2026-11-14": {"done": ["t2", "t3"], "note": "完成 P6 简易计算器，彻底解决 switch 字符残留与 scanf 误多读一次陷阱。"},
+      "2026-11-15": {"done": ["t2", "t4"], "note": "高光时刻：P7 成绩统计一次性全对！循环边界与 max 初值完美避坑。"},
+      "2026-11-16": {"done": ["t1", "t2"], "note": "完成 P8 位操作四大铁律，解决 else 里 return 0 阻断后续代码问题。"},
+      "2026-11-17": {"done": ["t2", "t3", "t4"], "note": "加练 8 位寄存器调试台，实现 0x%02X 格式化与温度定点化存储。"},
+      "2026-11-18": {"done": ["t1", "t2"], "note": "消除 VS 编译器警告 C4189、C4244、C4702，达到 -Wall -Wextra 零警告。"},
+      "2026-11-19": {"done": ["t2", "t3", "t4"], "note": "值传递与 static 局部变量验证，亲眼验证形参副本与静态区累计。"},
+      "2026-11-20": {"done": ["t1", "t2", "t5"], "note": "Modbus RTU 串口帧模拟与指针地址退化，验证 sizeof(frame) 与 sizeof(buf)。"},
+      "2026-11-21": {"done": ["t1", "t2", "t6"], "note": "H747 双核项目定位思考，ESP32 点灯练习，45秒自我介绍念诵。"},
+      "2026-11-22": {"done": ["t1", "t2", "t4"], "note": "信号与系统时域连续/离散卷积复习，C 语言流程控制巩固。"},
+      "2026-11-23": {"done": ["t1", "t2", "t3"], "note": "do...while 循环累加（1~100求和）手写实测，归档至 week01/FileName.c。"},
+      "2026-11-24": {"done": ["t1", "t2"], "note": "启动信号处理与系统全课程，搭建公网学习打卡与手帐系统。"}
+    };
+
+    function padZero(n){ return n < 10 ? '0'+n : ''+n; }
+    function getTodayStr(){
+      const d = new Date();
+      return d.getFullYear() + '-' + padZero(d.getMonth()+1) + '-' + padZero(d.getDate());
+    }
+    function shiftDate(dateStr, delta){
+      const p = dateStr.split('-');
+      const d = new Date(+p[0], +p[1]-1, +p[2]);
+      d.setDate(d.getDate() + delta);
+      return d.getFullYear() + '-' + padZero(d.getMonth()+1) + '-' + padZero(d.getDate());
+    }
+
+    function loadCheckinData(){
+      try {
+        const raw = localStorage.getItem(WB_KEY);
+        if(!raw) {
+          const init = { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+          localStorage.setItem(WB_KEY, JSON.stringify(init));
+          return init;
+        }
+        const o = JSON.parse(raw);
+        if(!o.days) o.days = {};
+        if(!o.tasks) o.tasks = JSON.parse(JSON.stringify(WB_DEFAULT_TASKS));
+        return o;
+      } catch(e) {
+        return { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+      }
+    }
+
+    function saveCheckinData(o){
+      try {
+        localStorage.setItem(WB_KEY, JSON.stringify(o));
+        return true;
+      } catch(e) { return false; }
+    }
+
+    let wbData = loadCheckinData();
+    const todayKey = getTodayStr();
+
+    function renderCheckinSystem(){
+      const d = wbData.days[todayKey] || { done: [], note: '' };
+      
+      // 1. 今日日期与完成情况
+      const dateEl = document.getElementById('portal_today_date');
+      if(dateEl) dateEl.textContent = '今天是 ' + todayKey + ' · 勾完点保存留在本机';
+      
+      const todayCntEl = document.getElementById('portal_todayCnt');
+      if(todayCntEl) todayCntEl.textContent = (d.done ? d.done.length : 0) + ' / ' + wbData.tasks.length;
+      
+      // 2. 统计连续天数与累计天数
+      const isDayChecked = (k) => {
+        const item = wbData.days[k];
+        return !!(item && item.done && item.done.length > 0);
+      };
+      const totalCount = Object.keys(wbData.days).filter(isDayChecked).length;
+      const totalEl = document.getElementById('portal_total');
+      if(totalEl) totalEl.textContent = totalCount;
+      
+      let s = 0, cur = todayKey;
+      if(!isDayChecked(cur)) cur = shiftDate(cur, -1);
+      while(isDayChecked(cur)){
+        s++;
+        cur = shiftDate(cur, -1);
+      }
+      const streakEl = document.getElementById('portal_streak');
+      if(streakEl) streakEl.textContent = s;
+      const badgeStreak = document.getElementById('badge_streak');
+      if(badgeStreak) badgeStreak.textContent = s + '天';
+
+      // 3. 渲染今日任务列表
+      const taskListEl = document.getElementById('portal_taskList');
+      if(taskListEl){
+        taskListEl.innerHTML = '';
+        wbData.tasks.forEach(t => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-3 p-2.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--background,#f8fafc)] hover:bg-slate-100 transition-colors';
+          
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.id = 'p_cb_' + t.id;
+          cb.checked = (d.done && d.done.indexOf(t.id) >= 0);
+          cb.className = 'w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer';
+          
+          const lb = document.createElement('label');
+          lb.htmlFor = cb.id;
+          lb.className = 'flex-1 text-xs font-semibold text-[var(--foreground,#0f172a)] cursor-pointer';
+          lb.textContent = t.text;
+          
+          const tag = document.createElement('span');
+          tag.className = 'text-[10px] px-2 py-0.5 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500';
+          tag.textContent = t.group || '任务';
+          
+          row.appendChild(cb);
+          row.appendChild(lb);
+          row.appendChild(tag);
+          taskListEl.appendChild(row);
+        });
+      }
+
+      // 4. Note 文本框
+      const noteEl = document.getElementById('portal_note');
+      if(noteEl && !noteEl.dataset.inited){
+        noteEl.value = d.note || '';
+        noteEl.dataset.inited = 'true';
+      }
+
+      // 5. 渲染管理列表
+      const manageListEl = document.getElementById('portal_manageList');
+      if(manageListEl){
+        manageListEl.innerHTML = '';
+        wbData.tasks.forEach(t => {
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between p-2 rounded-lg bg-[var(--background,#f8fafc)] text-xs border border-[var(--card-border,#e2e8f0)]';
+          item.innerHTML = `<span class="truncate flex-1 font-medium">${t.text}</span><button class="text-rose-500 hover:text-rose-700 px-2 cursor-pointer font-bold" onclick="deletePortalTask('${t.id}')">✕</button>`;
+          manageListEl.appendChild(item);
+        });
+      }
+
+      // 6. 渲染最近 14 天历史
+      const histEl = document.getElementById('portal_history');
+      if(histEl){
+        histEl.innerHTML = '';
+        for(let i=0; i<14; i++){
+          const k = shiftDate(todayKey, -i);
+          const rec = wbData.days[k];
+          if(rec){
+            const div = document.createElement('div');
+            div.className = 'py-2 border-b border-[var(--card-border,#e2e8f0)] last:border-0 text-xs flex flex-col gap-1';
+            div.innerHTML = `
+              <div class="flex items-center justify-between font-bold">
+                <span class="text-blue-600 dark:text-blue-400">📅 ${k}</span>
+                <span class="px-2 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-semibold">${rec.done.length}/${wbData.tasks.length} 完成</span>
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground,#64748b)] bg-[var(--background,#f8fafc)] p-2 rounded border border-[var(--card-border,#e2e8f0)]">${rec.note || '无复盘记录'}</div>
+            `;
+            histEl.appendChild(div);
+          }
+        }
+      }
+    }
+
+    function deletePortalTask(id){
+      if(!confirm('确定删除该打卡项？')) return;
+      wbData.tasks = wbData.tasks.filter(t => t.id !== id);
+      saveCheckinData(wbData);
+      renderCheckinSystem();
+    }
+
+    function initPortalCheckinEvents(){
+      // 保存
+      const saveBtn = document.getElementById('portal_save');
+      if(saveBtn){
+        saveBtn.onclick = function(){
+          const done = [];
+          wbData.tasks.forEach(t => {
+            const cb = document.getElementById('p_cb_' + t.id);
+            if(cb && cb.checked) done.push(t.id);
+          });
+          const noteText = document.getElementById('portal_note').value;
+          wbData.days[todayKey] = { done: done, note: noteText };
+          saveCheckinData(wbData);
+          const msg = document.getElementById('portal_saveMsg');
+          if(msg){
+            msg.textContent = '✅ 已成功保存！';
+            setTimeout(() => { msg.textContent = ''; }, 3000);
+          }
+          renderCheckinSystem();
+        };
+      }
+
+      // 添加项
+      const addBtn = document.getElementById('portal_add');
+      const newTaskInp = document.getElementById('portal_newTask');
+      if(addBtn && newTaskInp){
+        const doAdd = () => {
+          const v = newTaskInp.value.trim();
+          if(!v) return;
+          wbData.tasks.push({ id: 'u' + Date.now(), text: v, group: '自定义' });
+          newTaskInp.value = '';
+          saveCheckinData(wbData);
+          renderCheckinSystem();
+        };
+        addBtn.onclick = doAdd;
+        newTaskInp.onkeydown = (e) => { if(e.key === 'Enter') doAdd(); };
+      }
+
+      // 备份与导出
+      const expJson = document.getElementById('portal_exportJson');
+      if(expJson){
+        expJson.onclick = function(){
+          const blob = new Blob([JSON.stringify(wbData, null, 2)], { type: "application/json;charset=utf-8" });
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = u; a.download = "打卡备份_" + todayKey + ".json";
+          a.click();
+          URL.revokeObjectURL(u);
+        };
+      }
+
+      const impJson = document.getElementById('portal_importJson');
+      const fileInp = document.getElementById('portal_fileInput');
+      if(impJson && fileInp){
+        impJson.onclick = () => fileInp.click();
+        fileInp.onchange = (e) => {
+          const f = e.target.files[0];
+          if(!f) return;
+          const rd = new FileReader();
+          rd.onload = () => {
+            try {
+              const o = JSON.parse(rd.result);
+              if(!o || !Array.isArray(o.tasks) || !o.days) throw new Error();
+              wbData = o;
+              saveCheckinData(wbData);
+              renderCheckinSystem();
+              alert("打卡数据导入成功！");
+            } catch(err) {
+              alert("导入失败：文件格式不对！");
+            }
+          };
+          rd.readAsText(f);
+          e.target.value = '';
+        };
+      }
+
+      const expMd = document.getElementById('portal_exportMd');
+      if(expMd){
+        expMd.onclick = function(){
+          const lines = ['# 学习打卡记录', '', '| 日期 | 完成项 | 复盘备注 |', '|---|---|---|'];
+          Object.keys(wbData.days).sort().forEach(k => {
+            const r = wbData.days[k];
+            const names = r.done.map(id => {
+              const t = wbData.tasks.find(x => x.id === id);
+              return t ? t.text : id;
+            }).join('；');
+            lines.push('| ' + k + ' | ' + (names || '—') + ' | ' + (r.note || '').replace(/\|/g, '\|') + ' |');
+          });
+          const blob = new Blob([lines.join('\n')], { type: "text/markdown;charset=utf-8" });
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = u; a.download = "学习打卡记录.md";
+          a.click();
+          URL.revokeObjectURL(u);
+        };
+      }
+
+      const clrBtn = document.getElementById('portal_clear');
+      if(clrBtn){
+        clrBtn.onclick = function(){
+          if(!confirm("确定重置打卡数据为默认状态？")) return;
+          wbData = { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+          saveCheckinData(wbData);
+          renderCheckinSystem();
+        };
+      }
+    }
+
     function toggleLogDetail(id) {
       const el = document.getElementById(id);
       if (el) {
@@ -2973,6 +3368,295 @@ int main() {
     }
 
     
+    
+    // ==========================================
+    // 学习打卡系统 (与桌面学习打卡.html 100% 互通)
+    // ==========================================
+    const WB_KEY = 'wb_study_checkin_v1';
+    const WB_DEFAULT_TASKS = [
+      {id:'t1', text:'信号与系统重修（最高优先）', group:'日常'},
+      {id:'t2', text:'C 语言手敲 20 分钟（三遍手敲法）', group:'日常'},
+      {id:'t3', text:'代码朗读 20 行，逐行讲内存发生了什么', group:'日常'},
+      {id:'t4', text:'纸笔推演一次（不用 AI、不开 Copilot）', group:'日常'},
+      {id:'t5', text:'核实简历四组数据：晶振/TH1、MPU6050、PID 5 参数、100h', group:'本周'},
+      {id:'t6', text:'45 秒自我介绍念 2 遍', group:'本周'},
+      {id:'t7', text:'模拟面试走一轮', group:'本周'}
+    ];
+
+    const PRESET_DAYS_DATA = {
+      "2026-11-10": {"done": ["t1", "t2", "t3", "t4"], "note": "搭环境与编译 hello.c，手写编译验证通过，开启第一天打卡。"},
+      "2026-11-11": {"done": ["t2", "t3", "t4", "t5"], "note": "数据类型与位宽练习，完成 P1 个人信息卡片与 P2 类型字节数探测器。"},
+      "2026-11-12": {"done": ["t1", "t2", "t3"], "note": "9/5 整数除法截断与 printf 控制，完成 P3 圆几何计算与 P4 温度换算表。"},
+      "2026-11-13": {"done": ["t2", "t4"], "note": "控制流深化，完成 P5 三数最大值三目与 if 辨析，Keil 声明规范。"},
+      "2026-11-14": {"done": ["t2", "t3"], "note": "完成 P6 简易计算器，彻底解决 switch 字符残留与 scanf 误多读一次陷阱。"},
+      "2026-11-15": {"done": ["t2", "t4"], "note": "高光时刻：P7 成绩统计一次性全对！循环边界与 max 初值完美避坑。"},
+      "2026-11-16": {"done": ["t1", "t2"], "note": "完成 P8 位操作四大铁律，解决 else 里 return 0 阻断后续代码问题。"},
+      "2026-11-17": {"done": ["t2", "t3", "t4"], "note": "加练 8 位寄存器调试台，实现 0x%02X 格式化与温度定点化存储。"},
+      "2026-11-18": {"done": ["t1", "t2"], "note": "消除 VS 编译器警告 C4189、C4244、C4702，达到 -Wall -Wextra 零警告。"},
+      "2026-11-19": {"done": ["t2", "t3", "t4"], "note": "值传递与 static 局部变量验证，亲眼验证形参副本与静态区累计。"},
+      "2026-11-20": {"done": ["t1", "t2", "t5"], "note": "Modbus RTU 串口帧模拟与指针地址退化，验证 sizeof(frame) 与 sizeof(buf)。"},
+      "2026-11-21": {"done": ["t1", "t2", "t6"], "note": "H747 双核项目定位思考，ESP32 点灯练习，45秒自我介绍念诵。"},
+      "2026-11-22": {"done": ["t1", "t2", "t4"], "note": "信号与系统时域连续/离散卷积复习，C 语言流程控制巩固。"},
+      "2026-11-23": {"done": ["t1", "t2", "t3"], "note": "do...while 循环累加（1~100求和）手写实测，归档至 week01/FileName.c。"},
+      "2026-11-24": {"done": ["t1", "t2"], "note": "启动信号处理与系统全课程，搭建公网学习打卡与手帐系统。"}
+    };
+
+    function padZero(n){ return n < 10 ? '0'+n : ''+n; }
+    function getTodayStr(){
+      const d = new Date();
+      return d.getFullYear() + '-' + padZero(d.getMonth()+1) + '-' + padZero(d.getDate());
+    }
+    function shiftDate(dateStr, delta){
+      const p = dateStr.split('-');
+      const d = new Date(+p[0], +p[1]-1, +p[2]);
+      d.setDate(d.getDate() + delta);
+      return d.getFullYear() + '-' + padZero(d.getMonth()+1) + '-' + padZero(d.getDate());
+    }
+
+    function loadCheckinData(){
+      try {
+        const raw = localStorage.getItem(WB_KEY);
+        if(!raw) {
+          const init = { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+          localStorage.setItem(WB_KEY, JSON.stringify(init));
+          return init;
+        }
+        const o = JSON.parse(raw);
+        if(!o.days) o.days = {};
+        if(!o.tasks) o.tasks = JSON.parse(JSON.stringify(WB_DEFAULT_TASKS));
+        return o;
+      } catch(e) {
+        return { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+      }
+    }
+
+    function saveCheckinData(o){
+      try {
+        localStorage.setItem(WB_KEY, JSON.stringify(o));
+        return true;
+      } catch(e) { return false; }
+    }
+
+    let wbData = loadCheckinData();
+    const todayKey = getTodayStr();
+
+    function renderCheckinSystem(){
+      const d = wbData.days[todayKey] || { done: [], note: '' };
+      
+      // 1. 今日日期与完成情况
+      const dateEl = document.getElementById('portal_today_date');
+      if(dateEl) dateEl.textContent = '今天是 ' + todayKey + ' · 勾完点保存留在本机';
+      
+      const todayCntEl = document.getElementById('portal_todayCnt');
+      if(todayCntEl) todayCntEl.textContent = (d.done ? d.done.length : 0) + ' / ' + wbData.tasks.length;
+      
+      // 2. 统计连续天数与累计天数
+      const isDayChecked = (k) => {
+        const item = wbData.days[k];
+        return !!(item && item.done && item.done.length > 0);
+      };
+      const totalCount = Object.keys(wbData.days).filter(isDayChecked).length;
+      const totalEl = document.getElementById('portal_total');
+      if(totalEl) totalEl.textContent = totalCount;
+      
+      let s = 0, cur = todayKey;
+      if(!isDayChecked(cur)) cur = shiftDate(cur, -1);
+      while(isDayChecked(cur)){
+        s++;
+        cur = shiftDate(cur, -1);
+      }
+      const streakEl = document.getElementById('portal_streak');
+      if(streakEl) streakEl.textContent = s;
+      const badgeStreak = document.getElementById('badge_streak');
+      if(badgeStreak) badgeStreak.textContent = s + '天';
+
+      // 3. 渲染今日任务列表
+      const taskListEl = document.getElementById('portal_taskList');
+      if(taskListEl){
+        taskListEl.innerHTML = '';
+        wbData.tasks.forEach(t => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-3 p-2.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--background,#f8fafc)] hover:bg-slate-100 transition-colors';
+          
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.id = 'p_cb_' + t.id;
+          cb.checked = (d.done && d.done.indexOf(t.id) >= 0);
+          cb.className = 'w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer';
+          
+          const lb = document.createElement('label');
+          lb.htmlFor = cb.id;
+          lb.className = 'flex-1 text-xs font-semibold text-[var(--foreground,#0f172a)] cursor-pointer';
+          lb.textContent = t.text;
+          
+          const tag = document.createElement('span');
+          tag.className = 'text-[10px] px-2 py-0.5 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500';
+          tag.textContent = t.group || '任务';
+          
+          row.appendChild(cb);
+          row.appendChild(lb);
+          row.appendChild(tag);
+          taskListEl.appendChild(row);
+        });
+      }
+
+      // 4. Note 文本框
+      const noteEl = document.getElementById('portal_note');
+      if(noteEl && !noteEl.dataset.inited){
+        noteEl.value = d.note || '';
+        noteEl.dataset.inited = 'true';
+      }
+
+      // 5. 渲染管理列表
+      const manageListEl = document.getElementById('portal_manageList');
+      if(manageListEl){
+        manageListEl.innerHTML = '';
+        wbData.tasks.forEach(t => {
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between p-2 rounded-lg bg-[var(--background,#f8fafc)] text-xs border border-[var(--card-border,#e2e8f0)]';
+          item.innerHTML = `<span class="truncate flex-1 font-medium">${t.text}</span><button class="text-rose-500 hover:text-rose-700 px-2 cursor-pointer font-bold" onclick="deletePortalTask('${t.id}')">✕</button>`;
+          manageListEl.appendChild(item);
+        });
+      }
+
+      // 6. 渲染最近 14 天历史
+      const histEl = document.getElementById('portal_history');
+      if(histEl){
+        histEl.innerHTML = '';
+        for(let i=0; i<14; i++){
+          const k = shiftDate(todayKey, -i);
+          const rec = wbData.days[k];
+          if(rec){
+            const div = document.createElement('div');
+            div.className = 'py-2 border-b border-[var(--card-border,#e2e8f0)] last:border-0 text-xs flex flex-col gap-1';
+            div.innerHTML = `
+              <div class="flex items-center justify-between font-bold">
+                <span class="text-blue-600 dark:text-blue-400">📅 ${k}</span>
+                <span class="px-2 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-semibold">${rec.done.length}/${wbData.tasks.length} 完成</span>
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground,#64748b)] bg-[var(--background,#f8fafc)] p-2 rounded border border-[var(--card-border,#e2e8f0)]">${rec.note || '无复盘记录'}</div>
+            `;
+            histEl.appendChild(div);
+          }
+        }
+      }
+    }
+
+    function deletePortalTask(id){
+      if(!confirm('确定删除该打卡项？')) return;
+      wbData.tasks = wbData.tasks.filter(t => t.id !== id);
+      saveCheckinData(wbData);
+      renderCheckinSystem();
+    }
+
+    function initPortalCheckinEvents(){
+      // 保存
+      const saveBtn = document.getElementById('portal_save');
+      if(saveBtn){
+        saveBtn.onclick = function(){
+          const done = [];
+          wbData.tasks.forEach(t => {
+            const cb = document.getElementById('p_cb_' + t.id);
+            if(cb && cb.checked) done.push(t.id);
+          });
+          const noteText = document.getElementById('portal_note').value;
+          wbData.days[todayKey] = { done: done, note: noteText };
+          saveCheckinData(wbData);
+          const msg = document.getElementById('portal_saveMsg');
+          if(msg){
+            msg.textContent = '✅ 已成功保存！';
+            setTimeout(() => { msg.textContent = ''; }, 3000);
+          }
+          renderCheckinSystem();
+        };
+      }
+
+      // 添加项
+      const addBtn = document.getElementById('portal_add');
+      const newTaskInp = document.getElementById('portal_newTask');
+      if(addBtn && newTaskInp){
+        const doAdd = () => {
+          const v = newTaskInp.value.trim();
+          if(!v) return;
+          wbData.tasks.push({ id: 'u' + Date.now(), text: v, group: '自定义' });
+          newTaskInp.value = '';
+          saveCheckinData(wbData);
+          renderCheckinSystem();
+        };
+        addBtn.onclick = doAdd;
+        newTaskInp.onkeydown = (e) => { if(e.key === 'Enter') doAdd(); };
+      }
+
+      // 备份与导出
+      const expJson = document.getElementById('portal_exportJson');
+      if(expJson){
+        expJson.onclick = function(){
+          const blob = new Blob([JSON.stringify(wbData, null, 2)], { type: "application/json;charset=utf-8" });
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = u; a.download = "打卡备份_" + todayKey + ".json";
+          a.click();
+          URL.revokeObjectURL(u);
+        };
+      }
+
+      const impJson = document.getElementById('portal_importJson');
+      const fileInp = document.getElementById('portal_fileInput');
+      if(impJson && fileInp){
+        impJson.onclick = () => fileInp.click();
+        fileInp.onchange = (e) => {
+          const f = e.target.files[0];
+          if(!f) return;
+          const rd = new FileReader();
+          rd.onload = () => {
+            try {
+              const o = JSON.parse(rd.result);
+              if(!o || !Array.isArray(o.tasks) || !o.days) throw new Error();
+              wbData = o;
+              saveCheckinData(wbData);
+              renderCheckinSystem();
+              alert("打卡数据导入成功！");
+            } catch(err) {
+              alert("导入失败：文件格式不对！");
+            }
+          };
+          rd.readAsText(f);
+          e.target.value = '';
+        };
+      }
+
+      const expMd = document.getElementById('portal_exportMd');
+      if(expMd){
+        expMd.onclick = function(){
+          const lines = ['# 学习打卡记录', '', '| 日期 | 完成项 | 复盘备注 |', '|---|---|---|'];
+          Object.keys(wbData.days).sort().forEach(k => {
+            const r = wbData.days[k];
+            const names = r.done.map(id => {
+              const t = wbData.tasks.find(x => x.id === id);
+              return t ? t.text : id;
+            }).join('；');
+            lines.push('| ' + k + ' | ' + (names || '—') + ' | ' + (r.note || '').replace(/\|/g, '\|') + ' |');
+          });
+          const blob = new Blob([lines.join('\n')], { type: "text/markdown;charset=utf-8" });
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = u; a.download = "学习打卡记录.md";
+          a.click();
+          URL.revokeObjectURL(u);
+        };
+      }
+
+      const clrBtn = document.getElementById('portal_clear');
+      if(clrBtn){
+        clrBtn.onclick = function(){
+          if(!confirm("确定重置打卡数据为默认状态？")) return;
+          wbData = { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
+          saveCheckinData(wbData);
+          renderCheckinSystem();
+        };
+      }
+    }
+
     function toggleLogDetail(id) {
       const el = document.getElementById(id);
       if (el) {
