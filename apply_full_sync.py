@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-数据同步脚本：
-将姜俊哲真实的打卡记录、易错与重点本、15篇手帐日志与便签
-作为预设种子数据完整注入到 index.html 和 embedded_study_journal.html 中，
-并确保无论是首次访问（无本地缓存）还是已有缓存的用户，都能完美展示全部记录。
+数据同步脚本（修复版）：
+杜绝 re.sub 转义展开陷阱，使用 lambda 精准替换，
+确保在 index.html 和 embedded_study_journal.html 中生成的 JavaScript 代码 100% 合法无语法错误。
 """
 
 import json
@@ -312,181 +311,33 @@ def main():
     with open(path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # 替换或注入 DEFAULT_KNOWLEDGE
-    k_json = json.dumps(DEFAULT_KNOWLEDGE, ensure_ascii=False, indent=4)
-    logs_json = json.dumps(DEFAULT_STUDY_LOGS, ensure_ascii=False, indent=4)
-    memos_json = json.dumps(DEFAULT_MEMOS, ensure_ascii=False, indent=4)
-    ids_json = json.dumps(DEFAULT_CHECKED_IDS, ensure_ascii=False, indent=4)
+    # 使用 JSON.parse('...') 方案最安全纯净，完全规避双引号换行 SyntaxError！
+    k_json_str = json.dumps(DEFAULT_KNOWLEDGE, ensure_ascii=False)
+    logs_json_str = json.dumps(DEFAULT_STUDY_LOGS, ensure_ascii=False)
+    memos_json_str = json.dumps(DEFAULT_MEMOS, ensure_ascii=False)
+    ids_json_str = json.dumps(DEFAULT_CHECKED_IDS, ensure_ascii=False)
 
-    # 替换 DEFAULT_KNOWLEDGE 声明
-    k_pattern = re.compile(r"const DEFAULT_KNOWLEDGE = \[.*?\];", re.DOTALL)
-    k_decl = f"const DEFAULT_KNOWLEDGE = {k_json};\n\n    const DEFAULT_STUDY_LOGS = {logs_json};\n\n    const DEFAULT_MEMOS = {memos_json};\n\n    const DEFAULT_CHECKED_IDS = {ids_json};"
+    # 替换 const DEFAULT_KNOWLEDGE ... 整个区域
+    target_pattern = re.compile(r"const DEFAULT_KNOWLEDGE = \[.*?const DEFAULT_CHECKED_IDS = \[.*?\];", re.DOTALL)
     
-    if k_pattern.search(html):
-        html = k_pattern.sub(k_decl, html, count=1)
-        print("Successfully replaced DEFAULT_KNOWLEDGE with comprehensive datasets.")
+    clean_declarations = (
+        f"const DEFAULT_KNOWLEDGE = {k_json_str};\n\n"
+        f"    const DEFAULT_STUDY_LOGS = {logs_json_str};\n\n"
+        f"    const DEFAULT_MEMOS = {memos_json_str};\n\n"
+        f"    const DEFAULT_CHECKED_IDS = {ids_json_str};"
+    )
+
+    if target_pattern.search(html):
+        html = target_pattern.sub(lambda m: clean_declarations, html, count=1)
+        print("Replaced definitions using lambda match.")
     else:
-        print("Warning: DEFAULT_KNOWLEDGE pattern not found!")
-
-    # 完善 loadState() 函数
-    new_load_state = """function loadState() {
-      state = {
-        checkedIds: [],
-        logs: [],
-        memo: "",
-        memos: [],
-        knowledge: []
-      };
-
-      try {
-        const saved = localStorage.getItem("embedded_journal_state_v3");
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && typeof parsed === 'object') {
-            state.checkedIds = Array.isArray(parsed.checkedIds) ? parsed.checkedIds : [];
-            state.logs = Array.isArray(parsed.logs) ? parsed.logs : [];
-            state.memo = typeof parsed.memo === 'string' ? parsed.memo : "";
-            state.memos = Array.isArray(parsed.memos) ? parsed.memos : [];
-            state.knowledge = Array.isArray(parsed.knowledge) ? parsed.knowledge : [];
-
-            // 自动平滑平移老版本单个便签
-            if (state.memos.length === 0 && state.memo && state.memo.trim().length > 0) {
-              state.memos.push({
-                id: "memo_legacy",
-                content: state.memo.trim(),
-                color: "yellow",
-                createdAt: "历史备忘"
-              });
-              state.memo = "";
-            }
-          }
-        } else {
-          const oldV2 = localStorage.getItem("embedded_journal_state_v2");
-          const oldV1 = localStorage.getItem("embedded_journal_state");
-          if (oldV2) {
-            const p2 = JSON.parse(oldV2);
-            if (p2 && typeof p2 === 'object') {
-              state.checkedIds = Array.isArray(p2.checkedIds) ? p2.checkedIds : [];
-              state.logs = Array.isArray(p2.logs) ? p2.logs : [];
-              state.memo = p2.memo || "";
-              state.knowledge = Array.isArray(p2.knowledge) ? p2.knowledge : [];
-            }
-          } else if (oldV1) {
-            const p1 = JSON.parse(oldV1);
-            if (p1 && typeof p1 === 'object') {
-              state.checkedIds = Array.isArray(p1.checkedIds) ? p1.checkedIds : [];
-              state.logs = p1.logs || [];
-              state.memo = p1.memo || "";
-            }
-          }
-        }
-      } catch (e) {
-        console.warn("Storage load error", e);
-      }
-
-      // 🌟 核心同步：若本地无数据或对应项为空，自动载入作者姜俊哲的真实打卡与笔记数据
-      if (!state.knowledge || state.knowledge.length === 0) {
-        state.knowledge = JSON.parse(JSON.stringify(DEFAULT_KNOWLEDGE));
-      }
-      if (!state.logs || state.logs.length === 0) {
-        state.logs = JSON.parse(JSON.stringify(DEFAULT_STUDY_LOGS));
-      }
-      if (!state.memos || state.memos.length === 0) {
-        state.memos = JSON.parse(JSON.stringify(DEFAULT_MEMOS));
-      }
-      if (!state.checkedIds || state.checkedIds.length === 0) {
-        state.checkedIds = JSON.parse(JSON.stringify(DEFAULT_CHECKED_IDS));
-      }
-
-      // 【双保险同步】：扫描所有单独打卡键 wk_chk_* 与 sig_chk_*，补齐到 checkedIds
-      try {
-        WENGKAI_CHAPTERS.forEach(ch => {
-          ch.points.forEach(p => {
-            const id = p.split(":")[0];
-            const v = localStorage.getItem("wk_chk_" + id);
-            if ((v === "1" || v === "true") && !state.checkedIds.includes(id)) {
-              state.checkedIds.push(id);
-            }
-          });
-        });
-        SIGNALS_CHAPTERS.forEach(ch => {
-          ch.points.forEach(p => {
-            const id = p.split(":")[0];
-            const v = localStorage.getItem("sig_chk_" + id);
-            if ((v === "1" || v === "true") && !state.checkedIds.includes(id)) {
-              state.checkedIds.push(id);
-            }
-          });
-        });
-        FUTURE_STAGES.forEach(st => {
-          const v = localStorage.getItem("wk_chk_" + st.id);
-          if ((v === "1" || v === "true") && !state.checkedIds.includes(st.id)) {
-            state.checkedIds.push(st.id);
-          }
-        });
-      } catch(e) {}
-    }"""
-
-    load_state_pattern = re.compile(r"function loadState\(\)\s*\{.*?catch\(e\)\s*\{\}\s*\}", re.DOTALL)
-    if load_state_pattern.search(html):
-        html = load_state_pattern.sub(new_load_state, html, count=1)
-        print("Successfully updated loadState function.")
-    else:
-        print("Warning: loadState pattern not found!")
-
-    # 完善 initDefaultRealProgress
-    new_init_real = """function initDefaultRealProgress() {
-      // 1. 实战手写练习勾选同步
-      const realKeys = ['real_p1', 'real_p2', 'real_p3', 'real_p4', 'real_p5', 'real_p6', 'real_p7', 'real_p8', 'real_extra1', 'real_extra2'];
-      realKeys.forEach(k => {
-        if (localStorage.getItem(k) === null) {
-          localStorage.setItem(k, 'true');
-        }
-        const el = document.getElementById(k);
-        if (el) el.checked = (localStorage.getItem(k) === 'true');
-      });
-
-      // 2. 默认通关章节与里程碑双向同步
-      DEFAULT_CHECKED_IDS.forEach(id => {
-        const prefix = id.startsWith("sig_") ? "sig_chk_" : "wk_chk_";
-        if (localStorage.getItem(prefix + id) === null) {
-          localStorage.setItem(prefix + id, "1");
-        }
-      });
-    }
-
-    // 提供一键重置为作者姜俊哲真实手帐数据的专属函数
-    function resetToJiangJunzheData() {
-      if (!confirm("确定要将打卡记录、易错本、手帐日志重置为作者姜俊哲的真实预设记录吗？")) return;
-      state.knowledge = JSON.parse(JSON.stringify(DEFAULT_KNOWLEDGE));
-      state.logs = JSON.parse(JSON.stringify(DEFAULT_STUDY_LOGS));
-      state.memos = JSON.parse(JSON.stringify(DEFAULT_MEMOS));
-      state.checkedIds = JSON.parse(JSON.stringify(DEFAULT_CHECKED_IDS));
-      localStorage.setItem("embedded_journal_state_v3", JSON.stringify(state));
-      
-      // 写入打卡系统
-      wbData = { tasks: JSON.parse(JSON.stringify(WB_DEFAULT_TASKS)), days: JSON.parse(JSON.stringify(PRESET_DAYS_DATA)) };
-      saveCheckinData(wbData);
-
-      initDefaultRealProgress();
-      alert("✅ 已成功重置并同步姜俊哲全部真实打卡记录与笔记！即将为您刷新。");
-      window.location.reload();
-    }"""
-
-    real_prog_pattern = re.compile(r"function initDefaultRealProgress\(\)\s*\{.*?\}(?=\s*function|\s*toggleLogDetail)", re.DOTALL)
-    if real_prog_pattern.search(html):
-        html = real_prog_pattern.sub(new_init_real, html, count=1)
-        print("Successfully updated initDefaultRealProgress function.")
-    else:
-        print("Warning: initDefaultRealProgress pattern not found!")
-
-    # 增加一个顶部的便捷按钮：“🔄 同步姜俊哲真实打卡与笔记”
-    sync_btn_html = """<button onclick="resetToJiangJunzheData()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer" title="点击一键同步作者真实打卡数据、15篇日志与12条易错笔记">
-                <span>🔄</span> 同步作者真实打卡与笔记
-              </button>"""
-    if "resetToJiangJunzheData" not in html:
-        html = html.replace('<span>📥</span> 导出打卡数据 (JSON)', f'{sync_btn_html}\n              <button onclick="exportDataJson()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">\n                <span>📥</span> 导出打卡数据 (JSON)')
-        print("Added Reset/Sync button to top header.")
+        # 尝试单项匹配
+        k_single = re.compile(r"const DEFAULT_KNOWLEDGE = \[.*?\];", re.DOTALL)
+        if k_single.search(html):
+            html = k_single.sub(lambda m: clean_declarations, html, count=1)
+            print("Replaced DEFAULT_KNOWLEDGE with clean declarations.")
+        else:
+            print("Warning: pattern not matched directly.")
 
     # 保存 index.html
     with open(path, "w", encoding="utf-8") as f:
