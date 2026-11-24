@@ -149,10 +149,13 @@
         <div>
           <div class="flex flex-wrap items-center gap-2 mb-2">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/40">
-              <span>🎯</span> 目标：工业机柜环境监护系统
+              <span>🎯</span> 目标：嵌入式软件 / 工业机柜环境监护系统
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300">
+              🎓 中南大学测控技术与仪器 2027 届 · 姜俊哲
             </span>
             <a href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-pink-50 text-pink-700 border border-pink-200/70 hover:bg-pink-100 transition-colors dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-800/40">
-              <span>📺</span> B站·翁恺C语言视频直达 &UpperRightArrow;
+              <span>📺</span> B站·翁恺C语言 &UpperRightArrow;
             </a>
             <!-- 实时保存徽章 -->
             <span id="globalAutoSaveIndicator" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/40 transition-all">
@@ -160,9 +163,25 @@
               <span id="autoSaveText">⚡ 实时保存已就绪</span>
             </span>
           </div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2">
-            🌱 零基础 C 语言 &rarr; 嵌入式通关手帐
-          </h1>
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                🌱 姜俊哲 · 嵌入式通关手帐 (C语言 & DSP系统)
+              </h1>
+              <p class="text-xs sm:text-sm text-[var(--muted-foreground,#64748b)] mt-1.5">
+                中南大学测控技术与仪器 · 起点 2026-10-26 · 10项练习通关 · 3篇手写源码 · 15篇学习日志连载
+              </p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="exportDataJson()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">
+                <span>📥</span> 导出打卡数据 (JSON)
+              </button>
+              <label class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] hover:bg-slate-100 text-[var(--foreground,#0f172a)] shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer">
+                <span>📤</span> 导入打卡数据
+                <input type="file" accept=".json" onchange="importDataJson(event)" class="hidden">
+              </label>
+            </div>
+          </div>
           <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed">
             从第 1 章第一个 C 程序写起，一步步攻克变量、循环、函数、数组，第九章登顶<strong>指针</strong>！支持点击查看每章精讲速查与一键打卡。
           </p>
@@ -196,7 +215,10 @@
 
     <!-- 导航标签页 -->
     <div class="flex items-center gap-2 border-b border-[var(--card-border,#e2e8f0)] pb-2 text-sm overflow-x-auto custom-scrollbar">
-      <button onclick="switchTab('wengkai')" id="tabBtn-wengkai" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors bg-[var(--primary,#0284c7)] text-white shadow-sm flex items-center gap-1.5">
+        <button onclick="switchTab('jjz')" id="tabBtn-jjz" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors bg-[var(--primary,#0284c7)] text-white shadow-sm flex items-center gap-1.5">
+          <span>🎯</span> 姜俊哲 · 实战与代码 <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">10/10</span>
+        </button>
+        <button onclick="switchTab('wengkai')" id="tabBtn-wengkai" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
         <span>📚</span> 翁恺 C 语言
       </button>
       <button onclick="switchTab('signals')" id="tabBtn-signals" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
@@ -217,7 +239,407 @@
     </div>
 
     <!-- 标签 1：翁恺 C 语言完整 1~12 章全图谱 -->
-    <section id="tab-wengkai" class="tab-content space-y-3">
+    
+    <!-- 标签 0：姜俊哲 · 实战打卡与手写代码 -->
+    <section id="tab-jjz" class="tab-content block space-y-6">
+      
+      <!-- 阶段进度 -->
+      <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+            <span>🗺️</span> 嵌入式进阶四大阶段进度
+          </h2>
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+            阶段一已通关 · 进度超前进行中
+          </span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/20">
+            <div class="flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-300 mb-1">
+              <span>阶段一 · 语法地基 (1–5周)</span>
+              <span>✅ 100%</span>
+            </div>
+            <p class="text-[11px] text-emerald-700 dark:text-emerald-400">P1–P8 必做 + 2 项深度加练已全部通关，手写 C 代码已归档</p>
+          </div>
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--background,#f8fafc)] opacity-90">
+            <div class="flex items-center justify-between text-xs font-bold text-[var(--foreground,#0f172a)] mb-1">
+              <span>阶段二 · 核心进阶 (6–10周)</span>
+              <span class="text-amber-600 font-semibold">进行中 🏃</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground,#64748b)]">指针深入、内存模型、结构体、链表、位运算寄存器模拟</p>
+          </div>
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--background,#f8fafc)] opacity-75">
+            <div class="flex items-center justify-between text-xs font-bold text-[var(--foreground,#0f172a)] mb-1">
+              <span>阶段三 · 上板实战 (11–16周)</span>
+              <span class="text-slate-400">规划中</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground,#64748b)]">STM32 裸机驱动、串口/I2C/SPI/ADC、FreeRTOS 任务调度</p>
+          </div>
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--background,#f8fafc)] opacity-75">
+            <div class="flex items-center justify-between text-xs font-bold text-[var(--foreground,#0f172a)] mb-1">
+              <span>阶段四 · 成型项目 (17–24周)</span>
+              <span class="text-slate-400">目标</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground,#64748b)]">工业级双核网关/温控采集卡、全套面试题解、秋招签约</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 已通关的 10 项核心练习 -->
+      <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>🏆</span> 姜俊哲 · 10项实战练习通关台账 (P1–P8 + 2项加练)
+            </h2>
+            <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">全员零 AI 代写，100% 本地纯手写编译验证 · 支持勾选打卡保存</p>
+          </div>
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200">
+            10 / 10 项已通关
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          
+          <!-- P1 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p1" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p1" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P1 · 个人信息卡片</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">printf 宽度与精度、scanf 的 &、%19s 缓冲区防溢出</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：%.2f 误写在 scanf 导致报错；%f 误配 double 导致精度错乱；%1f 误将字母 l 敲成数字 1。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P2 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p2" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p2" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P2 · 类型字节数探测器</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">sizeof 是编译期运算符、%zu 格式符、&lt;limits.h&gt; 极值</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：%d 打印 UINT_MAX 变成 -1；-INT_MIN 负数溢出绕回自身未定义行为 (UB)。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P3 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p3" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p3" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P3 · 圆的几何计算</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">const double 常量、整数除法截断、%.3f 控制</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：9/5 整数截断得 1 而非 1.8；%.3f（保留三位）与 %3f（总宽3位）区别；PI 精度不够致 6.284。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P4 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p4" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p4" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P4 · 温度换算表</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">for 循环边界、off-by-one 偏差规避、表格对齐列宽设计</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>实战收获</b>：列宽必须等于该列最长内容字符数，宁多勿少；严格使用 %6.1f 等对齐格式符。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P5 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p5" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p5" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P5 · 三数最大值</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">三目表达式 ?: 与 if 语句辨析、Keil/C89 声明规范</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：变量声明必须置于代码块最开头（Keil C51/C89 硬规）；测试 5 5 5 等值边界状态。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P6 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p6" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p6" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P6 · 简易计算器</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">switch / break / default、" %c" 空格跳过残留换行符</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：为了校验返回值又在 if 里多调用了一次 scanf，导致程序意外卡住等待第4次输入！
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P7 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p7" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p7" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P7 · 成绩统计 (数组)</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">一次性全对 ⭐</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">数组索引 i &lt; n、max 用 scores[0] 打底、sum / 5.0 浮点除</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>高光实录</b>：唯一一次全对！预警的所有常见坑（0打底遇到负数、越界访问、整数除法）全部完美规避。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- P8 -->
+          <div class="chapter-card border border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_p8" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_p8" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>P8 · 位操作四大铁律</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-normal">已通关</span>
+                </label>
+                <div class="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">|= 置位 / &amp;=~ 清零 / ^= 翻转 / (val &gt;&gt; n) &amp; 1 读位</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>踩坑总结</b>：else 分支内写 return 0 导致后续全部不可达；scanf 再次犯了重复调用多读一次的错误。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 加练1 -->
+          <div class="chapter-card border border-purple-500/40 bg-purple-50/20 dark:bg-purple-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_extra1" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-purple-600 focus:ring-purple-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_extra1" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>加练 · 8位寄存器调试台</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 font-normal">深度加练</span>
+                </label>
+                <div class="text-xs font-mono text-purple-600 dark:text-purple-400 mt-1">功能码分发、进制格式化 0x%02X、×10 整数定点存温度、函数重构</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>血泪踩坑</b>：i&gt;0 漏处理 bit0；循环变量混淆；内外层循环共用变量 i 导致死循环；case 贯穿；\n 连漏6次。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 加练2 -->
+          <div class="chapter-card border border-purple-500/40 bg-purple-50/20 dark:bg-purple-950/10 rounded-xl p-4 transition-all">
+            <div class="flex items-start gap-2.5">
+              <input type="checkbox" id="real_extra2" checked onchange="saveState()" class="checkbox-tick mt-1 w-4 h-4 rounded text-purple-600 focus:ring-purple-500 cursor-pointer">
+              <div class="flex-1">
+                <label for="real_extra2" class="font-bold text-sm text-[var(--foreground,#0f172a)] cursor-pointer flex items-center gap-1.5">
+                  <span>加练 · 实验：值传递与 static</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 font-normal">核心实验</span>
+                </label>
+                <div class="text-xs font-mono text-purple-600 dark:text-purple-400 mt-1">栈帧分配、参数副本隔离、作用域 vs 静态区生命周期</div>
+                <div class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed bg-[var(--background,#f8fafc)] p-2 rounded-lg border border-[var(--card-border,#e2e8f0)]">
+                  💡 <b>亲眼验证</b>：被调函数内形参 v=11，main 里的实参 a 依然稳固为 10；static 局部变量 b 跨调用累计 1/2/3！
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3 个本地真实手写 C 代码检视器 -->
+      <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>💻</span> 本地手写 C 语言源代码检视 (3篇已归档)
+            </h2>
+            <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">直接在页面上查看本地手写源码，真实注释与编译逻辑一览无余</p>
+          </div>
+          <span class="text-xs font-mono text-blue-600 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-md border border-blue-200 dark:border-blue-800">
+            F:\Embedded_Workspace\code
+          </span>
+        </div>
+
+        <div class="space-y-4">
+          
+          <!-- Code 1 -->
+          <div class="border border-[var(--card-border,#e2e8f0)] rounded-xl overflow-hidden bg-[var(--background,#f8fafc)]">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-100 dark:bg-slate-800/80 border-b border-[var(--card-border,#e2e8f0)]">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">📄 code/week01/FileName.c</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-semibold">11-23 手写实测</span>
+              </div>
+              <span class="text-xs text-[var(--muted-foreground,#64748b)]">do...while 循环累加 (1~100求和)</span>
+            </div>
+            <pre class="p-4 text-xs font-mono bg-slate-900 text-emerald-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">#define _CRT_SECURE_NO_WARNINGS
+#include &lt;stdio.h&gt;
+int main(void)
+{
+	int num = 0, sum = 0;
+	do
+	{
+		num = num + 1;
+		sum = sum + num;
+	} while (num &lt; 100);
+	printf(&quot;累加结果为：%d&quot;, sum);
+	return 0;
+}
+
+
+</pre>
+          </div>
+
+          <!-- Code 2 -->
+          <div class="border border-[var(--card-border,#e2e8f0)] rounded-xl overflow-hidden bg-[var(--background,#f8fafc)]">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-100 dark:bg-slate-800/80 border-b border-[var(--card-border,#e2e8f0)]">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">📄 code/week04/函数.c</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-300 font-semibold">值传递与 static</span>
+              </div>
+              <span class="text-xs text-[var(--muted-foreground,#64748b)]">栈帧参数副本与静态变量累计</span>
+            </div>
+            <pre class="p-4 text-xs font-mono bg-slate-900 text-sky-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">#define _CRT_SECURE_NO_WARNINGS
+#include &lt;stdio.h&gt;
+void count_calls(void);
+
+int main(void)
+{
+    count_calls(); count_calls(); count_calls();
+    return 0;
+}
+
+void count_calls(void)
+{
+    int a = 0;
+    static int b = 0;
+    a++; b++; printf(&quot;a=%d,b=%d\n&quot;, a, b);
+}
+</pre>
+          </div>
+
+          <!-- Code 3 -->
+          <div class="border border-[var(--card-border,#e2e8f0)] rounded-xl overflow-hidden bg-[var(--background,#f8fafc)]">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-100 dark:bg-slate-800/80 border-b border-[var(--card-border,#e2e8f0)]">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">📄 code/week04/数组退化.c</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 font-semibold">嵌入式高频</span>
+              </div>
+              <span class="text-xs text-[var(--muted-foreground,#64748b)]">Modbus RTU 串口帧模拟与指针地址退化</span>
+            </div>
+            <pre class="p-4 text-xs font-mono bg-slate-900 text-amber-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">#define _CRT_SECURE_NO_WARNINGS
+#include &lt;stdio.h&gt;
+void print_frame(unsigned char* buf, int len);   /* 声明 */
+
+int main(void)
+{
+    unsigned char frame[8] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A };
+    int i = 0;
+
+    printf(&quot;main 里 sizeof(frame) = %zu\n&quot;, sizeof(frame));
+    print_frame(frame, 8);
+    printf(&quot;回来后 frame[0] = %02X\n&quot;, (unsigned int)frame[0]);
+    return 0;
+}
+
+void print_frame(unsigned char* buf, int len)   
+{
+    int i;
+    printf(&quot;函数里 sizeof(frame)=%zu\n&quot;, sizeof(buf));/* 1. 打印 sizeof(buf)，和 main 那个数比一比 */
+    for (i = 0; i &lt; len; i++) { printf(&quot;函数里 frame[%d]=%02X\n&quot;, i, buf[i]); }/* 2. 用 len 控制循环，逐个 %02X 打印 buf[i] */
+    buf[0] = 0xFF;/* 3. 写一句 buf[0] = 0xFF; —— 看看 main 那边会不会变 */
+}
+</pre>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 知识依赖链与坑位地图 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        
+        <!-- 知识依赖链 -->
+        <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+          <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] mb-3 flex items-center gap-2">
+            <span>🔗</span> 姜俊哲 · 个人知识技能依赖链
+          </h2>
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">数据类型与位宽</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">格式符与 IO</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">运算符与优先级</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">控制流 if/switch/for</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">数组与循环边界</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">位运算与寄存器</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">函数栈帧与 static</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-dashed border-amber-400 font-medium">指针深入 (进行中)</span>
+            <span class="text-slate-400">→</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-dashed border-slate-300 font-medium">结构体与寄存器映射</span>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground,#64748b)] mt-3">
+            🟢 绿色实线：已彻底掌握并手写实操验证；🟡 虚线：当前正在突破的核心进阶。
+          </p>
+        </div>
+
+        <!-- 真实坑位地图 -->
+        <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+          <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] mb-3 flex items-center gap-2">
+            <span>🛡️</span> 真实坑位地图 (实战沉淀的免疫力)
+          </h2>
+          <div class="space-y-2.5 text-xs">
+            <div class="p-2.5 rounded-lg border-l-4 border-rose-500 bg-rose-50/60 dark:bg-rose-950/20">
+              <div class="font-bold text-rose-800 dark:text-rose-300 mb-0.5">10/26 – 11/06 · 类型与格式陷阱</div>
+              <p class="text-rose-700 dark:text-rose-400 text-[11px]">同一内存的两种解读；9/5 整数除法截断丢失；%zu 与 %d 区别；scanf 误加 .2f。</p>
+            </div>
+            <div class="p-2.5 rounded-lg border-l-4 border-amber-500 bg-amber-50/60 dark:bg-amber-950/20">
+              <div class="font-bold text-amber-800 dark:text-amber-300 mb-0.5">11/07 – 11/08 · 输入与边界陷阱</div>
+              <p class="text-amber-700 dark:text-amber-400 text-[11px]">输入流消费性：检查返回值务必就地完成，绝不能为了判断而再次调用 scanf 导致阻塞。</p>
+            </div>
+            <div class="p-2.5 rounded-lg border-l-4 border-blue-500 bg-blue-50/60 dark:bg-blue-950/20">
+              <div class="font-bold text-blue-800 dark:text-blue-300 mb-0.5">11/09 · 结构重构与编译器警告</div>
+              <p class="text-blue-700 dark:text-blue-400 text-[11px]">循环变量内外层共用死循环；switch fall-through；坚决开启 -Wall -Wextra 并消灭 C4189/C4244。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="tab-wengkai" class="tab-content hidden space-y-3">
       <div class="flex items-center justify-between text-xs text-[var(--muted-foreground,#64748b)] px-1">
         <span>点击每章的 <strong>「📖 极速精讲」</strong> 可查看视频提炼，学完后可一键打卡：</span>
         <span class="font-medium text-amber-600 dark:text-amber-400">🔥 第 9 章即为核心指针</span>
@@ -362,115 +784,572 @@
     </section>
 
     <!-- 标签 3：打卡日志系统 -->
-    <section id="tab-logs" class="tab-content space-y-4 hidden">
-
-      <!-- 实时专注计时打卡卡片 -->
-      <div id="studyTimerCard" class="bg-gradient-to-r from-blue-50/90 via-indigo-50/80 to-blue-50/90 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-blue-950/40 border border-blue-200/80 dark:border-blue-800/50 rounded-xl p-4 sm:p-5 shadow-sm transition-all">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-3.5">
-            <div id="timerPulseDot" class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-xl shrink-0 shadow-sm transition-all">
-              ⏱️
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-blue-900 dark:text-blue-200">学习专注打卡器</span>
-                <span id="timerStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full font-medium bg-slate-200/80 text-slate-700 dark:bg-slate-800 dark:text-slate-300">未开始计时</span>
-              </div>
-              <div id="timerDisplay" class="font-mono text-2xl sm:text-3xl font-black text-blue-700 dark:text-blue-300 tracking-tight my-0.5">
-                00:00:00
-              </div>
-              <div id="timerStartTimeText" class="text-[11px] text-[var(--muted-foreground,#64748b)]">准备好开始今天的 C 语言学习了吗？点击右侧一键开始计时！</div>
-            </div>
+    <section id="tab-logs" class="tab-content hidden space-y-4">
+      <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="text-base font-bold text-[var(--foreground,#0f172a)] flex items-center gap-2">
+              <span>📅</span> 姜俊哲 · 每日真实学习日志 (15 篇连载)
+            </h2>
+            <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-0.5">从 2026-11-10 到 2026-11-24，每日手写代码记录、真实踩坑与复盘</p>
           </div>
-          
-          <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
-            <button type="button" id="timerStartBtn" onclick="startStudyTimer()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
-              <span>▶️</span> 开始学习计时
-            </button>
-            <button type="button" id="timerFinishBtn" onclick="finishStudyTimer()" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
-              <span>⏹️</span> 结束并填入手帐
-            </button>
-            <button type="button" id="timerResetBtn" onclick="resetStudyTimer()" class="hidden px-2.5 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs text-[var(--muted-foreground,#64748b)]" title="取消并重置计时">
-              ✕
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-5 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="font-bold text-base flex items-center gap-2">
-            <span>📝</span> 记录今日学习印记
-          </h2>
-          <span class="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 实时暂存中
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300">
+            全部 15 篇已同步归档
           </span>
         </div>
-
-        <form id="logForm" onsubmit="saveLog(event)" class="space-y-3">
-          <!-- 升级后的起止时间与时长网格 -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">学习日期</label>
-              <input type="date" id="logDate" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-            </div>
-            <div>
-              <div class="flex items-center justify-between mb-1">
-                <label class="text-xs font-medium text-[var(--muted-foreground,#64748b)]">开始时间</label>
-                <button type="button" onclick="setLogTimeToNow('logStartTime')" class="text-[10px] text-blue-600 dark:text-blue-400 hover:underline">设为当前</button>
-              </div>
-              <input type="time" id="logStartTime" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="autoCalcLogHours()">
-            </div>
-            <div>
-              <div class="flex items-center justify-between mb-1">
-                <label class="text-xs font-medium text-[var(--muted-foreground,#64748b)]">结束时间</label>
-                <button type="button" onclick="setLogTimeToNow('logEndTime')" class="text-[10px] text-blue-600 dark:text-blue-400 hover:underline">设为当前</button>
-              </div>
-              <input type="time" id="logEndTime" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="autoCalcLogHours()">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">时长 & 心情</label>
-              <div class="flex items-center gap-1.5">
-                <div class="relative flex-1">
-                  <input type="number" step="0.1" min="0.1" max="24" id="logHours" value="1.0" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 pr-7" title="可由起止时间自动计算，也可手动微调">
-                  <span class="absolute right-2 top-2 text-[10px] text-[var(--muted-foreground,#64748b)] pointer-events-none">h</span>
-                </div>
-                <select id="logMood" class="auto-save-input bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 shrink-0" title="今日学习心情">
-                  <option value="🌟 豁然开朗">🌟 豁然开朗</option>
-                  <option value="💡 略有所悟">💡 略有所悟</option>
-                  <option value="☕ 稳步推进">☕ 稳步推进</option>
-                  <option value="🧗 稍有吃力">🧗 稍有吃力</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">今日看的章节 / 核心收获</label>
-            <input type="text" id="logTitle" placeholder="例如：第3章 if-else 分支、关系运算符的大于等于" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">心得总结 / 卡壳疑问（记录下来后续探讨）</label>
-            <textarea id="logDetail" rows="2" placeholder="例如：写猜数游戏时，do-while 和 while 什么时候用更容易犯迷糊..." class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
-          </div>
-
-          <div class="flex justify-between items-center pt-1">
-            <span class="text-[11px] text-[var(--muted-foreground,#64748b)]">💡 表单文字已随时自动保存为草稿</span>
-            <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shadow-sm flex items-center gap-1.5">
-              <span>📌</span> 提交今日打卡
-            </button>
-          </div>
-        </form>
+        <div class="space-y-3.5">
+          
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-24</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-24.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_0')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
       </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-24
 
-      <!-- 历史时间轴记录 -->
-      <div class="space-y-3">
-        <h3 class="text-sm font-bold flex items-center justify-between text-[var(--muted-foreground,#64748b)]">
-          <span>📅 学习足迹时间轴</span>
-          <span id="logTotalHours" class="text-xs font-normal">累计打卡：0 次 (0 小时)</span>
-        </h3>
-        <div id="logsContainer" class="space-y-3"></div>
+ 00:00 浠ｇ爜璁板綍
+- 鏇存柊 FileName.c 鈫?code/week01/FileName.c
+- 鎻愪氦锛歚16034be...
+      </p>
+      <div id="log_content_0" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-24
+
+## 00:00 浠ｇ爜璁板綍
+- 鏇存柊 `FileName.c` 鈫?`code/week01/FileName.c`
+- 鎻愪氦锛歚16034be`
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-23</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-23.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_1')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-23
+
+ 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- 鐭ヨ瘑鐐?锛氬綋鏃ユ棤浼氳瘽杈呭璁板綍锛堣緟瀵艰蹇嗙洰褰曟渶鏂颁负 202...
+      </p>
+      <div id="log_content_1" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-23
+
+## 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛氬綋鏃ユ棤浼氳瘽杈呭璁板綍锛堣緟瀵艰蹇嗙洰褰曟渶鏂颁负 `2026-11-21.md`锛屾棤 11-23 鏂囦欢锛夛紝涓嶈噯閫犺瑙ｅ唴瀹广€備粎浠庡綋澶╂墜鍐欎唬鐮?diff 鍙缁冧範鍐呭锛歚do...while` 寰幆绱姞锛?~100 姹傚拰锛夈€乣num`/`sum` 鍙屽彉閲忋€乣printf(&quot;%d&quot;)` 杈撳嚭锛屽睘鍩虹娴佺▼鎺у埗澶嶇粌銆?
+- **鍧戜綅**锛氬綋鏃ユ棤杈呭璁板綍銆佹棤缂栬瘧/杩愯鎶ラ敊鐣欑棔锛屼笉鑷嗘柇鍧戜綅銆備唬鐮佸眰闈竴澶勯渶鐣欐剰锛氭棫鐗堛€屼綅杩愮畻瀵勫瓨鍣ㄦā鎷熷櫒銆嶏紙`print_bits` 鍑芥暟 + `switch` 缃綅/娓呬綅/缈昏浆/璇诲彇 + `scanf` 鑼冨洿鏍￠獙锛夎鏁存瑕嗙洊鍒犻櫎锛屾槸鍚屼竴鏂囦欢鎹㈤閲嶅啓鑰岄潪瀵规棫棰樼殑淇锛涙棫棰樼棔杩逛粎瀛樹簬 Git 鍘嗗彶鎻愪氦 `81fed97`銆?
+- **浠ｇ爜**锛歏S `c瀛︿範1\FileName.c` 浜?11-23 16:35 鎵嬪啓淇敼锛? 澧?30 鍒狅級锛涜剼鏈法鍗堝浜?11-24 00:00 褰掓。涓?`code/week01/FileName.c`锛宮aster 鎻愪氦 `16034be`锛坄-c` 鏈湴涓存椂韬唤锛屾湭鍐欏叏灞€ git config锛夈€傛敞锛氬洜鑴氭湰鏃堕挓宸插埌娆℃棩锛屻€?# 00:00 浠ｇ爜璁板綍銆嶆钀藉湪 `瀛︿範鏃ュ織/2026-11-24.md`锛屾湰鏂囦欢涓嶉噸澶嶈拷鍔犺娈点€?
+- **鏄庢棩寰呭姙**锛氣憼 鎵挎帴 11-10 娆犺处鈥斺€擿FileName.c` 鐨?C4189 璀﹀憡鏁存敼骞剁暀涓€浠介浂璀﹀憡 diff锛堟湰娆′负鎹㈤瑕嗙洊锛屾瑺璐︽湭浜嗭級锛涒憽 鎵挎帴 11-20 / 11-21 寰呯瓟鍙嶉棶锛圵okwi ESP32 鐐圭伅 8 棰樸€丠747 椤圭洰瀹氫綅 4 棰橈級涓庛€岀涓€椤佃皟璇曡褰曘€嶏紱鈶?浼樺厛绾т笉鍙橈細淇″彿涓庣郴缁熼噸淇?&gt; 鑺凹绉戞妧鐢垫帶宸ョ▼甯堥潰璇?&gt; 缃戠敵 &gt; C 璇█琛ュ己锛涒懀 缁х画鎵嬪啓鐨勪唬鐮侀渶钀藉洖 VS `c瀛︿範1` 鐩綍鎵嶄細琚綊妗ｈ剼鏈敹褰曘€?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-22</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-22.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_2')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-22
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-22 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 2026-11-21.md锛沄S 鎵嬪啓 .c 涓変釜鏂囦欢锛坄FileName.c /...
+      </p>
+      <div id="log_content_2" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-22
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-22 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 `2026-11-21.md`锛沄S 鎵嬪啓 .c 涓変釜鏂囦欢锛坄FileName.c` / `鍑芥暟.c` / `鏁扮粍閫€鍖?c`锛夊潎鏃犳敼鍔ㄣ€丟it master 宸ヤ綔鍖哄共鍑€涓旀棤 11-22 鎻愪氦锛屾渶杩戞彁浜や粛涓?`81fed97` / `e600592`锛堝潎 11-10锛夛紱褰掓。鑴氭湰浜?23:59:16 瑙﹀彂鍚庤法鍗堝杩愯锛屽疄闄呯害 2026-11-23 00:00 鎵ц銆侀€€鍑虹爜 0锛岃緭鍑?`date=2026-11-23 changed=0 / commit=none`锛屾寜鑷韩鏃堕挓鎶娿€?0:01 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇绰锋彁浜ゆ棤銆嶅啓鍏?`2026-11-23.md`锛屾湰鏃ヤ笉閲嶅琛ヨ锛?1-22 褰撳ぉ鍘熸湰鏃犳棩蹇楁枃浠讹紙11-21 閭ｆ鏈法鍗堝銆佹湭鏂板缓娆℃棩鏃ュ織锛夛紝鏈鏂板缓姝ゆ枃浠讹級
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-21</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-21.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_3')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-21
+
+ 00:02 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 23:59 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨...
+      </p>
+      <div id="log_content_3" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-21
+
+## 00:02 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 23:59 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛氳緟瀵艰蹇?`2026-11-21.md`锛?3:10銆?3:15 鍏?2 娈碉級涓哄綋鏃?C/宓屽叆寮忚緟瀵煎疄褰曘€傗憼 23:10 鐢ㄦ埛鍙戞姈闊虫埅鍥炬彁銆孲TM32H747 宸ヤ笟鏈烘煖鐜鐩戞姢绯荤粺銆嶏紙娓╂箍搴?姘存蹈鐩戞祴銆丗reeRTOS CM4+CM7 鍙屾牳缁?OpenAMP銆丩VGL銆丮odbus銆乄5500 TCP OTA銆丄/B 鍒嗗尯 Bootloader銆丼D FatFs銆両WDG銆丵t 涓婁綅鏈猴級鎯冲綋瀛︿範鍒囧叆鐐癸紱涓荤悊浜哄垽鏂細杩欐槸**宸ヤ笟绾у畬鏁翠骇鍝併€佺啛缁冨伐绋嬪笀鏁颁汉鏈?*宸ヤ綔閲忥紝瀵瑰綋鍓嶆按骞筹紙P8銆乄okwi 鐐圭伅鍒氭帓閿欍€佹棤纭欢銆佹棤 STM32 瀹炴搷锛変笉鑳芥暣浣撳鐜帮紝鍙兘褰撱€岃兘鍔涘湴鍥俱€嶆寜妯″潡鍒囷紝纭笂浼氶噸鐜般€孉I 浠ｅ啓銆佽嚜宸辫涓嶆竻銆嶇殑鑰侀棶棰樸€傗憽 宸插嚭**鎶€鑳藉垎灞傚湴鍥?*锛堜簲灞?+ 鍒囧叆浼樺厛绾э級锛氱‖浠朵笌澶栬锛圙PIO/UART/RS485/ADC/SDMMC/LCD/IWDG锛岃捣鐐?GPIO锛夆啋 RTOS 浠诲姟鍒掑垎 鈫?閫氫俊鍗忚锛圡odbus RTU / W5500 TCP / CRC32锛夆啋 绯荤粺涓庡弻鏍革紙Bootloader / A-B 鍒嗗尯 / OTA 鍥炴粴 / OpenAMP RPMsg / trial boot锛夆啋 HMI 涓庡瓨鍌紙LVGL / SDRAM+DMA2D / Qt / FatFs 鏃ュ織杞浆锛夛紱涓嶆帹缈?11/20銆屽钩琛″皬杞?+ Wokwi 椹卞姩灞傘€嶈矾绾匡紝瀹為檯鍔ㄦ墜浠嶆寜 GPIO鈫扷ART鈫扞2C鈫扨WM鈫扨CNT銆傗憿 23:15 纭害鏉燂紙宸叉牳瀹烇級锛?*Wokwi 涓嶆敮鎸?STM32H747**锛屽畼鏂?STM32 浠?`STM32C031 / L031 / F103C8`锛岀収鍘熼」鐩鐜板湪浠跨湡涓婄涓€姝ュ氨鍫垫锛屽弽杩囨潵閫煎嚭銆岄」鐩环鍊煎湪鍔熻兘閫昏緫杩樻槸鍏蜂綋鑺墖銆嶇殑鍒ゆ柇銆傗懀 **鏋佺畝鏈€灏忛棴鐜?*锛氬彧鐣欏姛鑳介€昏緫楠ㄦ灦鈥斺€旈噰闆嗭紙NTC+ADC锛夆啋 闃堝€煎垽鏂?鈫?LED 鍛婅锛圙PIO锛屽凡浼氾級鈫?UART 甯т笂鎶ワ紝澶栧姞鐪嬮棬鐙楋紙涓嶅杺鐙楀氨澶嶄綅锛夛紱鐮嶆帀鍙屾牳/OpenAMP銆丅ootloader A-B/trial boot銆丱TA 鍥炴粴銆佷互澶綉 W5500銆丩VGL銆丵t銆丼D FatFs銆丷S485锛岀悊鐢辨槸杩欎簺灞炪€屽钩鍙颁笌绯荤粺绾у鏉傚害銆嶈€岄潪鍔熻兘閫昏緫锛屽 P2 娴嬭瘯/楠岃瘉宀楁€т环姣斾綆銆傗懁 瀹氫綅涓?*绗簩涓」鐩?*锛堢涓€鏉￠摼璺戦€氬悗鍋氾級锛岃ˉ NTC/ADC銆乁ART 甯с€佺湅闂ㄧ嫍涓変釜 JD 鎸傜偣锛孧odbus 鐣欎綔 UART 甯ц窇閫氬悗鐨勮嚜鐒跺欢浼革紱璇ラ」鐩?Modbus RTU / RS485 / 鐪嬮棬鐙?/ 鏃ュ織鏂囨。鍖栦笌宸叉姄 JD锛堣姮灏煎繀闇€ IIC/UART/Modbus銆佹姤鍛?搂4.1 鐙珛鏂囨。琛ュ己锛夐珮搴﹂噸鍚堬紝鏄€孞D 瀵圭収銆嶄紭璐ㄧ礌鏉愩€傗懃 鏁欏绾﹀畾鐓ф棫锛氬厛璁蹭负浠€涔堛€佸弽闂?2 棰樸€佷笉缁欏畬鏁村彲鎶勪唬鐮侊紱鏈疆鏈缓鍥㈤槦銆佹湭鏀规姤鍛娿€佹湭寤轰唬鐮佹枃浠躲€?
+- **鍧戜綅**锛氫粖鏃?*鏃犳墜鍐欎唬鐮併€佹棤缂栬瘧/杩愯鎶ラ敊璁板綍**锛屼互涓嬩负鏂规涓庤鐭ュ眰闈㈠垽鏂紝涓嶅啋璁や唬鐮佸潙銆傗憼 鍒囧叆鐐瑰潙锛氭妸宸ヤ笟绾у畬鏁翠骇鍝佸綋銆屽涔犲垏鍏ョ偣銆嶄細閲嶇幇銆孉I 浠ｅ啓銆佽嚜宸辫涓嶆竻銆嶏紙鑺凹涓€绾垮伐绋嬪笀宸叉寚鍑虹殑鑰侀棶棰橈級锛屼富鐞嗕汉宸叉槑纭彧鑳藉仛鑳藉姏鍦板浘銆傗憽 骞冲彴鍙鎬у潙锛氭兂鐢?STM32H747锛屼絾 Wokwi 涓嶆敮鎸?H7 鍙屾牳 鈫?鏃犵‖浠舵潯浠朵笅绗竴姝ュ牭姝伙紱鑻ュ潥鎸?STM32 鍙兘鐢?F103C8 浠庨浂鎼€傗憿 涓荤悊浜烘槑鍐欐彁閱掞細**鍚噾閲忛珮 鈮?浣犺兘璁叉竻锛屼篃 鈮?涓?P2 娴嬭瘯/楠岃瘉宀楁洿杩?*锛?3:10 鍙嶉棶鈶★級銆?
+- **浠ｇ爜**锛歚record_code.py` 閫€鍑虹爜 0锛岃緭鍑?`date=2026-11-21 changed=0 commit=none`锛沄S `c瀛︿範1` 涓変釜 .c锛坄FileName.c` / `鍑芥暟.c` / `鏁扮粍閫€鍖?c`锛夊潎鏈敼鍔紝Git master 宸ヤ綔鍖哄共鍑€銆佹棤 11-21 鎻愪氦锛屾渶杩戜粛 `81fed97` / `e600592`锛堝潎 11-10锛夛紝**褰撴棩鏃犲彉鏇淬€佹棤 commit**銆俉okwi 缃戦〉绔殑鎵嬪啓宸ョ▼涓嶅湪 VS 婧愮爜鐩綍銆佹湭绾冲叆褰掓。锛屽瀹炶璐︿笉鍐掕銆傝剼鏈敤 `-c` 涓存椂韬唤锛坄濮滀繆鍝?&lt;jiangjunzhe@study.local&gt;`锛夛紝鏈啓鍏ㄥ眬 git config銆?
+- **鏄庢棩寰呭姙**锛氫紭鍏堢骇 **淇″彿涓庣郴缁熼噸淇紙鏈€楂橈級&gt; 鑺凹绉戞妧鐢垫帶宸ョ▼甯堥潰璇?&gt; 缃戠敵 &gt; C 璇█琛ュ己**銆傗憼 鍏堢瓟**娆犵潃鐨勫弽闂?*锛氭湰鏃?4 棰橈紙椤圭洰鏄鐪熷仛鍑烘潵杩樻槸鍙綋瀛︿範鍦板浘/璁叉竻鍗冲彲锛涙崲 H747 鏄钩琛″皬杞﹀崱浣忎簡杩樻槸鍥俱€屽惈閲戦噺楂樸€嶏紱骞冲彴缁х画 ESP32锛圵okwi 鍏ㄦ敮鎸併€佺偣鐏凡璺戦€氾級杩樻槸 STM32 F103C8 浠庨浂鎼紱閲囬泦鐢?NTC+ADC 杩樻槸 DHT22锛屼富鐞嗕汉寤鸿 **ESP32 + NTC**锛夛紝鍙犲姞 11-20 閬楃暀绱 8 棰樻湭绛斺€斺€斿厛瀹氬钩鍙颁笌椤圭洰瀹氫綅鍐嶅姩鎵嬶紝涓嶆満姊伴噸澶嶆彁闂€傗憽 鎸?GPIO鈫扷ART鈫扞2C鈫扨WM鈫扨CNT 缁х画 Wokwi 椹卞姩閾撅紝鎶婄涓€鏉￠摼璺戦€氬苟鍐欏嚭**绗竴椤佃皟璇曡褰?*锛堢幇璞♀啋鍋囪鈫掓祴閲忊啋鏀瑰摢琛屸啋缁撴灉锛夛紱鏋佺畝鐩戞姢绯荤粺鎺掗槦鍋氱浜屼釜椤圭洰锛屼笉鎶㈢涓€鏉￠摼銆傗憿 鎵挎帴鏃ф瑺璐︼細淇?11-20 01:26 閭ｇ増鐐圭伅浠ｇ爜锛堟仮澶?`while(1)`銆丩ED 鎺?GND銆乣app_main(void)`銆乣ESP_ERROR_CHECK(gpio_config(...))`銆佹樉寮忓垵濮嬪寲 `io_conf` 瀛楁锛? 11-10 `FileName.c` 娑?C4189 璀﹀憡銆佺暀闆惰鍛?diff锛堣嚦浠婃湭瑙佹彁浜わ級銆?
+
+&gt; 瀹㈣娉ㄨ锛堜粎璁板綍浜嬪疄锛岄潪瀛︿範鍐呭锛夛細鏈换鍔℃寜姣忔棩 23:59 璋冨害銆佸搴旇Е鍙戞棩 2026-11-21锛屾湰娆¤剼鏈?`datetime.now()` 涓庤Е鍙戞棩鍚屼负 11-21锛?*鏈法鍗堝**锛夛紝鑴氭湰鐩存帴鎶娿€?3:59 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶅啓鍏ユ湰鏂囦欢锛?026-11-21.md锛夛紝鏈柊寤烘鏃ワ紙11-22锛夋棩蹇椼€?
+&gt; - 鏈枃浠跺師鏈夈€?0:02 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶆绯?11-20 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛涙湰娆¤剼鏈拷鍔犮€?3:59銆嶆锛屾垜鏈噸澶嶈拷鍔犱唬鐮佽褰曟锛屽彧鍦ㄦ湯灏捐拷鍔犳湰灏忕粨銆?
+&gt; - 褰撳ぉ杈呭璁板繂 `2026-11-21.md` 瀛樺湪锛? 娈碉級锛屾晠鎸夊洓琛岃鐐瑰啓灏忕粨锛屼笉濂椼€屼粖鏃ユ棤瀛︿範璁板綍銆嶅崟琛岋紱褰撴棩鏃犱唬鐮佸彉鏇达紝鍧戜綅琛屽凡濡傚疄鏍囨敞涓烘柟妗堜笌璁ょ煡灞傞潰鍒ゆ柇銆?
+&gt; - 鍏ㄥ眬 git user.name/user.email 鍧囦负绌猴紝鑴氭湰鐢?`-c` 涓存椂韬唤锛涙湭淇敼浠讳綍 .c 婧愮爜銆佹湭鍔ㄦ闈㈡寕浠?鎵撳崱椤?闈㈣瘯鏉愭枡銆佹湭鍒犻櫎浠讳綍鏂囦欢銆?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-20</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-20.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_4')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-20
+
+ 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- 鐭ヨ瘑鐐?锛氳緟瀵艰蹇?2026-11-20.md锛?9 琛屻€?0:31鈥...
+      </p>
+      <div id="log_content_4" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-20
+
+## 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛氳緟瀵艰蹇?`2026-11-20.md`锛?9 琛屻€?0:31鈥?1:26 鍏?6 娈碉級涓哄綋鏃?C/ESP32 杈呭瀹炲綍銆傗憼 瀛︿範璺嚎浠?P1鈥揚8 椤哄簭鎺ㄨ繘 鈫?**浠?ESP32 骞宠　灏忚溅涓鸿浇浣撶殑椤圭洰椹卞姩**锛氬弽鍚戞媶瑙ｈ嚜宸辩殑灏忚溅浠ｇ爜锛屼簲姝ラ棴鐜紳鎸戜竴涓嚱鏁?鈫?閫愯闂负浠€涔堬紙鐢ㄤ粬鑷繁鐨勫彉閲忓悕锛夆啋 鍗′綇灏卞湴琛?C 鏈哄埗锛堟寚閽?缁撴瀯浣?浣嶆搷浣?volatile锛夆啋 鍥炲皬杞﹂獙璇?鈫?鍐欎竴椤佃皟璇曡褰曪紙鐜拌薄鈫掑亣璁锯啋娴嬮噺鈫掓敼鍝鈫掔粨鏋滐級銆傗憽 Wokwi 杈圭晫锛堝畼鏂规枃妗ｆ牳瀹烇級锛氭敮鎸?ESP32 鍘熺敓銆丮PU6050锛圛2C 0x68锛孉D0 鎺?VCC 鏀?0x69锛夈€両2C **浠呬富鏈?*銆丩EDC PWM銆丳CNT銆丟DB銆侀€昏緫鍒嗘瀽浠?.vcd锛涗笉鏀寔鍒氫綋鍔ㄥ姏瀛︺€佺數鏈烘儻鎬с€佽摑鐗欍€丮CPWM 鈫?**椹卞姩灞傝兘澶嶇幇锛屾帶鍒堕棴鐜墿鐞嗘晥鏋滀笉鑳?*銆傗憿 閫?ESP-IDF 鑰岄潪 Arduino Core锛坄Wire.begin()` 钘忓瘎瀛樺櫒锛夛紝鍥涙椤哄簭锛欸PIO 鐐圭伅+鎸夐敭涓柇 鈫?UART 甯?涓插彛缁樺浘 鈫?LEDC PWM 鈫?I2C 璇?MPU6050锛圥CNT 鏀炬渶鍚庯級銆傗懀 IDF 妯℃澘锛歚app_main` 鏄?FreeRTOS 浠诲姟鍏ュ彛锛宍vTaskDelay` 鏄?*涓诲姩璁╁嚭 CPU**锛堢┖杞?`while(1);` 浼氬崰浣?CPU 瑙﹀彂鐪嬮棬鐙楀浣嶃€佷覆鍙ｆ棤杈撳嚭锛夛紱`gpio_config_t` 涓夊眰鍚勬寕涓€涓?JD 缂哄彛鈥斺€斾换鍔?`vTaskDelay`鈫扲TOS銆佺粨鏋勪綋鈫掔粨鏋勪綋銆佷綅鎺╃爜 `(1ULL&lt;&lt;2)`鈫扜PIO 瀵勫瓨鍣紝**ULL 涓嶈兘鐪?*锛圗SP32 40+ 涓?GPIO锛?2 浣?int 瑁呬笉涓嬶紝鎺?P8 浣嶈繍绠楋級銆傗懁 Wokwi 涓€涓」鐩紳浠ｇ爜 + `diagram.json` 鐢佃矾 + Library Manager锛?*GPIO 鍙锋槸杞‖浠跺敮涓€缁戝畾鐐?*锛屼唬鐮佷笌鐢佃矾寮曡剼涓嶄竴鑷翠豢鐪熷氨娌″弽搴斻€傗懃 JD鈫斿皬杞﹀鐓э細绗旇瘯楂橀鎸囬拡/缁撴瀯浣?閾捐〃/鏁版嵁缁撴瀯銆両IC/UART 閫氫俊鍙婅皟璇曘€乿olatile/瀵勫瓨鍣ㄤ綅鎿嶄綔銆佸啓娴嬭瘯鎶ュ憡/鎶€鏈枃妗ｏ紙鎶ュ憡鏍囦负鐙珛琛ュ己锛屼笉鑳界敱 Git 鎻愪氦鎺ㄦ柇锛夈€?
+- **鍧戜綅**锛氣憼 01:10 璧锋墜寤虹殑鏄?Arduino 妯℃澘锛坄sketch.ino`锛夎€岄潪寤鸿鐨?ESP-IDF锛?1:13 鎵嶅垏杩囨潵锛屽凡褰撻潰鎸囧嚭宸埆銆傗憽 **01:26 鎵嬪啓绗竴鐗堢偣鐏唬鐮佹妸 `while(1){` 鍜岀 17 琛?`}` 娉ㄩ噴鎺変簡** 鈫?`app_main` 杩斿洖 鈫?FreeRTOS 鍒犻櫎浠诲姟 鈫?鐏棯涓€娆″悗姘镐箙鐏紱IDF 蹇呴』鑷繁鍐?`while(1)`锛屼笉鍍?Arduino `loop()` 鐢辨鏋舵棤闄愯皟鐢ㄣ€傗憿 鎺ョ嚎锛氱敾甯?LED+鐢甸樆宸叉帴锛屼絾鐪嬩笉鍒?GND銆乂CC 绠ご鎮┖ 鈫掋€孡ED 涓€绔帴 GPIO銆佸彟涓€绔繀椤婚棴鍚堝埌 GND銆嶏紱浠跨湡鎮┖涓嶆姤閿欙紝鐪熸澘浼氫笉浜?鐑ф澘銆傗懀 鑳借窇浣嗕笉瑙勮寖锛歚app_main()` 搴斾负 `app_main(void)`锛沗gpio_config()` 杩斿洖鍊兼湭妫€鏌ワ紙鐪熸澘闇€ `ESP_ERROR_CHECK`锛夛紱`io_conf` 鏈樉寮忓垵濮嬪寲 pull_up/pull_down/intr_type锛堣櫧 `{0}` 娓呴浂锛岀湡鏉挎槗琚共鎵拌瑙﹀彂锛夈€傗懁 鏂规硶灞傛牴鍥狅紙涓荤悊浜哄垽鏂級锛氥€屾參銆嶄笉鏄?C 璇硶娌″瀹岋紝鏄」鐩唬鐮?AI 鍐欑殑銆佽涓嶅嚭鑷繁璋冭繃浠€涔堬紝涓?11/12 鑺凹涓€绾垮伐绋嬪笀鍙嶉鍚屾簮銆?
+- **浠ｇ爜**锛歚record_code.py` 閫€鍑虹爜 0锛岃緭鍑?`date=2026-11-21 changed=0 commit=none`锛沄S `c瀛︿範1` 涓変釜 .c锛坄FileName.c` / `鍑芥暟.c` / `鏁扮粍閫€鍖?c`锛夊潎鏈敼鍔紝Git master 宸ヤ綔鍖哄共鍑€銆佹棤 11-20 鎻愪氦锛屾渶杩戜粛 `81fed97` / `e600592`锛堝潎 11-10锛夛紝**褰撴棩鏃犲彉鏇淬€佹棤 commit**銆傚涔犱晶 01:26 鏈汉鍦?**Wokwi ESP-IDF 妯℃澘**鎵嬫暡浜嗕竴鐗堢偣鐏鏋讹紙`driver/gpio.h`銆乣gpio_config_t io_conf={0}`銆乣pin_bit_mask=(1ULL&lt;&lt;2)`銆乣GPIO_MODE_OUTPUT`銆乣gpio_config`銆乣gpio_set_level`銆佷袱娆?`vTaskDelay`锛夛紝浠跨湡璺戦€氥€佷覆鍙ｆ湁 ESP-ROM/ESP-IDF 鍚姩鏃ュ織鈥斺€旇宸ョ▼鍦?Wokwi 缃戦〉绔€佷笉鍦?VS 婧愮爜鐩綍锛屾湭绾冲叆鏈 Git 褰掓。锛屽瀹炶璐︿笉鍐掕銆傝剼鏈敤 `-c` 涓存椂韬唤锛屾湭鍐欏叏灞€ git config銆?
+- **鏄庢棩寰呭姙**锛氫紭鍏堢骇 **淇″彿涓庣郴缁熼噸淇紙鏈€楂橈級&gt; 鑺凹绉戞妧鐢垫帶宸ョ▼甯堥潰璇?&gt; C 璇█琛ュ己**銆侰 渚т笁浠讹細鈶?淇?01:26 閭ｇ増鐐圭伅浠ｇ爜鈥斺€旀仮澶?`while(1)`銆佺‘璁?LED 鍙︿竴绔帴 GND銆乣app_main(void)`銆佽ˉ `ESP_ERROR_CHECK(gpio_config(...))` 涓?`io_conf` 鏄惧紡瀛楁锛岃窇閫氬悗鍐?*绗竴椤佃皟璇曡褰?*锛堢幇璞♀啋鍋囪鈫掓祴閲忊啋鏀瑰摢琛屸啋缁撴灉锛夛紝璋冨弬绗旇鏀逛簲鏍忛獙璇佽褰曪紱鈶?娆犵潃鐨勫弽闂細01:26 涓ら锛堝幓鎺?`ULL`銆佹敼鎺?GPIO 34 浼氭€庢牱锛涘厛 LED 闂儊杩樻槸鐩存帴涓?MPU6050 I2C锛屼富鐞嗕汉寤鸿鍏?I2C锛夈€?0:31 涓ら锛圴OFA+ 涓€娆″彂涓€涓?float 杩樻槸濉炵紦鍐插尯鏁扮粍涓€娆℃€у彂锛涚紦鍐插尯澹版槑 `uint8_t`/`char`/`int` 鐨勪緷鎹級銆?0:39 涓ら锛堢粓鐐规槸楠岃瘉瀵勫瓨鍣ㄩ厤瀵硅繕鏄緬鎵嬪啓椹卞姩锛涘厛 I2C 杩樻槸 PWM锛夈€?1:10 涓ら锛堟棤纭欢鍏堥獙璇佷粈涔堢幇璞°€丄rduino 杩樻槸 ESP-IDF锛屽凡鐢ㄨ鍔ㄧ瓟銆屽垏 IDF銆嶏級鈥斺€旂敤鎴?01:26 涓ら鏈瓟灏辩洿鎺ュ啓浜嗕唬鐮侊紝涓嬭疆椤虹潃浠栫殑闂璧帮紝涓嶆満姊伴噸澶嶆彁闂紱鈶?鎵挎帴 11-10 閬楃暀 `FileName.c` 娑?C4189 璀﹀憡銆佺暀闆惰鍛?diff 鐨勬瑺璐︼紙鑷充粖鏈鎻愪氦锛夈€傛暀瀛︾害瀹氱収鏃э細涓嶆柊寤?`.c`銆佷笉缁欏畬鏁村彲鎶勪唬鐮併€佸彧缁欓鏋跺拰鍏紡銆佸彧鐢ㄤ粬鐨勫彉閲忓悕銆佽涓€灏忔鈫掑弽闂?2 棰樷啋浠栫瓟鈫掗€愭潯绾犫啋鍐嶅姩鎵嬨€?
+
+&gt; 瀹㈣娉ㄨ锛堜粎璁板綍浜嬪疄锛岄潪瀛︿範鍐呭锛夛細鏈换鍔℃寜姣忔棩 23:59 璋冨害銆佸搴旇Е鍙戞棩 2026-11-20锛屽疄闄呰繍琛岃法鍗堝涓?2026-11-21 00:02锛屾寜鍥哄畾鍙ｅ緞銆屽綋鏃ワ紳瑙﹀彂鏃ャ€嶅皢灏忕粨鍐欏叆鏈枃浠讹紙2026-11-20.md锛夈€?
+&gt; - 鏈枃浠跺師鏈夈€?0:01 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶆绯?11-19 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛屾湰娆℃湭閲嶅杩藉姞浠ｇ爜璁板綍娈点€?
+&gt; - `record_code.py` 鎸夎嚜韬椂閽熸柊寤?`瀛︿範鏃ュ織/2026-11-21.md` 骞跺啓鍏ャ€?0:02 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶏紝璇ユ鏃ユ棩蹇椾笉鍦ㄦ湰鏂囦欢鍐呫€?
+&gt; - 鍏ㄥ眬 git user.name/user.email 鍧囦负绌猴紝鑴氭湰鐢?`-c` 涓存椂韬唤锛涙湭淇敼浠讳綍 .c 婧愮爜銆佹湭鍔ㄦ闈㈡寕浠?鎵撳崱椤?闈㈣瘯鏉愭枡銆佹湭鍒犻櫎浠讳綍鏂囦欢銆?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-19</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-19.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_5')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-19
+
+ 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰?
+
+&gt; 瀹㈣娉ㄨ锛堜粎璁板綍浜嬪疄锛岄潪瀛︿範鍐呭锛...
+      </p>
+      <div id="log_content_5" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-19
+
+## 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰?
+
+&gt; 瀹㈣娉ㄨ锛堜粎璁板綍浜嬪疄锛岄潪瀛︿範鍐呭锛夛細鏈换鍔¤Е鍙戜簬 2026-11-19 23:59锛屽疄闄呰繍琛岃法鍗堝涓?2026-11-20 00:01锛屾寜鍥哄畾鍙ｅ緞銆屽綋鏃ワ紳瑙﹀彂鏃ャ€嶅皢灏忕粨鍐欏叆鏈枃浠讹紙2026-11-19.md锛夈€?
+&gt; - 杈呭璁板繂鐩綍鏈€鏂颁负 2026-11-12锛屾棤 2026-11-19.md锛岃Е鍙戞棩鏃犱細璇濊緟瀵艰褰曘€?
+&gt; - `record_code.py` 閫€鍑虹爜 0锛岃緭鍑?`date=2026-11-20 changed=0 commit=none`锛氭棤婧愮爜鍙樻洿銆佹棤鏂版彁浜わ紱鑴氭湰鎸夎嚜韬椂閽熸柊寤?`瀛︿範鏃ュ織/2026-11-20.md` 骞跺啓鍏ャ€?0:01 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶃€?
+&gt; - 鏈枃浠跺師鏈夌殑銆?0:00 浠ｇ爜璁板綍銆嶆绯?11-18 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛屾湰娆℃湭閲嶅杩藉姞浠ｇ爜璁板綍娈点€?
+&gt; - Git master 宸ヤ綔鍖哄共鍑€锛屾棤 11-19 鎻愪氦锛堟渶杩戜粛 `81fed97`/`e600592`锛屽潎 11-10锛夛紱鑴氭湰鐢?`-c` 涓存椂韬唤鎻愪氦锛屾湭鍐欏叏灞€閰嶇疆銆?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-18</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-18.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_6')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-18
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-18 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 11-12.md锛沄S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 宸ヤ綔鍖哄共鍑€涓旀棤 11-...
+      </p>
+      <div id="log_content_6" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-18
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-18 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 11-12.md锛沄S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 宸ヤ綔鍖哄共鍑€涓旀棤 11-18 鎻愪氦锛屾渶杩戞彁浜や粛涓?`81fed97` / `e600592`锛堝潎 11-10锛夛紱褰掓。鑴氭湰浜?23:59:39 瑙﹀彂鍚庤法鍗堝杩愯锛屽疄闄?2026-11-19 00:00:11 鎵ц銆侀€€鍑虹爜 0锛岃緭鍑?`date=2026-11-19 changed=0 / commit=none`锛屾寜鑷韩鏃堕挓鎶娿€?0:00 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶅啓鍏?`2026-11-19.md`锛屾湰鏃ヤ笉閲嶅琛ヨ锛?1-18 褰撳ぉ鍘熸湰鏃犳棩蹇楁枃浠讹紙11-17 閭ｆ鏈法鍗堝銆佹湭鏂板缓娆℃棩鏃ュ織锛夛紝鏈鏂板缓锛?
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-17</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-17.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_7')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-17
+
+ 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 23:59 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨...
+      </p>
+      <div id="log_content_7" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-17
+
+## 00:01 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 23:59 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-17 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 11-12.md锛沄S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 宸ヤ綔鍖哄共鍑€涓旀棤 11-17 鎻愪氦锛屾渶杩戞彁浜や粛涓?`81fed97` / `e600592`锛堝潎 11-10锛夛紱褰掓。鑴氭湰浜?23:59 杩愯銆侀€€鍑虹爜 0锛岃緭鍑?`changed=0 / commit=none`锛屾湰娆℃湭璺ㄥ崍澶滐紝鎸夎嚜韬椂閽熸妸銆?3:59 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶇洿鎺ュ啓鍏ユ湰鏂囦欢 `2026-11-17.md`锛涙湰鏃ュ織鍐呫€?0:01 浠ｇ爜璁板綍銆嶆涓?11-16 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛屽唴瀹逛负婧愮爜鏃犲彉鏇达紝涓嶉噸澶嶈ˉ璁帮級
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-16</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-16.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_8')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-16
+
+ 00:02 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-16 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ...
+      </p>
+      <div id="log_content_8" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-16
+
+## 00:02 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-16 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 11-12.md锛沄S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 鏃?11-16 鎻愪氦锛涘綊妗ｈ剼鏈簬 23:59 瑙﹀彂鍚庤法鍗堝杩愯锛屽疄闄?2026-11-17 00:00:48 鎵ц銆侀€€鍑虹爜 0锛岃緭鍑?`changed=0 / commit=none`锛屾寜鑷韩鏃堕挓鎶娿€?0:01 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶅啓鍏?`2026-11-17.md`锛涙湰鏃ュ織鍐呫€?0:02 浠ｇ爜璁板綍銆嶆涓?11-15 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛屽唴瀹逛负婧愮爜鏃犲彉鏇达紝涓嶉噸澶嶈ˉ璁帮級
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-15</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-15.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_9')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-15
+
+ 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-15 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ...
+      </p>
+      <div id="log_content_9" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-15
+
+## 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙瑙﹀彂鏃?11-15 鏃犱細璇濊緟瀵艰蹇嗘枃浠讹紝璇ョ洰褰曟渶鏂颁负 11-12.md锛沄S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 鏃?11-15 鎻愪氦锛涘綊妗ｈ剼鏈簬 23:59 瑙﹀彂鍚庤法鍗堝杩愯锛岃緭鍑?`changed=0 / commit=none`锛屾寜鑷韩鏃堕挓鎶娿€?0:02 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶅啓鍏?`2026-11-16.md`锛涙湰鏃ュ織鍐呫€?0:00 浠ｇ爜璁板綍銆嶆涓?11-14 閭ｆ鑷姩鍖栬法鍗堝鍐欏叆锛屽唴瀹逛负婧愮爜鏃犲彉鏇达紝涓嶉噸澶嶈ˉ璁帮級
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-14</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-14.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_10')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-14
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙褰撳ぉ鏃犱細璇濊緟瀵艰蹇嗘枃浠躲€乂S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 鏃犳柊鎻愪氦锛涘綊妗ｈ剼鏈簬 23:59 瑙﹀彂鍚庤法鍗堝杩愯锛屾寜鑷韩鏃堕...
+      </p>
+      <div id="log_content_10" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-14
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+- 浠婃棩鏃犲涔犺褰曪紙褰撳ぉ鏃犱細璇濊緟瀵艰蹇嗘枃浠躲€乂S 鎵嬪啓 .c 鏃犳敼鍔ㄣ€丟it 鏃犳柊鎻愪氦锛涘綊妗ｈ剼鏈簬 23:59 瑙﹀彂鍚庤法鍗堝杩愯锛屾寜鑷韩鏃堕挓鎶娿€?0:00 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶅啓鍏?`2026-11-15.md`锛屾湰鏃ヤ笉閲嶅琛ヨ锛?</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-13</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-13.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_11')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-13
+
+ 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?...
+      </p>
+      <div id="log_content_11" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-13
+
+## 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-12</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-12.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_12')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-12
+
+ 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- 鐭ヨ瘑鐐?锛氬綋澶╀細璇濊緟瀵艰蹇?2026-11-12.md锛?45 琛岋...
+      </p>
+      <div id="log_content_12" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-12
+
+## 00:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛氬綋澶╀細璇濊緟瀵艰蹇?`2026-11-12.md`锛?45 琛岋級涓鸿亴涓氳鍒?姹傝亴涓撳満锛堜笓瀹跺洟璺緞鎺ㄦ紨銆佽姮灏奸潰鍙嶉銆佹嫑鑱樹細鍚嶅崟銆佺畝鍘?v5锛夛紝**鏃?C 璇█鐭ヨ瘑鐐硅瑙ｃ€佹棤浠ｇ爜鍧戜綅**锛屽瀹炶褰曚笉缂栭€犮€備笌鑷鏂规硶鐩存帴鐩稿叧鐨勭湡瀹炵粨璁轰袱鏉★細鈶?11:49 鐢ㄦ埛纭銆孉I 鎶婂啓鍑鸿兘璺戠殑浠ｇ爜鍙樹究瀹滐紝绛涗汉闆嗕腑鍒颁负浠€涔堣繖涔堝啓銆佸嚭闂鎬庝箞瀹氫綅銆嶆槸琛屼笟瀹炴儏锛涒憽 楠屾敹绾挎嵁姝ゆ敼涓恒€岃嚦灏戜竴娆″畬鏁磋皟璇曢棴鐜?+ 鑳藉鐫€鑷繁浠ｇ爜閫愯璁叉竻銆嶏紝姣忎欢浣滃搧鐣欎竴浠借皟璇曡褰曪紙鐜拌薄 / 鍋囪 / 鎬庝箞娴?/ 缁撴灉 / 涓轰粈涔堟敼杩欓噷锛夛紝鎸傚埌宸叉湁 Git 閫愭棩鎻愪氦锛屼笉鏂板缓浣撶郴銆?
+- **鍧戜綅**锛氬綋澶╂湭鎵嬪啓 .c锛屾棤缂栬瘧/璋冭瘯鍧戜綅銆傜湡瀹炴毚闇茬殑鏄兘鍔涘潙浣嶏細11:24 鑺凹闈㈠弽棣堛€屼笉鎺ㄨ崘璧板祵鍏ュ紡 / 鏃犲鍘嗕紭鍔?/ 闇€寮哄姩鎵嬭兘鍔涖€嶏紝11:35 鏇存涓?*璧勬繁宸ョ▼甯堥潰**锛堥潪棰嗗闈級锛屻€屽姩鎵嬭兘鍔涖€嶇敱鍗拌薄鍒嗗崌涓轰竴绾挎妧鏈垽鏂紱鏍规簮涓庛€岄」鐩緷鎵?AI 瀹屾垚銆佷唬鐮侀潬 AI 瑙ｉ噴鎵嶆噦銆嶅悓婧愶紝P2 鍏ュ彛鍓嶆彁銆岃兘璁叉竻鑷繁璋冭繃浠€涔堛€嶅皻鏈弧瓒炽€?1:49 鐢ㄦ埛鍙﹀畾浼氳瘽绾緥锛氳涓氬垽鏂纭鍚庣洿鎺ユ帹鍚箟锛屼笉鍥炴眰鑱屾妧宸у眰銆佷笉鍒?A/B/C銆佷笉鍙嶉棶涓ら銆?
+- **浠ｇ爜**锛歚record_code.py` 閫€鍑虹爜 0锛岃緭鍑?`date=2026-11-13 changed=0 commit=none`锛沄S 婧愮爜鏃犳敼鍔紝Git master 宸ヤ綔鍖哄共鍑€锛屾渶杩戞彁浜や粛 `81fed97` / `e600592`锛堝潎 11-10锛夛紝**褰撴棩鏃犲彉鏇淬€佹棤鏂版彁浜?*銆傝剼鏈疄闄呬簬 11-13 00:00:41 杩愯锛堣法鍗堝锛夛紝鎸夎嚜韬椂閽熸柊寤哄苟鍐欏叆 `瀛︿範鏃ュ織/2026-11-13.md` 鐨勩€?0:00 浠ｇ爜璁板綍路婧愮爜鏃犲彉鏇淬€嶏紱鏈枃浠舵部鐢ㄥ凡鏈?00:00 浠ｇ爜璁板綍娈碉紝鏈噸澶嶈拷鍔犮€傚叏灞€ git user.name/email 鏈缃紝鑴氭湰鐢?`-c` 涓存椂韬唤銆佹湭鍐欏叏灞€閰嶇疆銆?
+- **鏄庢棩寰呭姙**锛氫紭鍏堢骇 **淇″彿涓庣郴缁熼噸淇紙鏈€楂橈級&gt; 鑷帶閲嶄慨 &gt; 缃戠敵 / 11-14 婀栧ぇ鍦?&gt; C 璇█鑳藉姏琛ュ己**銆侰 渚ф壙鎺ヤ袱鏉℃瑺璐︼細鈶?11-10 閬楃暀鐨勬湰浜烘墜鏀?`FileName.c` 娑?C4189 璀﹀憡銆佺暀涓€浠介浂璀﹀憡 diff锛堣嚦浠婃湭瑙佹彁浜わ級锛涒憽 鎸?11:49 鍙ｅ緞琛ョ涓€鏉¤皟璇曡褰曪紙鎵嬪啓涓€娈典唬鐮?+ 鐜拌薄 / 鍋囪 / 鎬庝箞娴?/ 缁撴灉 / 涓轰粈涔堟敼杩欓噷锛夎繘 Git銆傝蹇嗕腑绠€鍘?v5 鐨?16 鏉℃湰浜虹‘璁ゆ竻鍗曘€佽亴涓氳鍒?6 椤瑰緟绛斾粛鎸傜潃锛屽睘姹傝亴锛屾澶勪粎璁拌处涓嶈拷闂€?
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-11</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-11.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_13')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-11
+
+ 00:04 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+ 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- 鐭ヨ瘑鐐?锛氬綋鏃ユ棤 C 璇█杈呭璁板綍銆佹棤鏂扮煡璇嗙偣锛涘敮涓€浼氳...
+      </p>
+      <div id="log_content_13" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-11
+
+## 00:04 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛氭棤锛堝伐浣滃尯鏃犲緟鎻愪氦鍙樻洿锛?
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛氬綋鏃ユ棤 C 璇█杈呭璁板綍銆佹棤鏂扮煡璇嗙偣锛涘敮涓€浼氳瘽璁板綍涓?22:16 鑺凹棰嗗闈㈤棶绛旀潗鏂欐暣鐞嗏€斺€斿悎骞跺幓閲?`鑺凹棰嗗闈?瀹氬埗绛旀硶.md` 涓?`鑺凹棰嗗闈?60棰樼瓫閫夌瓟娉?md`锛岀敓鎴?`瀛︿範璧勬枡/鑺凹棰嗗闈?闂瓟棰?md`锛屽叡 37 棰橈紙棰樺簱 A 妗?19 + B 妗ｆ儏鏅?9 + 棰嗗闈㈠繀闂?9锛夈€?49 琛岋紝鎸夌敤鎴疯姹傚彧鐣欓鐩笌绛旀锛屽垹鎺夌瓫閫夎鏄?绾緥/鑺傚/绱㈠紩/鑰冨療閲嶇偣/绛旈鎬濊矾銆傝嚜瀛﹁繘搴︿粛鍋滃湪 P1鈥揚8 + 鍑芥暟/鍊间紶閫?static銆?
+- **鍧戜綅**锛氬綋鏃ユ棤 C 璇█韪╁潙涓庤皟璇曡褰曪紝鏃犲弽闂銆佹棤缁冧範鐣欑棔锛涢潰璇曟潗鏂欎晶閬楃暀锛氶搴?37鈥?4 棰樼己椤垫湭琛ャ€佽嫳鏂囬鎸夈€屽矖浣嶇浉鍏充笉澶с€嶈烦杩囨湭绾冲叆銆佷笁浠芥潗鏂欐槗娣疯儗闇€鍒嗗紑璁般€?
+- **浠ｇ爜**锛氭棤鍙樻洿銆佹棤鏂版彁浜ゃ€傚綊妗ｈ剼鏈簬 11-12 00:00:03 璺ㄥ崍澶滆繍琛岋紙閫€鍑虹爜 0锛夛紝杈撳嚭 `date=2026-11-12 changed=0 commit=none`锛涜剼鏈寜鑷韩鏃堕挓鎶娿€?# 00:00 浠ｇ爜璁板綍锛堟簮鐮佹棤鍙樻洿锛夈€嶅啓鍏?`2026-11-12.md`锛屾湭鍐欏叆褰撴棩鏂囦欢銆傚綋鏃?`2026-11-11.md` 鍐呭凡鏈夌殑銆?0:04 浠ｇ爜璁板綍銆嶆潵鑷?11-10 瑙﹀彂鐨勯偅娆¤嚜鍔ㄥ寲锛屾湭閲嶅杩藉姞銆侴it 鍒嗘敮 master銆佸伐浣滃尯骞插噣锛屾渶杩戞彁浜や粛涓?11-10 鐨?`81fed97` / `e600592`锛涘叏灞€ user.name/user.email 涓虹┖锛屾湭鍐欏叏灞€閰嶇疆銆?
+- **鏄庢棩寰呭姙**锛?1/12 鍛ㄥ洓鑺凹棰嗗闈紙浼樺厛绾э細淇″彿涓庣郴缁熼噸淇?&gt; 闈㈣瘯 &gt; 缃戠敵 &gt; C 璇█锛夛紱琛ラ綈棰樺簱 37鈥?4 棰樸€佹ā鎷熻拷闂?Q3鈫扱16鈫扱56鈫扱59鈫扱60锛涢潰璇曠粨鏉熷悗鍥炲綊 C锛屽厛鏈汉鎵嬫敼鎺?`FileName.c` 鐨?C4189 璀﹀憡鍐嶉噸璺戙€岃褰曚唬鐮併€嶇暀闆惰鍛?diff锛堟壙鎺?11-10 娆犺处锛夛紝骞惰ˉ涓€娆°€屽厛璁插簳灞?鈫?鍙嶉棶 2 棰?鈫?鑷繁绛?鈫?鎵嬫暡銆嶇殑缁冧範銆?
+
+</pre>
+      </div>
+    </div>
+    
+    <div class="border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📅 2026-11-10</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">文件名: 2026-11-10.md</span>
+        </div>
+        <button onclick="toggleLogDetail('log_content_14')" class="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+          <span>展开全文</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-[var(--foreground,#0f172a)] leading-relaxed bg-[var(--background,#f8fafc)] p-3 rounded-lg border border-[var(--card-border,#e2e8f0)] font-sans">
+         宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-10
+
+ 01:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛歚e600592
+
+ 23:37 浠ｇ爜璁板綍
+- 鏇存柊 FileName.c 鈫?code/week01/FileName.c
+- 鏂板 鏁扮粍閫€鍖?c...
+      </p>
+      <div id="log_content_14" class="hidden mt-3 pt-3 border-t border-[var(--card-border,#e2e8f0)]">
+        <pre class="text-xs font-mono bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-96 custom-scrollbar"># 宓屽叆寮?C 瀛︿範鏃ュ織 路 2026-11-10
+
+## 01:00 浠ｇ爜璁板綍
+- 婧愮爜鏃犲彉鏇?
+- 鎻愪氦锛歚e600592`
+
+## 23:37 浠ｇ爜璁板綍
+- 鏇存柊 `FileName.c` 鈫?`code/week01/FileName.c`
+- 鏂板 `鏁扮粍閫€鍖?c` 鈫?`code/week04/鏁扮粍閫€鍖?c`
+- 鎻愪氦锛歚81fed97`
+
+## 褰撴棩灏忕粨锛堣嚜鍔ㄧ敓鎴愶級
+
+- **鐭ヨ瘑鐐?*锛歚鏁扮粍閫€鍖?c` 瀹為獙锛堟暟缁勪綔鍑芥暟鍙傛暟閫€鍖栦负鎸囬拡锛?2 琛岋紝钀?`code/week04/`锛夛紱`FileName.c` 閲嶆瀯鐗?print_bits 浣嶈緭鍑?/ sizeof 浣嶅 / switch case 3 琛?break锛涚悊瑙ｇ敤 Git 鎻愪氦鍘嗗彶鐣欍€屽甫璀﹀憡鈫掗浂璀﹀憡銆峝iff 浣滆嚜瀛﹁建杩广€?
+- **鍧戜綅**锛歚FileName.c` 褰撳墠甯?1 涓?C4189 璀﹀憡锛屾寜鍙?AI 浠ｅ啓瑙勭煩鐢辨湰浜烘墜鏀瑰悗鍐嶈ˉ涓€娆¤褰曪紱涓や唤 .c 鏄?VS 淇濆瓨鐨?GBK 缂栫爜锛屾帹 GitHub 缃戦〉棰勮涓枃浼氫贡鐮侊紝闇€琛?UTF-8 鍓湰鎴?`.gitattributes`锛涙暀瀛︿粛鎸夈€屽厛璁插簳灞備负浠€涔?鈫?鍙嶉棶 2 棰?鈫?鑷繁绛?鈫?鎵嬫暡銆嶏紝涓嶈儗缁撹銆?
+- **浠ｇ爜**锛氬綋澶╀袱娆℃彁浜?`e600592`锛?1:00 浠撳簱棣栨鎻愪氦锛屽綊妗ｆ鍓?5 涓枃浠讹級銆乣81fed97`锛?3:37 鏇存柊 `code/week01/FileName.c`銆佹柊澧?`code/week04/鏁扮粍閫€鍖?c`锛夛紱鏈鑷姩鍖栦簬璺ㄥ崍澶?00:04 杩愯锛宍changed=0`銆乣commit=none`锛屾簮鐮佹棤鍙樻洿銆佹棤鏂版彁浜わ紝鑴氭湰鎸夎嚜韬椂閽熸妸銆?0:04 浠ｇ爜璁板綍銆嶅啓鍏?`2026-11-11.md`銆?
+- **鏄庢棩寰呭姙**锛氫俊鍙蜂笌绯荤粺閲嶄慨浼樺厛绾ф渶楂橈紙鍘绘暀鍔＄‘璁ら噸淇椂闂达級锛涜姮灏奸瀵奸潰 11/12 鍛ㄥ洓锛岃ˉ榻愰搴?37鈥?4 棰樸€佸懆涓夋ā鎷熻拷闂?Q3鈫扱16鈫扱56鈫扱59鈫扱60锛屼笁浠介潰璇曟潗鏂欏埆娣疯儗锛涜嚜宸辨敼鎺?C4189 璀﹀憡鍚庨噸璺戙€岃褰曚唬鐮併€嶇暀闆惰鍛?diff銆?
+
+</pre>
+      </div>
+    </div>
+    
+        </div>
       </div>
     </section>
 
@@ -2121,7 +3000,127 @@ int main() {
       }
     }
 
+    
+    function toggleLogDetail(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.toggle('hidden');
+      }
+    }
+
+    function exportDataJson() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        data[key] = localStorage.getItem(key);
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "embedded_study_backup_" + new Date().toISOString().slice(0, 10) + ".json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importDataJson(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          for (let k in data) {
+            localStorage.setItem(k, data[k]);
+          }
+          alert("打卡数据与笔记导入成功！立即为您刷新页面。");
+          window.location.reload();
+        } catch (err) {
+          alert("文件解析失败，请确保选择的是合法的备份 JSON 文件！");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // 预填默认真实通关数据（如果本地从未勾选过）
+    function initDefaultRealProgress() {
+      const realKeys = ['real_p1', 'real_p2', 'real_p3', 'real_p4', 'real_p5', 'real_p6', 'real_p7', 'real_p8', 'real_extra1', 'real_extra2'];
+      realKeys.forEach(k => {
+        if (localStorage.getItem(k) === null) {
+          localStorage.setItem(k, 'true');
+        }
+      });
+      // 默认第1~2周基础也打上勾
+      const baseKeys = ['wk_chk_0_1', 'wk_chk_0_2', 'wk_chk_0_3', 'wk_chk_1_1', 'wk_chk_1_2'];
+      baseKeys.forEach(k => {
+        if (localStorage.getItem(k) === null) {
+          localStorage.setItem(k, 'true');
+        }
+      });
+    }
+
+    
+    function toggleLogDetail(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.toggle('hidden');
+      }
+    }
+
+    function exportDataJson() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        data[key] = localStorage.getItem(key);
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "embedded_study_backup_" + new Date().toISOString().slice(0, 10) + ".json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importDataJson(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          for (let k in data) {
+            localStorage.setItem(k, data[k]);
+          }
+          alert("打卡数据与笔记导入成功！立即为您刷新页面。");
+          window.location.reload();
+        } catch (err) {
+          alert("文件解析失败，请确保选择的是合法的备份 JSON 文件！");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // 预填默认真实通关数据（如果本地从未勾选过）
+    function initDefaultRealProgress() {
+      const realKeys = ['real_p1', 'real_p2', 'real_p3', 'real_p4', 'real_p5', 'real_p6', 'real_p7', 'real_p8', 'real_extra1', 'real_extra2'];
+      realKeys.forEach(k => {
+        if (localStorage.getItem(k) === null) {
+          localStorage.setItem(k, 'true');
+        }
+      });
+      // 默认第1~2周基础也打上勾
+      const baseKeys = ['wk_chk_0_1', 'wk_chk_0_2', 'wk_chk_0_3', 'wk_chk_1_1', 'wk_chk_1_2'];
+      baseKeys.forEach(k => {
+        if (localStorage.getItem(k) === null) {
+          localStorage.setItem(k, 'true');
+        }
+      });
+    }
+
     function switchTab(tabName) {
+      localStorage.setItem("active_tab", tabName);
+      localStorage.setItem("active_tab", tabName);
       document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
       document.querySelectorAll(".tab-btn").forEach(el => {
         el.classList.remove("bg-[var(--primary,#0284c7)]", "text-white", "shadow-sm");
