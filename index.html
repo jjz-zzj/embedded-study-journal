@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>嵌入式进阶通关手帐 · 从零开始学C语言</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --card-border: #e2e8f0;
+      --content: #f1f5f9;
+      --muted-foreground: #64748b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #090d16;
+        --foreground: #f1f5f9;
+        --card: #131b2e;
+        --card-border: #1e293b;
+        --content: #1e293b;
+        --muted-foreground: #94a3b8;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--card-border, #e2e8f0);
+      border-radius: 9999px;
+    }
+    .checkbox-tick:checked + label {
+      text-decoration: line-through;
+      opacity: 0.55;
+    }
+    .chapter-card:has(input:checked) {
+      border-color: rgba(16, 185, 129, 0.4);
+      background-color: rgba(16, 185, 129, 0.02);
+    }
+    pre, code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    /* ============================================================
+       高对比度、清晰不刺眼的内容卡片（解决任何环境下文字看不清的问题）
+       ============================================================ */
+    .callout-pitfall {
+      background-color: #fff1f2 !important;
+      border: 1px solid #fecdd3 !important;
+      border-left: 5px solid #e11d48 !important;
+      color: #0f172a !important; /* 浓黑深灰字，最高对比度，绝对不发虚 */
+      font-size: 13px !important;
+      line-height: 1.7 !important;
+      font-weight: 500 !important;
+      padding: 14px 16px !important;
+      border-radius: 12px !important;
+    }
+
+    .callout-core {
+      background-color: #f0f7ff !important;
+      border: 1px solid #bfdbfe !important;
+      border-left: 5px solid #2563eb !important;
+      color: #0f172a !important;
+      font-size: 13px !important;
+      line-height: 1.7 !important;
+      font-weight: 500 !important;
+      padding: 14px 16px !important;
+      border-radius: 12px !important;
+    }
+
+    .callout-exercise {
+      background-color: #faf5ff !important;
+      border: 1px solid #e9d5ff !important;
+      border-left: 5px solid #9333ea !important;
+      color: #0f172a !important;
+      font-size: 13px !important;
+      line-height: 1.7 !important;
+      font-weight: 500 !important;
+      padding: 14px 16px !important;
+      border-radius: 12px !important;
+    }
+
+    .code-box-wrong {
+      background-color: #fff1f2 !important;
+      border: 1px solid #fecaca !important;
+      border-left: 4px solid #f43f5e !important;
+      color: #0f172a !important;
+    }
+
+    .code-box-right {
+      background-color: #ecfdf5 !important;
+      border: 1px solid #a7f3d0 !important;
+      border-left: 4px solid #10b981 !important;
+      color: #0f172a !important;
+    }
+
+    /* 深色模式下的超清晰适配：深色底 + 明亮高对比文字 */
+    @media (prefers-color-scheme: dark) {
+      .callout-pitfall {
+        background-color: #241016 !important;
+        border: 1px solid #541926 !important;
+        border-left: 5px solid #f43f5e !important;
+        color: #f8fafc !important; /* 纯净亮白字，清晰锐利 */
+      }
+      .callout-core {
+        background-color: #0d1a33 !important;
+        border: 1px solid #1a3668 !important;
+        border-left: 5px solid #3b82f6 !important;
+        color: #f8fafc !important;
+      }
+      .callout-exercise {
+        background-color: #1e102f !important;
+        border: 1px solid #3f1f63 !important;
+        border-left: 5px solid #a855f7 !important;
+        color: #f8fafc !important;
+      }
+      .code-box-wrong {
+        background-color: #241016 !important;
+        border: 1px solid #541926 !important;
+        border-left: 4px solid #f87171 !important;
+        color: #f8fafc !important;
+      }
+      .code-box-right {
+        background-color: #062b1e !important;
+        border: 1px solid #0f5132 !important;
+        border-left: 4px solid #34d399 !important;
+        color: #f8fafc !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[var(--background,#f8fafc)] text-[var(--foreground,#0f172a)] antialiased p-3 sm:p-5 md:p-6 min-h-screen">
+
+  <div class="max-w-4xl mx-auto space-y-5">
+
+    <!-- 顶部封面与统计面板 -->
+    <header class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-2xl p-5 sm:p-6 shadow-sm relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-amber-100 dark:bg-amber-900/20 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/40">
+              <span>🎯</span> 目标：工业机柜环境监护系统
+            </span>
+            <a href="https://www.bilibili.com/video/BV1dr4y1n7vA" target="_blank" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-pink-50 text-pink-700 border border-pink-200/70 hover:bg-pink-100 transition-colors dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-800/40">
+              <span>📺</span> B站·翁恺C语言视频直达 &UpperRightArrow;
+            </a>
+            <!-- 实时保存徽章 -->
+            <span id="globalAutoSaveIndicator" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/40 transition-all">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="autoSaveText">⚡ 实时保存已就绪</span>
+            </span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2">
+            🌱 零基础 C 语言 &rarr; 嵌入式通关手帐
+          </h1>
+          <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-1.5 leading-relaxed">
+            从第 1 章第一个 C 程序写起，一步步攻克变量、循环、函数、数组，第九章登顶<strong>指针</strong>！支持点击查看每章精讲速查与一键打卡。
+          </p>
+        </div>
+
+        <!-- 进度概览 -->
+        <div class="flex items-center gap-4 bg-[var(--content,#f1f5f9)] p-3.5 sm:p-4 rounded-xl border border-[var(--card-border,#e2e8f0)] self-start md:self-auto">
+          <div class="text-right">
+            <div class="text-xs text-[var(--muted-foreground,#64748b)] font-medium">通关总进度</div>
+            <div class="text-2xl font-black text-amber-600 dark:text-amber-400" id="totalPercent">0%</div>
+          </div>
+          <div class="w-12 h-12 rounded-full border-4 border-amber-200 dark:border-amber-900/50 flex items-center justify-center font-mono text-xs font-bold" id="progressCount">
+            0/28
+          </div>
+        </div>
+      </div>
+
+      <!-- 进度条 -->
+      <div class="mt-5">
+        <div class="w-full bg-[var(--content,#f1f5f9)] h-2.5 rounded-full overflow-hidden border border-[var(--card-border,#e2e8f0)]">
+          <div id="progressBar" class="bg-gradient-to-r from-amber-500 via-blue-500 to-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between items-center text-[11px] text-[var(--muted-foreground,#64748b)] mt-1.5 font-medium">
+          <span id="currentPhaseLabel">当前进度：第 1 章 · 启蒙起步中</span>
+          <span id="cPhaseProgress">📚 翁恺 C 语言：0/12 章</span>
+              <span>·</span>
+              <span id="signalsPhaseProgress" class="font-medium text-blue-600 dark:text-blue-400">📡 信号与系统：0/12 章 (0/48学时)</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 导航标签页 -->
+    <div class="flex items-center gap-2 border-b border-[var(--card-border,#e2e8f0)] pb-2 text-sm overflow-x-auto custom-scrollbar">
+      <button onclick="switchTab('wengkai')" id="tabBtn-wengkai" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors bg-[var(--primary,#0284c7)] text-white shadow-sm flex items-center gap-1.5">
+        <span>📚</span> 翁恺 C 语言
+      </button>
+      <button onclick="switchTab('signals')" id="tabBtn-signals" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
+        <span>📡</span> 信号处理与系统 <span id="signalsProgressBadge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-bold">0/12</span>
+      </button>
+      <button onclick="switchTab('knowledge')" id="tabBtn-knowledge" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
+        <span>🔥</span> 易错与重点本 <span id="knowledgeCountBadge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 font-bold">4</span>
+      </button>
+      <button onclick="switchTab('logs')" id="tabBtn-logs" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
+        <span>✍️</span> 每日打卡手帐
+      </button>
+      <button onclick="switchTab('notes')" id="tabBtn-notes" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
+        <span>💡</span> 随时备忘便签 <span id="memosCountBadge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 font-bold">0</span>
+      </button>
+      <button onclick="switchTab('future')" id="tabBtn-future" class="tab-btn shrink-0 px-3.5 py-2 rounded-lg font-medium transition-colors text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)] flex items-center gap-1.5">
+        <span>🚀</span> 后续嵌入式阶梯
+      </button>
+    </div>
+
+    <!-- 标签 1：翁恺 C 语言完整 1~12 章全图谱 -->
+    <section id="tab-wengkai" class="tab-content space-y-3">
+      <div class="flex items-center justify-between text-xs text-[var(--muted-foreground,#64748b)] px-1">
+        <span>点击每章的 <strong>「📖 极速精讲」</strong> 可查看视频提炼，学完后可一键打卡：</span>
+        <span class="font-medium text-amber-600 dark:text-amber-400">🔥 第 9 章即为核心指针</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="wengkaiChaptersContainer">
+        <!-- 动态生成 12 个章节大卡片 -->
+      </div>
+    </section>
+
+    <!-- 标签：信号处理与系统 (中南大学 48学时) -->
+    <section id="tab-signals" class="tab-content space-y-4 hidden">
+      <!-- 课程导读与教材横幅 -->
+      <div class="bg-gradient-to-r from-blue-50/90 via-indigo-50/80 to-sky-50/90 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-sky-950/40 border border-blue-200/80 dark:border-blue-800/50 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white shadow-sm">
+                中南大学理论核心课
+              </span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200">
+                理论授课 48 学时 · 全 12 章
+              </span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
+                信号与系统 + 数字信号处理 (DSP)
+              </span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+              📡 信号处理与系统全课程通关手帐
+            </h2>
+            <p class="text-xs sm:text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+              嵌入式工程师的“硬核数学护城河”！涵盖卷积、傅里叶变换 (CTFT/DTFT)、拉氏变换、Z变换、以及单片机 ADC 采样必考的 <strong>DFT、FFT、IIR/FIR 数字滤波器设计</strong>。
+            </p>
+            <div class="text-[11px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-2 pt-1">
+              <span>📖 指定教材：《信号与系统分析 (第4版)》、《数字信号处理》</span>
+              <span>·</span>
+              <span>📚 经典参考：郑君里、程佩青 (MATLAB版)</span>
+            </div>
+          </div>
+
+          <div class="flex md:flex-col items-center justify-center p-4 bg-white/80 dark:bg-slate-900/60 rounded-xl border border-blue-100 dark:border-blue-900/40 shrink-0 text-center shadow-sm">
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">信号课程学时完成度</div>
+            <div class="text-2xl font-black text-blue-600 dark:text-blue-400" id="signalsHoursCount">0 / 48 h</div>
+            <div class="text-[11px] text-slate-400 mt-0.5" id="signalsChaptersCount">已掌握 0 / 12 章</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 章节打卡卡片容器 -->
+      <div id="signalsChaptersContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        <!-- 动态通过 JavaScript 渲染 -->
+      </div>
+    </section>
+
+    <!-- 标签 2：全新【易错与重点知识本】 -->
+    <section id="tab-knowledge" class="tab-content space-y-4 hidden">
+      <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-[var(--card-border,#e2e8f0)]">
+          <h2 class="font-bold text-base flex items-center gap-2">
+            <span>➕</span> 记录常错陷阱或重点知识
+          </h2>
+          <span class="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 边输入边实时保存草稿
+          </span>
+        </div>
+
+        <form id="knowledgeForm" onsubmit="saveKnowledge(event)" class="space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">知识类型</label>
+              <select id="kType" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <option value="pitfall">⚠️ 踩坑易错 (Mistake / Bug)</option>
+                <option value="key">🔑 核心重点 (Core Concept)</option>
+                <option value="tip">💡 技巧小抄 (Tip / Trick)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">所属章节</label>
+              <select id="kChapter" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <option value="第1章 编程起步">第 1 章 · 计算机与编程起步</option>
+                <option value="第2章 变量与计算">第 2 章 · 变量与计算</option>
+                <option value="第3章 判断分支">第 3 章 · 判断与分支</option>
+                <option value="第4章 循环">第 4 章 · 循环</option>
+                <option value="第5章 循环控制">第 5 章 · 循环控制</option>
+                <option value="第6章 数据类型">第 6 章 · 数据类型深入</option>
+                <option value="第7章 函数">第 7 章 · 函数与调用栈</option>
+                <option value="第8章 数组">第 8 章 · 数组</option>
+                <option value="第9章 指针" selected>第 9 章 · 指针大攻坚</option>
+                <option value="第10章 字符串">第 10 章 · 字符串</option>
+                <option value="第11章 结构类型">第 11 章 · 结构体与枚举</option>
+                <option value="第12章 程序结构">第 12 章 · 宏定义与工程</option>
+                <option value="嵌入式/其他">嵌入式底硬件 / 其他</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">标题/一句话总结</label>
+              <input type="text" id="kTitle" placeholder="例如：scanf 漏写 & 导致闪退" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-rose-600 dark:text-rose-400 mb-1">❌ 错误代码 / 易错表现</label>
+              <textarea id="kWrong" rows="3" placeholder="// 例如：&#10;int a;&#10;scanf(&quot;%d&quot;, a); // 漏掉了 &amp;" class="auto-save-input w-full font-mono bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-900/50 rounded-lg p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-1">✅ 正确写法 / 核心记忆法</label>
+              <textarea id="kRight" rows="3" placeholder="// 例如：&#10;int a;&#10;scanf(&quot;%d&quot;, &amp;a); // 必须传 a 的地址进去才能被修改" required class="auto-save-input w-full font-mono bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/50 rounded-lg p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">原因分析 / 心得备忘（可选）</label>
+            <input type="text" id="kNote" placeholder="例如：C语言函数参数是值传递，scanf 要修改外界变量的值，必须拿到该变量的内存门牌号（&amp;）" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+          </div>
+
+          <div class="flex justify-between items-center pt-1">
+            <span class="text-[11px] text-[var(--muted-foreground,#64748b)]">💡 每敲一个字自动暂存，不小心关网页文本依然在</span>
+            <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-medium text-xs transition-colors shadow-sm flex items-center gap-1.5">
+              <span>💾</span> 发布入库
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 筛选与搜索工具条 -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+          <button onclick="setKnowledgeFilter('all')" id="kFilter-all" class="k-filter-btn px-3 py-1.5 rounded-lg bg-[var(--primary,#0284c7)] text-white font-medium">全部 (<span id="count-all">0</span>)</button>
+          <button onclick="setKnowledgeFilter('pitfall')" id="kFilter-pitfall" class="k-filter-btn px-3 py-1.5 rounded-lg bg-[var(--content,#f1f5f9)] text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)]">⚠️ 仅看易错 (<span id="count-pitfall">0</span>)</button>
+          <button onclick="setKnowledgeFilter('key')" id="kFilter-key" class="k-filter-btn px-3 py-1.5 rounded-lg bg-[var(--content,#f1f5f9)] text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card,#ffffff)]">🔑 仅看重点 (<span id="count-key">0</span>)</button>
+          <button onclick="setKnowledgeFilter('unmastered')" id="kFilter-unmastered" class="k-filter-btn px-3 py-1.5 rounded-lg bg-[var(--content,#f1f5f9)] text-amber-600 hover:bg-[var(--card,#ffffff)]">⏳ 待完全掌握 (<span id="count-unmastered">0</span>)</button>
+        </div>
+
+        <div class="relative">
+          <input type="text" id="kSearchInput" oninput="renderKnowledgeList()" placeholder="🔍 搜索知识点关键字..." class="w-full sm:w-56 bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+      </div>
+
+      <!-- 知识卡片流列表 -->
+      <div id="knowledgeListContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- 标签 3：打卡日志系统 -->
+    <section id="tab-logs" class="tab-content space-y-4 hidden">
+
+      <!-- 实时专注计时打卡卡片 -->
+      <div id="studyTimerCard" class="bg-gradient-to-r from-blue-50/90 via-indigo-50/80 to-blue-50/90 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-blue-950/40 border border-blue-200/80 dark:border-blue-800/50 rounded-xl p-4 sm:p-5 shadow-sm transition-all">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div id="timerPulseDot" class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-xl shrink-0 shadow-sm transition-all">
+              ⏱️
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-blue-900 dark:text-blue-200">学习专注打卡器</span>
+                <span id="timerStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full font-medium bg-slate-200/80 text-slate-700 dark:bg-slate-800 dark:text-slate-300">未开始计时</span>
+              </div>
+              <div id="timerDisplay" class="font-mono text-2xl sm:text-3xl font-black text-blue-700 dark:text-blue-300 tracking-tight my-0.5">
+                00:00:00
+              </div>
+              <div id="timerStartTimeText" class="text-[11px] text-[var(--muted-foreground,#64748b)]">准备好开始今天的 C 语言学习了吗？点击右侧一键开始计时！</div>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            <button type="button" id="timerStartBtn" onclick="startStudyTimer()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
+              <span>▶️</span> 开始学习计时
+            </button>
+            <button type="button" id="timerFinishBtn" onclick="finishStudyTimer()" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
+              <span>⏹️</span> 结束并填入手帐
+            </button>
+            <button type="button" id="timerResetBtn" onclick="resetStudyTimer()" class="hidden px-2.5 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs text-[var(--muted-foreground,#64748b)]" title="取消并重置计时">
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-base flex items-center gap-2">
+            <span>📝</span> 记录今日学习印记
+          </h2>
+          <span class="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 实时暂存中
+          </span>
+        </div>
+
+        <form id="logForm" onsubmit="saveLog(event)" class="space-y-3">
+          <!-- 升级后的起止时间与时长网格 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">学习日期</label>
+              <input type="date" id="logDate" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-[var(--muted-foreground,#64748b)]">开始时间</label>
+                <button type="button" onclick="setLogTimeToNow('logStartTime')" class="text-[10px] text-blue-600 dark:text-blue-400 hover:underline">设为当前</button>
+              </div>
+              <input type="time" id="logStartTime" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="autoCalcLogHours()">
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-medium text-[var(--muted-foreground,#64748b)]">结束时间</label>
+                <button type="button" onclick="setLogTimeToNow('logEndTime')" class="text-[10px] text-blue-600 dark:text-blue-400 hover:underline">设为当前</button>
+              </div>
+              <input type="time" id="logEndTime" class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="autoCalcLogHours()">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">时长 & 心情</label>
+              <div class="flex items-center gap-1.5">
+                <div class="relative flex-1">
+                  <input type="number" step="0.1" min="0.1" max="24" id="logHours" value="1.0" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 pr-7" title="可由起止时间自动计算，也可手动微调">
+                  <span class="absolute right-2 top-2 text-[10px] text-[var(--muted-foreground,#64748b)] pointer-events-none">h</span>
+                </div>
+                <select id="logMood" class="auto-save-input bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 shrink-0" title="今日学习心情">
+                  <option value="🌟 豁然开朗">🌟 豁然开朗</option>
+                  <option value="💡 略有所悟">💡 略有所悟</option>
+                  <option value="☕ 稳步推进">☕ 稳步推进</option>
+                  <option value="🧗 稍有吃力">🧗 稍有吃力</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">今日看的章节 / 核心收获</label>
+            <input type="text" id="logTitle" placeholder="例如：第3章 if-else 分支、关系运算符的大于等于" required class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[var(--muted-foreground,#64748b)] mb-1">心得总结 / 卡壳疑问（记录下来后续探讨）</label>
+            <textarea id="logDetail" rows="2" placeholder="例如：写猜数游戏时，do-while 和 while 什么时候用更容易犯迷糊..." class="auto-save-input w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+          </div>
+
+          <div class="flex justify-between items-center pt-1">
+            <span class="text-[11px] text-[var(--muted-foreground,#64748b)]">💡 表单文字已随时自动保存为草稿</span>
+            <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shadow-sm flex items-center gap-1.5">
+              <span>📌</span> 提交今日打卡
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 历史时间轴记录 -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold flex items-center justify-between text-[var(--muted-foreground,#64748b)]">
+          <span>📅 学习足迹时间轴</span>
+          <span id="logTotalHours" class="text-xs font-normal">累计打卡：0 次 (0 小时)</span>
+        </h3>
+        <div id="logsContainer" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- 标签 4：便签与避坑小抄 -->
+    <section id="tab-notes" class="tab-content space-y-4 hidden">
+      <!-- 顶部：翁恺老师学习锦囊 -->
+      <div class="bg-amber-50/70 border border-amber-200/70 dark:bg-amber-950/20 dark:border-amber-900/40 rounded-xl p-4 shadow-sm">
+        <div class="font-bold text-sm text-amber-800 dark:text-amber-300 flex items-center gap-1.5 mb-2">
+          <span>💡</span> 翁恺老师学习锦囊（四大避坑黄金铁律）
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
+          <div class="flex items-start gap-1.5">
+            <span class="text-amber-600 font-bold">①</span>
+            <span><strong>代码必须亲手敲</strong>：光看不写等于没学，哪怕每段只有三五行，亲手在 IDE 跑出来才算掌握。</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-amber-600 font-bold">②</span>
+            <span><strong>警惕 scanf 取地址符</strong>：<code>scanf("%d", &a)</code> 的 <code>&</code> 绝不能丢，丢了程序直接崩溃闪退。</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-amber-600 font-bold">③</span>
+            <span><strong>等号与赋值混淆</strong>：<code>=</code> 是赋值，<code>==</code> 才是判断相等！<code>if(a == 5)</code> 误写成 <code>if(a = 5)</code> 永远为真。</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-amber-600 font-bold">④</span>
+            <span><strong>数组下标从 0 开始</strong>：定义 <code>int a[10]</code>，最大有效下标只有 <code>a[9]</code>，访问 <code>a[10]</code> 属于越界危险行为！</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新建便签卡片 -->
+      <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm sm:text-base flex items-center gap-2 text-[var(--foreground,#0f172a)]">
+            <span>📝</span> 新建便签备忘
+          </h3>
+          <span class="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 输入自动暂存草稿
+          </span>
+        </div>
+
+        <div>
+          <textarea id="memoInput" rows="3" placeholder="随时记录冒出的疑问、突然想到的代码点子、待查的名词或下个练习想法...&#10;（提示：按 Ctrl+Enter 可一键快速保存）" class="w-full bg-[var(--content,#f1f5f9)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-3 text-xs sm:text-sm text-[var(--foreground,#0f172a)] focus:outline-none focus:ring-2 focus:ring-blue-500/50 leading-relaxed resize-y"></textarea>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <!-- 便签颜色选择器 -->
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-[var(--muted-foreground,#64748b)] text-[11px]">便签颜色：</span>
+            <input type="hidden" id="memoColor" value="yellow">
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="selectMemoColor('yellow')" id="colorBtn-yellow" class="memo-color-btn w-6 h-6 rounded-full bg-amber-200 border-2 border-amber-500 ring-2 ring-amber-400/40 transition-transform scale-110" title="暖黄灵感"></button>
+              <button type="button" onclick="selectMemoColor('blue')" id="colorBtn-blue" class="memo-color-btn w-6 h-6 rounded-full bg-blue-200 border-2 border-transparent hover:scale-105 transition-transform" title="清爽蓝疑问"></button>
+              <button type="button" onclick="selectMemoColor('green')" id="colorBtn-green" class="memo-color-btn w-6 h-6 rounded-full bg-emerald-200 border-2 border-transparent hover:scale-105 transition-transform" title="薄荷绿待办"></button>
+              <button type="button" onclick="selectMemoColor('purple')" id="colorBtn-purple" class="memo-color-btn w-6 h-6 rounded-full bg-purple-200 border-2 border-transparent hover:scale-105 transition-transform" title="丁香紫重点"></button>
+            </div>
+          </div>
+
+          <!-- 保存按钮 -->
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="clearMemoInput()" class="px-3 py-1.5 rounded-lg border border-[var(--card-border,#e2e8f0)] text-xs text-[var(--muted-foreground,#64748b)] hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              清空
+            </button>
+            <button type="button" onclick="addMemo()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
+              <span>➕</span> 保存为便签
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 备忘便签墙 (展示已保存的多份便签) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h3 class="font-bold text-sm sm:text-base flex items-center gap-1.5 text-[var(--foreground,#0f172a)]">
+              <span>📌</span> 随手备忘便签墙
+            </h3>
+            <span id="memoCountTitleBadge" class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 font-medium">共 0 条</span>
+          </div>
+          <button type="button" onclick="clearAllMemos()" class="text-xs text-rose-500 hover:underline">
+            清空所有便签
+          </button>
+        </div>
+
+        <!-- 便签卡片瀑布网格 -->
+        <div id="memosContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <!-- 动态渲染便签卡片 -->
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-future" class="tab-content space-y-4 hidden">
+      <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-5 shadow-sm space-y-4">
+        <div class="border-b border-[var(--card-border,#e2e8f0)] pb-3">
+          <h2 class="font-bold text-base flex items-center gap-2">
+            <span>🗺️</span> 嵌入式进阶通关路径（学完 C 语言后解锁）
+          </h2>
+          <p class="text-xs text-[var(--muted-foreground,#64748b)] mt-1">
+            当你完成翁恺老师的指针与结构体后，我们将正式启动以下阶段：
+          </p>
+        </div>
+
+        <div class="space-y-3 text-sm">
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--content,#f1f5f9)]">
+            <div class="font-bold text-blue-600 dark:text-blue-400 text-xs mb-1">STAGE 1 · 纯 PC 协议与状态机攻坚 (0 元)</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2" id="futureStage1List"></div>
+          </div>
+
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--content,#f1f5f9)]">
+            <div class="font-bold text-emerald-600 dark:text-emerald-400 text-xs mb-1">STAGE 2 · 百元级硬件底层驱动实战</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2" id="futureStage2List"></div>
+          </div>
+
+          <div class="p-3.5 rounded-xl border border-[var(--card-border,#e2e8f0)] bg-[var(--content,#f1f5f9)]">
+            <div class="font-bold text-purple-600 dark:text-purple-400 text-xs mb-1">STAGE 3 · FreeRTOS 操作系统与 A/B OTA 升级</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2" id="futureStage3List"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 底部功能栏 -->
+    <footer class="pt-4 border-t border-[var(--card-border,#e2e8f0)] flex flex-wrap items-center justify-between text-xs text-[var(--muted-foreground,#64748b)] gap-3">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>全量数据与输入草稿已开启<strong>双层本地实时持久化</strong>。</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="exportData()" class="hover:text-[var(--foreground,#0f172a)] underline">备份手帐(JSON)</button>
+        <span>·</span>
+        <button onclick="resetDataPrompt()" class="hover:text-rose-500 underline">重置所有数据</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- 精讲速查弹窗 Modal -->
+  <div id="lectureModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-3 sm:p-4 hidden backdrop-blur-sm">
+    <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in duration-150">
+      <div class="p-4 border-b border-[var(--card-border,#e2e8f0)] flex items-center justify-between bg-[var(--content,#f1f5f9)]">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📖</span>
+          <h3 id="modalTitle" class="font-extrabold text-sm sm:text-base text-[var(--foreground,#0f172a)]"></h3>
+        </div>
+        <button onclick="closeLectureModal()" class="w-7 h-7 rounded-lg text-sm text-[var(--muted-foreground,#64748b)] hover:bg-[var(--card-border,#e2e8f0)] flex items-center justify-center">✕</button>
+      </div>
+
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 custom-scrollbar text-xs sm:text-[13px]">
+        <!-- 通俗解 -->
+        <div class="space-y-1.5">
+          <h4 class="font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
+            <span>💡</span> 翁恺核心通俗解
+          </h4>
+          <div id="modalCore" class="callout-core shadow-sm"></div>
+        </div>
+
+        <!-- 经典代码 -->
+        <div class="space-y-1.5">
+          <h4 class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span>💻</span> 课堂核心原味代码
+          </h4>
+          <pre class="bg-slate-900 text-slate-100 p-3.5 rounded-xl overflow-x-auto text-xs leading-relaxed"><code id="modalCode"></code></pre>
+        </div>
+
+        <!-- 避坑 -->
+        <div class="space-y-1.5">
+          <h4 class="font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1">
+            <span>⚠️</span> 初学者致命踩坑点
+          </h4>
+          <div id="modalPitfall" class="callout-pitfall shadow-sm"></div>
+        </div>
+
+        <!-- 随堂练习 -->
+        <div class="space-y-1.5">
+          <h4 class="font-bold text-purple-600 dark:text-purple-400 flex items-center gap-1">
+            <span>🎯</span> 随堂小试牛刀
+          </h4>
+          <div id="modalExercise" class="callout-exercise shadow-sm"></div>
+        </div>
+      </div>
+
+      <div class="p-3.5 border-t border-[var(--card-border,#e2e8f0)] bg-[var(--content,#f1f5f9)] flex flex-wrap items-center justify-between gap-2.5">
+        <span class="text-[11px] text-[var(--muted-foreground,#64748b)]">学完即可点击右侧一键通关，实时落盘</span>
+        <div class="flex items-center gap-2">
+          <button onclick="closeLectureModal()" class="px-3.5 py-1.5 rounded-lg border border-[var(--card-border,#e2e8f0)] bg-[var(--card,#ffffff)] text-xs font-medium hover:bg-slate-100">关闭</button>
+          <button id="modalCompleteBtn" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm flex items-center gap-1">
+            <span>✅</span> 本章已通关（一键打卡）
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 翁恺 C 语言视频完整 1~12 章架构数据与精讲提炼内容
+    
+    // ============================================================
+    // 中南大学《信号处理与系统》(48学时) 完整 12 章节课程体系与精讲数据
+    // ============================================================
+    const SIGNALS_CHAPTERS = [
+      {
+        num: 0,
+        title: "第 0 章 · 绪论",
+        hours: 2,
+        desc: "信号与系统的基本概念、分类模型、分析方法体系与典型工程应用",
+        points: [
+          "sig_c0_1: 信号与系统的核心概念与分类体系 (模拟/数字/连续/离散)",
+          "sig_c0_2: 信号的时域、频域与复频域三大分析主线及软硬件对应"
+        ],
+        summary: {
+          core: "信号是信息的物理载体（如电压、声波、温度采样序列），系统是对信号进行加工、提取特征的处理单元（如RC滤波电路、STM32上的滤波算法）。连续信号以时间 t 为自变量，离散信号以采样序号 n 为自变量。嵌入式开发中，ADC 将模拟信号连续域带入离散数字域处理。",
+          code: `// 连续信号在单片机中的离散化模型：
+// x[n] = x(n * Ts) = x(n / Fs)
+float sample = Read_ADC_Value(); // 离散时间采样点 x[n]`,
+          pitfall: "1. 混淆时域与频域：时域看波形，频域看成分。不要试图在时域肉眼看出包含哪些谐波！\n2. 混淆连续与离散：连续信号求导积分，离散信号做差分与卷积和。",
+          exercise: "举例说明工业机柜监护系统中，温度传感器信号从物理量到单片机内存经历了哪些信号形态变化？"
+        }
+      },
+      {
+        num: 1,
+        title: "第 1 章 · 信号与系统基础",
+        hours: 2,
+        desc: "典型连续/离散信号运算、奇异信号阶跃与冲激、LTI 线性时不变系统性质判定",
+        points: [
+          "sig_c1_1: 阶跃信号 u(t) 与冲激信号 δ(t) 的抽样特性与微积分性质",
+          "sig_c1_2: 系统线性、时不变性、因果性与稳定性四大物理性质判别"
+        ],
+        summary: {
+          core: "奇异信号是信号分析的灵魂。冲激信号 δ(t) 面积为 1、宽度无限窄，具有核心抽样性质：∫ x(t)δ(t-t0)dt = x(t0)。阶跃信号 u(t) 是开关通断的数学模型。线性时不变 (LTI) 系统满足叠加性与齐次性，且参数不随时间变化，是信号处理绝大多数理论的前提。",
+          code: `// 离散单位脉冲序列与阶跃序列：
+// delta[n] = (n == 0) ? 1 : 0;
+// u[n]     = (n >= 0) ? 1 : 0;`,
+          pitfall: "1. 时不变性判断误区：凡是自变量 t 带有倍数（如 x(2t)）或乘以 t（如 t*x(t)），系统必有时变性！\n2. 抽样性质不要把积分区间看漏：若 t0 不在积分区间内，积分结果直接为 0！",
+          exercise: "判断系统 y(t) = 3*x(t) + 2 是否为线性系统？（提示：检验齐次性与叠加性，零输入是否有响应）。"
+        }
+      },
+      {
+        num: 2,
+        title: "第 2 章 · 线性时不变系统的时域分析",
+        hours: 4,
+        desc: "微分/差分方程求解、零输入/零状态响应分解、连续卷积积分与离散卷积和",
+        points: [
+          "sig_c2_1: 微分方程与差分方程的经典解法与响应分解 (全响应 = ZIR + ZSR)",
+          "sig_c2_2: 卷积积分与卷积和的“卷、移、乘、积”计算与冲激响应 h(t)"
+        ],
+        summary: {
+          core: "全响应 = 零输入响应 (ZIR) + 零状态响应 (ZSR)。系统的零状态响应本质就是输入信号与冲激响应 h(t) 的卷积！卷积四大真言：卷（翻转成 -τ）、移（右移 t 变为 t-τ）、乘（两波形相乘）、积（求重叠区域面积）。在离散域中，差分方程是单片机编写滤波器的直接代码形式。",
+          code: `// 离散卷积和 y[n] = sum(x[k] * h[n-k])：
+for (int n = 0; n < N + M - 1; n++) {
+    y[n] = 0;
+    for (int k = 0; k < N; k++) {
+        if (n - k >= 0 && n - k < M) y[n] += x[k] * h[n - k];
+    }
+}`,
+          pitfall: "1. 卷积反转平移混淆：务必牢记是让其中一个信号翻转后再沿着时间轴平移，移动量为 t（或序号 n）。\n2. 零输入响应包含初始状态，与外加激励 x(t) 完全无关！",
+          exercise: "计算序列 x[n] = [1, 2, 3] 与 h[n] = [1, 1] 的离散卷积和 y[n]，并指出 y[n] 的总长度是多少？"
+        }
+      },
+      {
+        num: 3,
+        title: "第 3 章 · 连续时间信号与系统频域分析 (CTFT)",
+        hours: 5,
+        desc: "傅里叶级数 (FS)、连续傅里叶变换 (FT)、频域系统函数、时域抽样定理",
+        points: [
+          "sig_c3_1: 连续时间傅里叶变换 (CTFT) 及其对称、卷积、微分性质",
+          "sig_c3_2: 频域系统函数 H(jω) 与时域抽样定理 (奈奎斯特判据 fs >= 2fm)"
+        ],
+        summary: {
+          core: "世界是由正弦波构成的。周期信号对应离散傅里叶级数，非周期信号对应连续傅里叶变换 (FT)。频域最爽的特性是：时域极其繁琐的卷积，在频域直接变成简单乘法 Y(jω) = X(jω) * H(jω)！时域抽样定理（奈奎斯特准则）：为了无失真恢复信号，采样频率必须满足 fs >= 2*fm。",
+          code: `// 频域理想低通滤波模型：
+// H(jω) = 1 (|ω| <= ωc), 0 (|ω| > ωc)
+// 采样定理工程底线：fs >= 2 * f_max`,
+          pitfall: "1. 抽样混叠致命陷阱：如果采样率不足（fs < 2fm），高频信号会折叠进低频，产生永久混叠失真，无法后处理补救！\n2. 门函数与 sinc 函数是对偶变换对：时域方波对应频域 sinc，时域脉冲越窄，频域频带越宽！",
+          exercise: "一段音频信号最高频率为 8kHz，请问用单片机 ADC 采集该音频时，最低采样频率应为多少？实际工程中为什么通常选 44.1kHz？"
+        }
+      },
+      {
+        num: 4,
+        title: "第 4 章 · 离散时间信号与系统频域分析 (DTFT)",
+        hours: 5,
+        desc: "序列离散时间傅里叶变换 (DTFT)、2π 周期性、频域响应与数字滤波基础",
+        points: [
+          "sig_c4_1: DTFT 的数学定义、对称性质与以 2π 为周期的物理成因",
+          "sig_c4_2: 离散 LTI 系统的频域分析与数字角频率 ω 与模拟频率 Ω 的映射"
+        ],
+        summary: {
+          core: "对连续信号采样后得到的序列 x[n]，其傅里叶变换即为 DTFT。DTFT 的频谱具有必然的 2π 周期性（因为时域采样引发频域周期延拓）！数字角频率 ω 与模拟角频率 Ω 的映射关系为：ω = Ω * Ts = Ω / fs。数字角频率 ω = π 严格对应模拟的最高无失真频率 fs/2（折叠频率）。",
+          code: `// 模拟角频率与数字角频率转换：
+// ω = 2 * PI * (f / fs)
+// 当 f = fs / 2 时，ω = π（数字域最高频）`,
+          pitfall: "1. 忘记 DTFT 的 2π 周期性：分析 DTFT 时只需看 [-π, π] 区间即可，因为之后完全周期重复！\n2. 混淆模拟频率与数字频率：数字频率 ω 是无量纲的归一化弧度值。",
+          exercise: "若采样频率 fs = 1000Hz，模拟信号频率 f = 250Hz，求对应的数字角频率 ω 是多少？"
+        }
+      },
+      {
+        num: 5,
+        title: "第 5 章 · 连续时间信号与系统复频域分析 (拉氏变换)",
+        hours: 4,
+        desc: "双边与单边拉普拉斯变换、收敛域 (ROC)、S域系统函数 H(s) 与系统稳定性",
+        points: [
+          "sig_c5_1: 拉普拉斯变换定义、收敛域 ROC 与单边拉氏变换求解微分方程",
+          "sig_c5_2: 系统函数 H(s) 极零点分布与连续系统因果性、稳定性的几何判定"
+        ],
+        summary: {
+          core: "很多发散信号无法求傅里叶变换。拉普拉斯变换乘上衰减因子 e^(-σt)，将变量扩展到复平面 s = σ + jω。系统函数 H(s) 的极点决定了冲激响应的波形形态！连续因果系统稳定的充要条件：H(s) 的所有极点必须严格位于复平面的左半平面 (Re(s) < 0)！",
+          code: `// 单边拉氏变换核心代数化：
+// dx/dt  -->  s*X(s) - x(0-)
+// d2x/dt2 --> s^2*X(s) - s*x(0-) - x'(0-)
+// 微分方程瞬间转化为初中代数方程！`,
+          pitfall: "1. 抛开收敛域 ROC 谈拉氏变换无意义：相同代数式的 X(s)，ROC 不同对应的时域信号完全不同（因果还是反因果）！\n2. 稳定性判定：虚轴上有单极点是临界稳定，虚轴上有重极点则系统发散不稳定！",
+          exercise: "某系统的传递函数为 H(s) = 1 / (s^2 + 3s + 2)，求系统的极点，并判断该系统是否稳定？"
+        }
+      },
+      {
+        num: 6,
+        title: "第 6 章 · 离散时间信号与系统复频域分析 (Z变换)",
+        hours: 5,
+        desc: "双边与单边 Z 变换、环形收敛域、逆 Z 变换、Z 域系统函数 H(z) 与差分方程",
+        points: [
+          "sig_c6_1: Z 变换数学定义、收敛域 ROC 环形带与 S 平面向 Z 平面的映射",
+          "sig_c6_2: Z 域系统函数 H(z) 极点在单位圆内外的稳定性判据与差分方程求解"
+        ],
+        summary: {
+          core: "Z 变换是离散世界中的拉普拉斯变换。映射关系为 z = e^(sTs)。S 平面的虚轴映射为 Z 平面的单位圆 (|z|=1)；S 平面的左半平面映射为单位圆内部 (|z|<1)。因此：离散因果系统稳定的充要条件是——H(z) 的所有极点必须严格位于单位圆以内！",
+          code: `// 离散时移定理与 Z 变换：
+// x[n - k]  <-->  z^(-k) * X(z)
+// 单片机中 z^(-1) 物理上就是代表“一个周期的延迟（Delay Buffer）”！`,
+          pitfall: "1. 极点位置混淆：连续系统稳定看极点是否在左半平面，离散系统稳定看极点是否在单位圆内（|z| < 1）！\n2. 单边与双边 Z 变换区别：单边 Z 变换专门用于求解含有初始条件的差分方程。",
+          exercise: "已知离散系统函数 H(z) = 1 / (1 - 0.5 * z^(-1))，求极点并写出对应的时域差分方程 y[n] 的表达式。"
+        }
+      },
+      {
+        num: 7,
+        title: "第 7 章 · 离散傅里叶变换 (DFT)",
+        hours: 5,
+        desc: "频域抽样理论、DFT 与 IDFT 变换对、圆周卷积定理与线性卷积的快速实现",
+        points: [
+          "sig_c7_1: 频域抽样理论与有限长序列离散傅里叶变换 (DFT) 变换对",
+          "sig_c7_2: 圆周卷积与线性卷积的关系定理及零填充补齐法则 (N >= L+M-1)"
+        ],
+        summary: {
+          core: "计算机无法存储连续谱。DFT 是将时域有限长序列在频域进行离散等间隔抽样，得到唯一时域离散、频域也离散的变换，是现代数字信号处理在计算机上的物理基石！注意：DFT 频域相乘对应的是时域圆周卷积。要用 DFT 计算线性卷积，必须补零使点数 N >= L + M - 1！",
+          code: `// DFT 定义核：WN = exp(-j * 2 * PI / N)
+// X[k] = sum(x[n] * WN^(k*n))
+// 乘法计算复杂度为 O(N^2)`,
+          pitfall: "1. 直接用 DFT 相乘以为算的是线性卷积：实际上得到的是圆周卷积！必须做零填充 (Zero-padding) 补足点数才能避免混叠。\n2. 频域采样间隔为 Δf = fs / N，要提高频率分辨率，必须增加总时域观察时间！",
+          exercise: "长度分别为 100 和 80 的两个序列做线性卷积，如果要用 DFT 快速实现，DFT 的点数 N 至少应选择多少点？"
+        }
+      },
+      {
+        num: 8,
+        title: "第 8 章 · 快速傅里叶变换 (FFT)",
+        hours: 4,
+        desc: "基-2 按时间抽取 FFT (DIT-FFT)、频抽取 FFT (DIF-FFT)、蝶形运算与计算量优化",
+        points: [
+          "sig_c8_1: 基-2 DIT-FFT 奇偶分解、旋转因子性质与蝶形运算流图",
+          "sig_c8_2: 倒位序 (Bit-reversal) 重排与计算复杂度 O(N log2 N) 对比"
+        ],
+        summary: {
+          core: "FFT 不是一种新变换，而是 DFT 的超高速快速算法！利用旋转因子 WN 的周期性、对称性和可约性，将 N 点序列按奇偶位置分解为两个 N/2 点，递归形成蝶形算子。复杂度从 O(N^2) 骤降到 O(N*log2(N))。在 STM32 单片机上（如 CMSIS-DSP 库），FFT 让千点频谱毫秒级完成！",
+          code: `// 基-2 蝶形运算核心代码骨架：
+// A' = A + B * WN_r;
+// B' = A - B * WN_r;
+// 1024 点 FFT 乘法次数：5120 次 vs DFT 1048576 次（提速 200 倍！）`,
+          pitfall: "1. 倒位序重排遗漏：按时间抽取的 DIT-FFT，输入序列必须先经过二进制倒位序排序，输出才是自然顺序！\n2. 基-2 FFT 要求序列点数必须是 2 的整数次幂（如 128, 256, 512, 1024），不足需补零。",
+          exercise: "计算 256 点 DFT 与 256 点基-2 FFT 的复数乘法次数，说明提速倍数大约是多少？"
+        }
+      },
+      {
+        num: 9,
+        title: "第 9 章 · 离散傅里叶变换的应用",
+        hours: 4,
+        desc: "信号频谱分析中的频谱泄露、栅栏效应与混叠、快速卷积分段法 (重叠相加/保留)",
+        points: [
+          "sig_c9_1: 实际信号频谱分析的三大典型现象 (泄露、栅栏效应、混叠) 及对策",
+          "sig_c9_2: 基于 FFT 的快速长卷积分段算法 (重叠相加法 OLA 与重叠保留法 OLS)"
+        ],
+        summary: {
+          core: "实际工程使用 FFT 时的避坑指南。截断信号必然导致频谱泄露（矩形窗侧瓣高），应选用汉宁窗、海明窗改善；栅栏效应导致看不清非采样点谱峰，应通过时域补零提高视在分辨率。对长音频流或振动流数据，采用重叠相加法 (OLA) 或重叠保留法 (OLS) 进行分段实时高速滤波。",
+          code: `// 加窗抗频谱泄露（汉宁窗）：
+// w[n] = 0.5 * (1 - cos(2 * PI * n / (N - 1)));
+// x_windowed[n] = x[n] * w[n];`,
+          pitfall: "1. 补零提高的是视在分辨率，不能提高真实物理分辨率！要想区分两个很近的频率，只能加长物理采样时间长度 T！\n2. 加窗改善旁瓣泄露的代价是主瓣加宽，降低了频率分辨锐度。",
+          exercise: "如果一个正弦信号频率为 50.5Hz，采样率为 100Hz，采集 100 点做 FFT 会发生什么现象？如何缓解？"
+        }
+      },
+      {
+        num: 10,
+        title: "第 10 章 · IIR 数字滤波器的设计",
+        hours: 4,
+        desc: "模拟低通滤波器原型 (巴特沃斯/切比雪夫)、双线性变换法 (BLT)、频率预畸变校正",
+        points: [
+          "sig_c10_1: 巴特沃斯与切比雪夫模拟原型滤波器设计与阶数计算",
+          "sig_c10_2: 双线性变换法 (BLT) 的 S-Z 映射及频率预畸变校正计算"
+        ],
+        summary: {
+          core: "IIR 滤波器单位冲激响应无限长，内部有反馈环路（递归型）。设计经典路线：先设计模拟原型（巴特沃斯通带最平坦，切比雪夫过渡带陡峭），再通过双线性变换法 (BLT) 映射到 Z 域。双线性变换克服了冲激响应不变法的频谱混叠，但产生了非线性频率畸变，设计前必须预畸变！",
+          code: `// 双线性变换法映射核心：
+// s = (2 / T) * (1 - z^(-1)) / (1 + z^(-1))
+// 频率预畸变校正公式：Ω = (2 / T) * tan(ω / 2)`,
+          pitfall: "1. 忘记频率预畸变：未校正将导致截止频率产生严重漂移！\n2. IIR 滤波器极点一旦由于浮点量化误差漂移到单位圆外，系统将发散自激振荡！",
+          exercise: "巴特沃斯滤波器和切比雪夫 I 型滤波器的幅频响应各有什么特点？工程上追求平坦通带应选哪种？"
+        }
+      },
+      {
+        num: 11,
+        title: "第 11 章 · FIR 数字滤波器的设计",
+        hours: 4,
+        desc: "FIR 滤波器的严格线性相位条件、窗函数设计法 (矩形/汉宁/海明/布莱克曼)、频率抽样法",
+        points: [
+          "sig_c11_1: FIR 线性相位的四种类型 (冲激响应奇偶对称性与幅度特性)",
+          "sig_c11_2: 窗函数设计法核心流程与矩形窗、汉宁窗、海明窗性能指标选型"
+        ],
+        summary: {
+          core: "FIR 滤波器冲激响应有限长，没有反馈回路，极点全在原点，天然绝对稳定！最无可替代的王牌优势是：当 h[n] 满足偶对称或奇对称时，具有严格的线性相位（各频率延时一致，波形不产生相位失真）。工程上最常用窗函数法（截断理想低通冲激响应 hd[n] 并乘以窗函数）进行设计。",
+          code: `// 常用 FIR 窗函数阻带最小衰减指标：
+// 矩形窗: 21 dB  (过渡带宽 4π/N)
+// 汉宁窗: 44 dB  (过渡带宽 8π/N)
+// 海明窗: 53 dB  (过渡带宽 8π/N)
+// 布莱克曼: 74 dB (过渡带宽 12π/N)`,
+          pitfall: "1. 阻带衰减只取决于窗函数的类型，增加窗长 N 只能缩小过渡带宽，无法改善阻带衰减指标！\n2. 高通滤波器不能选用第 2 类或第 4 类 FIR 结构（因为在 ω=π 处幅度响应恒为 0）。",
+          exercise: "设计一个要求阻带衰减大于 50dB 的数字低通滤波器，从矩形窗、汉宁窗和海明窗中，你应该选择哪种窗函数？"
+        }
+      }
+    ];
+
+const WENGKAI_CHAPTERS = [
+      {
+        num: 1,
+        title: "第 1 章 · 计算机和编程语言",
+        desc: "计算机模型、编译机制、搭建开发环境、写出第一个 Hello World！",
+        points: ["wk_c1_1: 第一个C程序骨架与 main 函数", "wk_c1_2: 程序的编译、链接与运行逻辑"],
+        summary: {
+          core: "计算机本身不会思考，它唯一的超能力就是按部就班、以极高速度进行机械重复。你写的 .c 文件是给人类看的，编译器（如 gcc）就像翻译官，把高阶文本一次性翻译为 CPU 硬件唯一认得的 0101 机器码 (.exe)。",
+          code: `#include <stdio.h>  // 引入标准输入输出库
+
+int main()          // main 函数是所有 C 程序的唯一起点
+{
+    printf("Hello World!\\n"); // 终端打印文本，\\n 换行
+    return 0;                 // 告知操作系统程序正常退出
+}`,
+          pitfall: "1. 标点符号必须全英文！中文分号“；”或双引号会导致编译器直接报错。\n2. C语言严格区分大小写，main 不能写成 Main。\n3. 每句执行语句末尾必须带分号 ; 结尾。",
+          exercise: "在你的电脑上新建一个 test.c 文件，尝试输出两行文字，第一行是你的名字拼音，第二行输出 Hello C！"
+        }
+      },
+      {
+        num: 2,
+        title: "第 2 章 · 计算与变量",
+        desc: "变量的定义、初始化、赋值，printf 格式化输出与 scanf 输入读取。",
+        points: ["wk_c2_1: 变量声明、赋值与常量 const", "wk_c2_2: scanf 输入与算术四则运算表达式"],
+        summary: {
+          core: "变量就是一个【有名字的盒子】！内存为你开辟一块空间，贴上变量名标签。它有三要素：类型（装什么）、名字（叫什么）、值（装了什么）。scanf 是从键盘读取数字放进盒子里。",
+          code: `#include <stdio.h>
+
+int main() {
+    int price = 0; // 定义并初始化为 0（好习惯：定义即初始化）
+    printf("请输入金额: ");
+    scanf("%d", &price); // 核心：&price 传入内存门牌号，函数才能修改它的值
+    
+    int change = 100 - price;
+    printf("找零: %d 元\\n", change);
+    return 0;
+}`,
+          pitfall: "1. scanf 漏加 &：scanf(\"%d\", price) 会导致内存越界崩溃闪退！\n2. 整数除法截断：10 / 3 结果严格等于 3，小数部分直接被丢弃！要小数必须写 10.0 / 3。\n3. scanf 双引号里不要手滑加 \\n，否则会卡死等输入。",
+          exercise: "编写一段代码，输入身高厘米数（如 175），利用 double 类型换算并输出米数（如 1.75 米）。"
+        }
+      },
+      {
+        num: 3,
+        title: "第 3 章 · 判断与分支",
+        desc: "if 语句、关系运算与优先级、嵌套分支与 switch-case 多路分支。",
+        points: ["wk_c3_1: if-else 分支判断与条件表达式", "wk_c3_2: switch-case 多分支与 break 的作用"],
+        summary: {
+          core: "计算机根据条件的真假（真为 1，假为 0，C 语言中【非零即为真】）决定执行不同支路。switch-case 适合根据固定的整型/字符状态码做离散跳转。",
+          code: `#include <stdio.h>
+
+int main() {
+    int status = 1;
+    switch(status) {
+        case 1:
+            printf("机柜状态正常\\n");
+            break; // 必须有 break，否则穿透执行后面的 case！
+        case 2:
+            printf("温湿度超标报警\\n");
+            break;
+        default:
+            printf("未知状态\\n");
+            break;
+    }
+    return 0;
+}`,
+          pitfall: "1. 赋值 '=' 与比较 '==' 混淆：if (a = 5) 会把 5 赋给 a，表达式值为 5（非零永远为真！）。\n2. switch-case 漏写 break 会导致后面的分支顺次全部执行。",
+          exercise: "编写程序，输入一个温度值，如果大于 40 则打印告警，如果在 20~40 之间打印正常，否则打印低温。"
+        }
+      },
+      {
+        num: 4,
+        title: "第 4 章 · 循环",
+        desc: "while 循环、do-while 循环、循环计数、经典算法：数位数、猜数游戏。",
+        points: ["wk_c4_1: while 与 do-while 循环的区别", "wk_c4_2: 循环条件控制与计数器模式"],
+        summary: {
+          core: "让计算机发挥重复计算能力的骨架。while 是【先看再进】（可能 0 次），do-while 是【先斩后奏】（至少执行 1 次）。",
+          code: `#include <stdio.h>
+
+int main() {
+    int num = 3526, count = 0;
+    do {
+        num /= 10; // 丢弃个位
+        count++;   // 计数加一
+    } while (num > 0); // 注意 do-while 结尾必带分号
+    printf("位数=%d\\n", count); // 输出 4
+    return 0;
+}`,
+          pitfall: "1. 死循环：循环体中必须包含促使条件不满足的变更操作（如自增/自减/输入）。\n2. do-while 结尾的 while(条件); 绝不能漏掉分号。",
+          exercise: "用 while 循环计算 1 + 2 + 3 + ... + 100 的累加和并打印。"
+        }
+      },
+      {
+        num: 5,
+        title: "第 5 章 · 循环控制",
+        desc: "for 循环结构、break 强制跳出、continue 提前下一轮、多重嵌套循环。",
+        points: ["wk_c5_1: for 循环三段式表达与阶乘计算", "wk_c5_2: break 与 continue、嵌套循环素数判断"],
+        summary: {
+          core: "for 循环把【起点、终点、步长】收拢在一行。break 是掀桌子彻底跳出整层循环；continue 是放弃本轮剩余代码立即开始下一轮。",
+          code: `#include <stdio.h>
+
+int main() {
+    int n = 17, isPrime = 1;
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            isPrime = 0; // 证明不是素数
+            break;       // 立即跳出，无需再算
+        }
+    }
+    printf("%d %s素数\\n", n, isPrime ? "是" : "不是");
+    return 0;
+}`,
+          pitfall: "1. for 头部千万别在小括号后加分号：for(...); 会把循环体当成空语句。\n2. break 在多重嵌套循环中只能跳出它所在的那【一层】循环。",
+          exercise: "用双重嵌套 for 循环在终端打印出经典的九九乘法表。"
+        }
+      },
+      {
+        num: 6,
+        title: "第 6 章 · 数据类型深入",
+        desc: "整数的内部表示（补码与溢出）、浮点数精度的坑、char 字符型与 ASCII 码。",
+        points: ["wk_c6_1: 整数大小、补码表示与溢出问题", "wk_c6_2: char 字符类型与强制类型转换"],
+        summary: {
+          core: "类型决定了内存开辟多少字节以及如何解读 01 二进制。负数以补码存储。字符 char 本质就是存 1 字节整数（ASCII 码，'A'=65）。",
+          code: `#include <stdio.h>
+
+int main() {
+    char c = 127;
+    c = c + 1; // 有符号 1 字节最大值是 127
+    printf("127 + 1 = %d\\n", c); // 环绕溢出变成 -128！
+    
+    char ch = 'A';
+    printf("字符 %c 的 ASCII 码是 %d\\n", ch, ch); // 输出 A 和 65
+    return 0;
+}`,
+          pitfall: "1. 浮点数不可用 == 精确比较（有微小精度舍入误差），需用 fabs(a - b) < 0.00001。\n2. 整数溢出不会报错，只会静默产生奇怪的负数或回绕，单片机中常导致逻辑失控。",
+          exercise: "编写程序，输入一个小写字母（如 'a'），通过数学运算将其转换为大写字母（'A'）输出（提示：'a'-'A'=32）。"
+        }
+      },
+      {
+        num: 7,
+        title: "第 7 章 · 函数与调用栈",
+        desc: "函数的定义与调用、实参形参的值传递、本地变量的作用域与调用栈机制。",
+        points: ["wk_c7_1: 函数定义、返回类型与参数传递机制", "wk_c7_2: 局部变量生存周期与函数调用栈"],
+        summary: {
+          core: "函数是黑盒模块化封装。最关键铁律：C 语言函数参数【永远是传值】！传入的永远是外界变量的一份克隆副本，在函数内修改形参绝不可能改变外界原变量（这也是为什么需要指针！）。",
+          code: `#include <stdio.h>
+
+// 经典错误：传值无法交换外部变量
+void swap_wrong(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+} // 局部变量在调用栈销毁，外界毫无变化
+
+int main() {
+    int x = 5, y = 10;
+    swap_wrong(x, y);
+    printf("x=%d, y=%d\\n", x, y); // 依然是 5 和 10！
+    return 0;
+}`,
+          pitfall: "1. 绝不能返回指向局部变量的地址，因为函数返回后栈帧已被销毁！\n2. 函数原型声明需放在 main 之前，否则编译器可能报隐式声明警告。",
+          exercise: "编写一个函数 int isEven(int n)，判断一个数字是否是偶数，是则返回 1，否则返回 0。"
+        }
+      },
+      {
+        num: 8,
+        title: "第 8 章 · 数组",
+        desc: "初识一维数组、数组越界灾难、素数表筛法、二维数组与矩阵运算。",
+        points: ["wk_c8_1: 一维数组的定义、下标与遍历安全", "wk_c8_2: 数组经典搜索应用与二维数组基础"],
+        summary: {
+          core: "同类型数据的线性连续内存容器。数组名代表的就是这片内存的首地址。下标从 0 开始计数，最大下标是 长度-1。",
+          code: `#include <stdio.h>
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50}; // 占用 5*4=20 字节连续内存
+    int sum = 0;
+    for (int i = 0; i < 5; i++) {
+        sum += arr[i];
+    }
+    printf("平均值=%.1f\\n", sum / 5.0);
+    return 0;
+}`,
+          pitfall: "1. 数组越界（C语言第一恶性Bug）：定义 int a[10]，访问 a[10] 不会编译报错，但会踩烂别的内存！\n2. 数组作为参数传递给函数时会退化为指针，丢失长度信息，必须多传一个 size 参数。",
+          exercise: "定义一个包含 5 个整数的数组，遍历找出其中的最大值并打印。"
+        }
+      },
+      {
+        num: 9,
+        title: "第 9 章 · 【重磅核心】指针",
+        desc: "变量的物理地址（&）、指针变量（*）、指针解引用、指针传参 swap、指针与数组运算。",
+        highlight: true,
+        points: [
+          "wk_c9_1: 取地址运算符 & 与指针变量声明",
+          "wk_c9_2: 指针解引用 *p 与传指针实现 swap",
+          "wk_c9_3: 指针与数组：数组名为何退化为指针",
+          "wk_c9_4: 指针算术运算：步长与 (*p)++ 陷阱"
+        ],
+        summary: {
+          core: "翁恺三大比喻：&a 是看门牌号（地址）；int *p 声明了一个装门牌号的盒子（指针）；*p 是拿钥匙顺着门牌号开门去读写房间里的数据（解引用）。",
+          code: `#include <stdio.h>
+
+// 正确实现：通过门牌号修改外部变量
+void swap_right(int *pa, int *pb) {
+    int temp = *pa; // 拿 pa 钥匙开门取值
+    *pa = *pb;      // pb 的东西搬进 pa
+    *pb = temp;     // temp 搬进 pb
+}
+
+int main() {
+    int a = 5, b = 10;
+    swap_right(&a, &b); // 传入门牌号！
+    printf("交换成功: a=%d, b=%d\\n", a, b); // a=10, b=5
+    return 0;
+}`,
+          pitfall: "1. 野指针未初始化：int *p; *p = 10;（向未知随机内存乱写，直接崩溃！）\n2. 指针步长：int *p; p+1 地址不是加 1，而是增加 4 字节（sizeof(int)）。",
+          exercise: "定义两个 int 变量 a=10, b=20，定义两个指针分别指向它们，通过指针计算两数之和。"
+        }
+      },
+      {
+        num: 10,
+        title: "第 10 章 · 字符串",
+        desc: "以 \\0 结尾的字符数组、string.h 库函数（strlen, strcmp, strcpy, strcat）。",
+        points: ["wk_c10_1: 字符串字面量与 \\0 结束标志", "wk_c10_2: strlen / strcmp 等常用字符串库函数"],
+        summary: {
+          core: "C 语言没有原生 string 类型，字符串的本质就是以 '\\0'（ASCII 码 0）收尾的 char 数组。'\\0' 是所有字符串函数的停止哨兵。",
+          code: `#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char s1[20] = "Hello";
+    char s2[] = "World";
+    strcat(s1, " ");
+    strcat(s1, s2); // 拼接
+    printf("%s (长度=%lu)\\n", s1, strlen(s1)); // Hello World, 长度=11
+    
+    // 字符串比较不能用 ==，必须用 strcmp
+    if (strcmp(s1, "Hello World") == 0) {
+        printf("内容一致！\\n");
+    }
+    return 0;
+}`,
+          pitfall: "1. sizeof(str) 是数组总容量，strlen(str) 才是有效字符数（不计 \\0）。\n2. 数组长度必须至少比字符数多 1，用来存放结尾的 \\0，否则打印会乱码穿透。",
+          exercise: "使用 char str[100]，用 scanf(\"%s\", str) 读入一个单词，计算并输出该单词由多少个字母组成。"
+        }
+      },
+      {
+        num: 11,
+        title: "第 11 章 · 结构类型与枚举",
+        desc: "enum 枚举类型、struct 结构体定义、结构体数组、结构体指针与 -> 访问符。",
+        points: [
+          "wk_c11_1: enum 枚举与 struct 结构体基本定义",
+          "wk_c11_2: 结构体指针与 -> 操作符（单片机必备）"
+        ],
+        summary: {
+          core: "结构体是多种不同类型变量的打包复合体（单片机中用来打包传感器参数）。普通变量用点（dev.temp），结构体指针用箭头（pDev->temp）。",
+          code: `#include <stdio.h>
+
+typedef struct {
+    float temp;
+    float humi;
+    int alarm;
+} CabinetStatus_t; // 模拟机柜环境结构体
+
+void showStatus(CabinetStatus_t *p) {
+    // 结构体指针使用 -> 访问内部成员
+    printf("温度: %.1f℃, 湿度: %.1f%%, 报警: %d\\n", 
+           p->temp, p->humi, p->alarm);
+}
+
+int main() {
+    CabinetStatus_t dev1 = {25.6, 60.5, 0};
+    showStatus(&dev1);
+    return 0;
+}`,
+          pitfall: "1. struct 定义末尾大括号必须带分号：struct Point { int x; int y; };\n2. 箭头 -> 仅适用于结构体【指针】，普通结构体变量用点 . 操作符。",
+          exercise: "定义一个包含学生姓名（char name[20]）和成绩（int score）的结构体，并编写函数打印该学生信息。"
+        }
+      },
+      {
+        num: 12,
+        title: "第 12 章 · 程序结构与大型工程",
+        desc: "全局变量的利弊、静态本地变量 static、#define 宏定义与 #include 头文件分层思想。",
+        points: [
+          "wk_c12_1: static 关键字与全局变量作用域",
+          "wk_c12_2: 宏定义 #define 与 .h/.c 头文件模块化"
+        ],
+        summary: {
+          core: "实际大型项目把接口写在 .h（头文件提供函数声明、宏定义、结构体协议），具体代码写在 .c（源文件）。带参宏一定要加足括号！",
+          code: `#include <stdio.h>
+
+// 带参宏务必将每个参数及外层全加上括号！
+#define SQUARE(x) ((x) * (x))
+
+void counter() {
+    static int cnt = 0; // static 本地变量：只初始化一次，函数结束后值依然保持
+    cnt++;
+    printf("调用次数: %d\\n", cnt);
+}
+
+int main() {
+    counter(); // 1
+    counter(); // 2
+    printf("5的平方: %d\\n", SQUARE(2 + 3)); // 25
+    return 0;
+}`,
+          pitfall: "1. 宏定义不加括号的灾难：#define SQR(x) x*x，调用 SQR(2+3) 展开为 2+3*2+3=11，而不是 25！\n2. 头文件 .h 里不要定义变量（只能放 extern 声明），否则多文件包含会报“符号重复定义”。",
+          exercise: "写一个带参宏 #define MAX(a, b) ((a) > (b) ? (a) : (b))，测试输出两数较大者。"
+        }
+      }
+    ];
+
+    // 后续嵌入式阶梯数据
+    const FUTURE_STAGES = [
+      { id: "fut_1", stage: 1, text: "手写无锁环形缓冲区 (RingBuffer) 单元测试" },
+      { id: "fut_2", stage: 1, text: "编写 CRC16 (Modbus 查表法) 与 CRC32 校验函数" },
+      { id: "fut_3", stage: 1, text: "实现 Modbus RTU 03H/06H 功能码解析状态机" },
+      { id: "fut_4", stage: 1, text: "在电脑上运行 LVGL 官方 PC 模拟器设计机柜监护 UI" },
+      { id: "fut_5", stage: 2, text: "STM32 CubeMX 配置 GPIO 点灯与调试器断点单步" },
+      { id: "fut_6", stage: 2, text: "串口 USART + DMA + 空闲中断实现不定长数据接收" },
+      { id: "fut_7", stage: 2, text: "ADC 多通道采集 + 均值滤波算法读取水浸传感器" },
+      { id: "fut_8", stage: 2, text: "RS485 总线轮询温湿度传感器并解析 Modbus 数据" },
+      { id: "fut_9", stage: 2, text: "SPI 驱动 W5500 以太网芯片，打通局域网 TCP 通信" },
+      { id: "fut_10", stage: 3, text: "FreeRTOS 任务解耦：采集、通信、日志、看门狗心跳" },
+      { id: "fut_11", stage: 3, text: "单核 Bootloader 开发：Flash 扇区擦写与 VTOR 向量跳转" },
+      { id: "fut_12", stage: 3, text: "自定义分块 OTA 协议与 A/B 分区试启动(Trial Boot)回滚" }
+    ];
+
+    const DEFAULT_KNOWLEDGE = [
+      {
+        id: "k_init_1",
+        type: "pitfall",
+        chapter: "第3章 判断分支",
+        title: "if(a = 5) 误将赋值运算符 '=' 当作比较 '=='",
+        wrong: "int a = 0;\nif (a = 5) { // 永远为真！因为 (a = 5) 表达式的值是 5\n    printf(\"等于5\");\n}",
+        right: "int a = 0;\nif (a == 5) { // 必须使用双等号 == 比较\n    printf(\"等于5\");\n}\n// 高手防呆写法：if (5 == a)，误写为 5 = a 会直接编译报错！",
+        note: "单等号是赋值，双等号是逻辑相等比较。C 语言非零即为真，a=5 导致条件永远成立。",
+        mastered: false,
+        createdAt: "2026-11-22"
+      },
+      {
+        id: "k_init_2",
+        type: "pitfall",
+        chapter: "第2章 变量与计算",
+        title: "scanf 漏加取地址符 '&' 导致程序崩溃闪退",
+        wrong: "int num;\nscanf(\"%d\", num); // 危险！未加 &，传的是随机值当地址",
+        right: "int num;\nscanf(\"%d\", &num); // 必须传 &num 变量的内存地址",
+        note: "scanf 是让函数去修改你变量的值，必须告知函数变量的具体内存门牌号（&num）。",
+        mastered: false,
+        createdAt: "2026-11-22"
+      },
+      {
+        id: "k_init_3",
+        type: "pitfall",
+        chapter: "第8章 数组",
+        title: "数组下标越界访问：访问了 a[长度]",
+        wrong: "int a[10];\nfor (int i = 0; i <= 10; i++) { // 错误！i=10 时越界！\n    a[i] = 0;\n}",
+        right: "int a[10];\nfor (int i = 0; i < 10; i++) { // 正确：最大有效下标是 9\n    a[i] = 0;\n}",
+        note: "C 语言中定义大小为 N 的数组，有效下标区间严格为 0 到 N-1。访问 a[N] 会踩踏其他内存！",
+        mastered: false,
+        createdAt: "2026-11-22"
+      },
+      {
+        id: "k_init_4",
+        type: "key",
+        chapter: "第9章 指针",
+        title: "* 号的双重含义：声明时的'身份标牌' vs 运算时的'开门解引用'",
+        wrong: "int *p; // 以为这里的 * 是运算\n*p = 10; // 野指针未赋值就解引用写入，直接崩溃！",
+        right: "int a = 100;\nint *p = &a; // 这里的 * 只是表示 p 是个指针类型变量\n*p = 200;    // 这里的 *p 是解引用：顺着地址修改 a 里面的值为 200",
+        note: "声明里的 * 代表身份（指针），执行语句里的 * 代表动作（顺藤摸瓜找内存）。",
+        mastered: false,
+        createdAt: "2026-11-22"
+      }
+    ];
+
+    let state = {
+      checkedIds: [],
+      logs: [],
+      memo: "",
+      knowledge: []
+    };
+
+    let currentKnowledgeFilter = 'all';
+
+    let autoSaveTimer = null;
+    function triggerSaveVisual() {
+      const text = document.getElementById("autoSaveText");
+      if (!text) return;
+      text.innerText = "⚡ 正在实时保存...";
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0];
+        text.innerText = `✓ 实时已同步 (${timeStr})`;
+      }, 250);
+    }
+
+    function loadState() {
+      state = {
+        checkedIds: [],
+        logs: [],
+        memo: "",
+        memos: [],
+        knowledge: []
+      };
+
+      try {
+        const saved = localStorage.getItem("embedded_journal_state_v3");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === 'object') {
+            state.checkedIds = Array.isArray(parsed.checkedIds) ? parsed.checkedIds : [];
+            state.logs = Array.isArray(parsed.logs) ? parsed.logs : [];
+            state.memo = typeof parsed.memo === 'string' ? parsed.memo : "";
+            state.memos = Array.isArray(parsed.memos) ? parsed.memos : [];
+            state.knowledge = Array.isArray(parsed.knowledge) ? parsed.knowledge : [];
+
+            // 自动平滑平移老版本单个便签
+            if (state.memos.length === 0 && state.memo && state.memo.trim().length > 0) {
+              state.memos.push({
+                id: "memo_legacy",
+                content: state.memo.trim(),
+                color: "yellow",
+                createdAt: "历史备忘"
+              });
+              state.memo = "";
+            }
+          }
+        } else {
+          const oldV2 = localStorage.getItem("embedded_journal_state_v2");
+          const oldV1 = localStorage.getItem("embedded_journal_state");
+          if (oldV2) {
+            const p2 = JSON.parse(oldV2);
+            if (p2 && typeof p2 === 'object') {
+              state.checkedIds = Array.isArray(p2.checkedIds) ? p2.checkedIds : [];
+              state.logs = Array.isArray(p2.logs) ? p2.logs : [];
+              state.memo = p2.memo || "";
+              state.knowledge = Array.isArray(p2.knowledge) ? p2.knowledge : [];
+            }
+          } else if (oldV1) {
+            const p1 = JSON.parse(oldV1);
+            if (p1 && typeof p1 === 'object') {
+              state.checkedIds = Array.isArray(p1.checkedIds) ? p1.checkedIds : [];
+              state.logs = p1.logs || [];
+              state.memo = p1.memo || "";
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Storage load error", e);
+      }
+
+      // 【双保险同步】：扫描所有单独打卡键 wk_chk_*，补齐到 checkedIds，防止刷新丢失
+      try {
+        WENGKAI_CHAPTERS.forEach(ch => {
+          ch.points.forEach(p => {
+            const id = p.split(":")[0];
+            if (localStorage.getItem("wk_chk_" + id) === "1" && !state.checkedIds.includes(id)) {
+              state.checkedIds.push(id);
+            }
+          });
+        });
+        SIGNALS_CHAPTERS.forEach(ch => {
+          ch.points.forEach(p => {
+            const id = p.split(":")[0];
+            if (localStorage.getItem("sig_chk_" + id) === "1" && !state.checkedIds.includes(id)) {
+              state.checkedIds.push(id);
+            }
+          });
+        });
+        FUTURE_STAGES.forEach(st => {
+          if (localStorage.getItem("wk_chk_" + st.id) === "1" && !state.checkedIds.includes(st.id)) {
+            state.checkedIds.push(st.id);
+          }
+        });
+      } catch(e) {}
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem("embedded_journal_state_v3", JSON.stringify(state));
+        triggerSaveVisual();
+      } catch (e) {
+        console.error("Failed to save state", e);
+      }
+      updateProgress();
+      updateKnowledgeStats();
+    }
+
+    const DRAFT_FIELDS = [
+      "kType", "kChapter", "kTitle", "kWrong", "kRight", "kNote",
+      "logDate", "logStartTime", "logEndTime", "logHours", "logMood", "logTitle", "logDetail", "memoInput"
+    ];
+
+    function initRealtimeDraftListeners() {
+      DRAFT_FIELDS.forEach(fieldId => {
+        const el = document.getElementById(fieldId);
+        if (!el) return;
+
+        el.addEventListener("input", () => {
+          try { localStorage.setItem("journal_draft_" + fieldId, el.value); } catch(e){}
+          triggerSaveVisual();
+        });
+        el.addEventListener("change", () => {
+          try { localStorage.setItem("journal_draft_" + fieldId, el.value); } catch(e){}
+          triggerSaveVisual();
+        });
+
+        try {
+          const savedDraft = localStorage.getItem("journal_draft_" + fieldId);
+          if (savedDraft !== null && savedDraft !== undefined && savedDraft !== "") {
+            el.value = savedDraft;
+          }
+        } catch(e){}
+      });
+    }
+
+    function clearDraftsFor(fieldIds) {
+      fieldIds.forEach(id => {
+        try { localStorage.removeItem("journal_draft_" + id); } catch(e){}
+      });
+    }
+
+    function isMilestoneChecked(id) {
+      if (state.checkedIds && state.checkedIds.includes(id)) return true;
+      try {
+        if (localStorage.getItem("wk_chk_" + id) === "1") return true;
+        if (localStorage.getItem("sig_chk_" + id) === "1") return true;
+      } catch (e) {}
+      return false;
+    }
+
+    
+    function renderSignalsChapters() {
+      const container = document.getElementById("signalsChaptersContainer");
+      if (!container) return;
+      container.innerHTML = "";
+
+      SIGNALS_CHAPTERS.forEach(ch => {
+        let pointsHtml = "";
+        ch.points.forEach(p => {
+          const [id, label] = p.split(": ");
+          const isChecked = isMilestoneChecked(id);
+          pointsHtml += `
+            <div class="flex items-start gap-2 pt-1 text-xs sm:text-[13px]">
+              <input type="checkbox" id="${id}" ${isChecked ? 'checked' : ''} onchange="toggleMilestone('${id}', this)" class="checkbox-tick mt-0.5 rounded text-blue-600 focus:ring-blue-500 shrink-0 cursor-pointer">
+              <label for="${id}" class="text-[var(--foreground,#0f172a)] cursor-pointer select-none leading-snug">${label}</label>
+            </div>
+          `;
+        });
+
+        const isChapterDone = ch.points.every(p => isMilestoneChecked(p.split(":")[0]));
+
+        const card = `
+          <div class="chapter-card bg-[var(--card,#ffffff)] border ${isChapterDone ? 'border-blue-400/80 shadow-blue-500/5 bg-blue-50/20 dark:bg-blue-950/10' : 'border-[var(--card-border,#e2e8f0)]'} rounded-xl p-4 shadow-sm flex flex-col justify-between transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <h3 class="font-bold text-sm ${isChapterDone ? 'text-blue-700 dark:text-blue-300' : 'text-[var(--foreground,#0f172a)]'} flex items-center gap-1.5">
+                  <span>${isChapterDone ? '✅' : '📡'}</span> ${ch.title}
+                </h3>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">${ch.hours} 学时</span>
+                  <button onclick="openLectureModal(${ch.num}, 'signals')" class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200/70 transition-colors flex items-center gap-1" title="查看信号与系统精讲速查">
+                    <span>📖</span> 极速精讲
+                  </button>
+                </div>
+              </div>
+              <p class="text-[11px] text-[var(--muted-foreground,#64748b)] mb-2 leading-relaxed">${ch.desc}</p>
+              <div class="space-y-1.5">${pointsHtml}</div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    function renderWengkaiChapters() {
+      const container = document.getElementById("wengkaiChaptersContainer");
+      container.innerHTML = "";
+
+      WENGKAI_CHAPTERS.forEach(ch => {
+        const isHighlight = ch.highlight;
+        
+        let pointsHtml = "";
+        ch.points.forEach(p => {
+          const [id, label] = p.split(": ");
+          const isChecked = isMilestoneChecked(id);
+          pointsHtml += `
+            <div class="flex items-start gap-2 pt-1 text-xs sm:text-[13px]">
+              <input type="checkbox" id="${id}" ${isChecked ? 'checked' : ''} onchange="toggleMilestone('${id}', this)" autocomplete="off" class="checkbox-tick mt-0.5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer">
+              <label for="${id}" class="cursor-pointer leading-tight select-none">${label}</label>
+            </div>
+          `;
+        });
+
+        const cardHtml = `
+          <div class="chapter-card bg-[var(--card,#ffffff)] border ${isHighlight ? 'border-amber-400/80 shadow-amber-500/5 bg-amber-50/20 dark:bg-amber-950/10' : 'border-[var(--card-border,#e2e8f0)]'} rounded-xl p-4 shadow-sm flex flex-col justify-between transition-all">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-[var(--card-border,#e2e8f0)] mb-2">
+                <h3 class="font-bold text-sm ${isHighlight ? 'text-amber-700 dark:text-amber-300' : 'text-[var(--foreground,#0f172a)]'} flex items-center gap-1.5">
+                  ${isHighlight ? '🔥' : '📘'} ${ch.title}
+                </h3>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="openLectureModal(${ch.num})" class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200/70 transition-colors flex items-center gap-1" title="查看翁恺精华速查">
+                    <span>📖</span> 极速精讲
+                  </button>
+                  ${isHighlight ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">必考</span>' : ''}
+                </div>
+              </div>
+              <p class="text-[11px] text-[var(--muted-foreground,#64748b)] mb-2 leading-relaxed">${ch.desc}</p>
+              <div class="space-y-1.5">${pointsHtml}</div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHtml;
+      });
+    }
+
+    function renderFutureStages() {
+      const s1 = document.getElementById("futureStage1List");
+      const s2 = document.getElementById("futureStage2List");
+      const s3 = document.getElementById("futureStage3List");
+      s1.innerHTML = "";
+      s2.innerHTML = "";
+      s3.innerHTML = "";
+
+      FUTURE_STAGES.forEach(m => {
+        const isChecked = isMilestoneChecked(m.id);
+        const itemHtml = `
+          <div class="flex items-start gap-2 p-1.5 rounded-lg hover:bg-[var(--card,#ffffff)] transition-colors text-xs">
+            <input type="checkbox" id="${m.id}" ${isChecked ? 'checked' : ''} onchange="toggleMilestone('${m.id}', this)" autocomplete="off" class="checkbox-tick mt-0.5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer">
+            <label for="${m.id}" class="cursor-pointer leading-tight select-none">${m.text}</label>
+          </div>
+        `;
+        if (m.stage === 1) s1.innerHTML += itemHtml;
+        else if (m.stage === 2) s2.innerHTML += itemHtml;
+        else s3.innerHTML += itemHtml;
+      });
+    }
+
+    function toggleMilestone(id, el) {
+      if (!Array.isArray(state.checkedIds)) {
+        state.checkedIds = [];
+      }
+      const prefix = id.startsWith("sig_") ? "sig_chk_" : "wk_chk_";
+      const isChecked = el ? el.checked : !state.checkedIds.includes(id);
+
+      if (isChecked) {
+        if (!state.checkedIds.includes(id)) {
+          state.checkedIds.push(id);
+        }
+        try { localStorage.setItem(prefix + id, "1"); } catch(e){}
+      } else {
+        state.checkedIds = state.checkedIds.filter(x => x !== id);
+        try { localStorage.removeItem(prefix + id); } catch(e){}
+      }
+
+      saveState();
+    }
+
+    // 打开精讲速查弹窗
+    function openLectureModal(chapterNum, courseType = 'wengkai') {
+      const list = (courseType === 'signals') ? SIGNALS_CHAPTERS : WENGKAI_CHAPTERS;
+      const ch = list.find(c => c.num === chapterNum);
+      if (!ch || !ch.summary) return;
+
+      document.getElementById("modalTitle").innerText = ch.title + (courseType === 'signals' ? ` (${ch.hours}学时) · 极速精讲提炼` : " · 极速精讲提炼");
+      document.getElementById("modalCore").innerHTML = `<div class="leading-relaxed">${escapeHtml(ch.summary.core)}</div>`;
+      document.getElementById("modalCode").innerText = ch.summary.code;
+
+      const pitfallLines = (ch.summary.pitfall || "").split('\n').filter(l => l.trim().length > 0);
+      document.getElementById("modalPitfall").innerHTML = pitfallLines.map(line => {
+        return `<div class="flex items-start gap-2.5 mb-2.5 last:mb-0">
+          <span class="shrink-0 mt-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-rose-200 dark:ring-rose-900/60"></span>
+          <span class="flex-1 font-medium">${escapeHtml(line)}</span>
+        </div>`;
+      }).join('');
+      document.getElementById("modalExercise").innerHTML = `<div class="leading-relaxed">${escapeHtml(ch.summary.exercise)}</div>`;
+
+      // 绑定一键打卡按钮
+      const btn = document.getElementById("modalCompleteBtn");
+      btn.onclick = function() {
+        const prefix = (courseType === 'signals') ? "sig_chk_" : "wk_chk_";
+        ch.points.forEach(p => {
+          const id = p.split(":")[0];
+          if (!state.checkedIds.includes(id)) {
+            state.checkedIds.push(id);
+          }
+          try { localStorage.setItem(prefix + id, "1"); } catch(e){}
+        });
+        saveState();
+        if (courseType === 'signals') {
+          renderSignalsChapters();
+        } else {
+          renderWengkaiChapters();
+        }
+        closeLectureModal();
+        alert(`🎉 恭喜！${ch.title} 已成功通关并实时打卡保存！`);
+      };
+
+      document.getElementById("lectureModal").classList.remove("hidden");
+    }
+
+    function closeLectureModal() {
+      document.getElementById("lectureModal").classList.add("hidden");
+    }
+
+    function updateProgress() {
+      let totalWkPoints = 0;
+      WENGKAI_CHAPTERS.forEach(ch => totalWkPoints += ch.points.length);
+
+      let totalSigPoints = 0;
+      SIGNALS_CHAPTERS.forEach(ch => totalSigPoints += ch.points.length);
+
+      const totalAll = totalWkPoints + totalSigPoints + FUTURE_STAGES.length;
+
+      // 实时核验并校准已完成的所有点位
+      const checkedSet = new Set(state.checkedIds || []);
+      WENGKAI_CHAPTERS.forEach(ch => {
+        ch.points.forEach(p => {
+          const id = p.split(":")[0];
+          if (isMilestoneChecked(id)) checkedSet.add(id);
+        });
+      });
+      SIGNALS_CHAPTERS.forEach(ch => {
+        ch.points.forEach(p => {
+          const id = p.split(":")[0];
+          if (isMilestoneChecked(id)) checkedSet.add(id);
+        });
+      });
+      FUTURE_STAGES.forEach(st => {
+        if (isMilestoneChecked(st.id)) checkedSet.add(st.id);
+      });
+      state.checkedIds = Array.from(checkedSet);
+
+      const doneAll = state.checkedIds.length;
+      const pct = totalAll > 0 ? Math.round((doneAll / totalAll) * 100) : 0;
+
+      const totalPercentEl = document.getElementById("totalPercent");
+      if (totalPercentEl) totalPercentEl.innerText = pct + "%";
+
+      const progressCountEl = document.getElementById("progressCount");
+      if (progressCountEl) progressCountEl.innerText = `${doneAll}/${totalAll}`;
+
+      const progressBarEl = document.getElementById("progressBar");
+      if (progressBarEl) progressBarEl.style.width = pct + "%";
+
+      // 翁恺 C 语言进度统计
+      let completedWkChapters = 0;
+      WENGKAI_CHAPTERS.forEach(ch => {
+        const allDone = ch.points.every(p => isMilestoneChecked(p.split(":")[0]));
+        if (allDone) completedWkChapters++;
+      });
+      const cPhaseProgressEl = document.getElementById("cPhaseProgress");
+      if (cPhaseProgressEl) cPhaseProgressEl.innerText = `📚 翁恺 C 语言：${completedWkChapters}/12 章`;
+
+      // 信号处理与系统进度统计
+      let completedSigChapters = 0;
+      let completedSigHours = 0;
+      SIGNALS_CHAPTERS.forEach(ch => {
+        const allDone = ch.points.every(p => isMilestoneChecked(p.split(":")[0]));
+        if (allDone) {
+          completedSigChapters++;
+          completedSigHours += ch.hours;
+        }
+      });
+      const sigProgressBadge = document.getElementById("signalsProgressBadge");
+      if (sigProgressBadge) sigProgressBadge.innerText = `${completedSigChapters}/12`;
+
+      const sigPhaseProgressEl = document.getElementById("signalsPhaseProgress");
+      if (sigPhaseProgressEl) sigPhaseProgressEl.innerText = `📡 信号与系统：${completedSigChapters}/12 章 (${completedSigHours}/48学时)`;
+
+      const sigHoursCount = document.getElementById("signalsHoursCount");
+      if (sigHoursCount) sigHoursCount.innerText = `${completedSigHours} / 48 h`;
+
+      const sigChaptersCount = document.getElementById("signalsChaptersCount");
+      if (sigChaptersCount) sigChaptersCount.innerText = `已掌握 ${completedSigChapters} / 12 章`;
+
+      // 阶段提示文案
+      const label = document.getElementById("currentPhaseLabel");
+      const isPointerDone = isMilestoneChecked("wk_c9_1") && isMilestoneChecked("wk_c9_2");
+      
+      if (label) {
+        label.innerText = `双轨推进中 · C 语言 (${completedWkChapters}/12 章) · 信号与系统 (${completedSigChapters}/12 章 · ${completedSigHours}/48h)`;
+      }
+    }
+
+    function updateKnowledgeStats() {
+      const list = state.knowledge || [];
+      const countAll = list.length;
+      const countPitfall = list.filter(k => k.type === 'pitfall').length;
+      const countKey = list.filter(k => k.type === 'key').length;
+      const countUnmastered = list.filter(k => !k.mastered).length;
+
+      document.getElementById("count-all").innerText = countAll;
+      document.getElementById("count-pitfall").innerText = countPitfall;
+      document.getElementById("count-key").innerText = countKey;
+      document.getElementById("count-unmastered").innerText = countUnmastered;
+
+      const badge = document.getElementById("knowledgeCountBadge");
+      badge.innerText = countAll;
+      badge.style.display = countAll > 0 ? 'inline-block' : 'none';
+    }
+
+    function setKnowledgeFilter(filterType) {
+      currentKnowledgeFilter = filterType;
+      document.querySelectorAll(".k-filter-btn").forEach(btn => {
+        btn.classList.remove("bg-[var(--primary,#0284c7)]", "text-white");
+        btn.classList.add("bg-[var(--content,#f1f5f9)]", "text-[var(--muted-foreground,#64748b)]");
+      });
+      const activeBtn = document.getElementById("kFilter-" + filterType);
+      if (activeBtn) {
+        activeBtn.classList.remove("bg-[var(--content,#f1f5f9)]", "text-[var(--muted-foreground,#64748b)]");
+        activeBtn.classList.add("bg-[var(--primary,#0284c7)]", "text-white");
+      }
+      renderKnowledgeList();
+    }
+
+    function renderKnowledgeList() {
+      const container = document.getElementById("knowledgeListContainer");
+      container.innerHTML = "";
+
+      const query = (document.getElementById("kSearchInput").value || "").trim().toLowerCase();
+      let list = state.knowledge || [];
+
+      if (currentKnowledgeFilter === 'pitfall') {
+        list = list.filter(k => k.type === 'pitfall');
+      } else if (currentKnowledgeFilter === 'key') {
+        list = list.filter(k => k.type === 'key' || k.type === 'tip');
+      } else if (currentKnowledgeFilter === 'unmastered') {
+        list = list.filter(k => !k.mastered);
+      }
+
+      if (query) {
+        list = list.filter(k => 
+          k.title.toLowerCase().includes(query) ||
+          k.chapter.toLowerCase().includes(query) ||
+          (k.wrong && k.wrong.toLowerCase().includes(query)) ||
+          k.right.toLowerCase().includes(query) ||
+          (k.note && k.note.toLowerCase().includes(query))
+        );
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-[var(--muted-foreground,#64748b)] text-xs border border-dashed border-[var(--card-border,#e2e8f0)] rounded-xl">
+            没有找到匹配的知识卡片。看视频或敲代码踩坑时，赶紧在上方记录下来吧！ 💡
+          </div>
+        `;
+        return;
+      }
+
+      list.forEach(k => {
+        const isPitfall = k.type === 'pitfall';
+        const typeBadge = isPitfall 
+          ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">⚠️ 易错坑点</span>`
+          : (k.type === 'tip'
+            ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">💡 技巧小抄</span>`
+            : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300">🔑 核心重点</span>`);
+
+        const masterBtn = k.mastered
+          ? `<button onclick="toggleMastered('${k.id}')" class="px-2 py-1 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-300 dark:border-emerald-800 flex items-center gap-1 hover:bg-emerald-100 transition-colors"><span>✅</span> 已完全掌握</button>`
+          : `<button onclick="toggleMastered('${k.id}')" class="px-2 py-1 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-300 dark:border-amber-800 flex items-center gap-1 hover:bg-amber-100 transition-colors"><span>⏳</span> 待复习巩固</button>`;
+
+        const card = `
+          <div class="bg-[var(--card,#ffffff)] border ${k.mastered ? 'border-emerald-200 dark:border-emerald-900/40 opacity-80' : 'border-[var(--card-border,#e2e8f0)]'} rounded-xl p-4 shadow-sm space-y-3 transition-all relative">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                ${typeBadge}
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-[var(--content,#f1f5f9)] text-[var(--muted-foreground,#64748b)]">${escapeHtml(k.chapter)}</span>
+                <span class="text-[10px] text-[var(--muted-foreground,#64748b)]">${k.createdAt || ''}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                ${masterBtn}
+                <button onclick="deleteKnowledge('${k.id}')" class="text-xs text-[var(--muted-foreground,#64748b)] hover:text-rose-500 transition-colors px-1" title="删除">🗑️</button>
+              </div>
+            </div>
+
+            <h4 class="font-bold text-sm text-[var(--foreground,#0f172a)] leading-snug">
+              ${escapeHtml(k.title)}
+            </h4>
+
+            ${(k.wrong || k.right) ? `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                ${k.wrong ? `
+                  <div class="code-box-wrong rounded-lg p-2.5 space-y-1">
+                    <div class="text-[11px] font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1"><span>❌</span> 错误现象 / 踩坑写法</div>
+                    <pre class="overflow-x-auto leading-tight font-mono text-xs"><code>${escapeHtml(k.wrong)}</code></pre>
+                  </div>
+                ` : ''}
+                ${k.right ? `
+                  <div class="code-box-right rounded-lg p-2.5 space-y-1">
+                    <div class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1"><span>✅</span> 正确解法 / 核心规范</div>
+                    <pre class="overflow-x-auto leading-tight font-mono text-xs"><code>${escapeHtml(k.right)}</code></pre>
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+
+            ${k.note ? `
+              <div class="text-xs text-[var(--muted-foreground,#64748b)] bg-[var(--content,#f1f5f9)] p-2.5 rounded-lg leading-relaxed flex items-start gap-1.5">
+                <span class="shrink-0 text-amber-500">💡</span>
+                <span>${escapeHtml(k.note)}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    function saveKnowledge(e) {
+      e.preventDefault();
+      const type = document.getElementById("kType").value;
+      const chapter = document.getElementById("kChapter").value;
+      const title = document.getElementById("kTitle").value.trim();
+      const wrong = document.getElementById("kWrong").value.trim();
+      const right = document.getElementById("kRight").value.trim();
+      const note = document.getElementById("kNote").value.trim();
+
+      const newCard = {
+        id: "k_" + Date.now(),
+        type,
+        chapter,
+        title,
+        wrong,
+        right,
+        note,
+        mastered: false,
+        createdAt: new Date().toISOString().slice(0, 10)
+      };
+
+      state.knowledge.unshift(newCard);
+      saveState();
+      renderKnowledgeList();
+
+      document.getElementById("kTitle").value = "";
+      document.getElementById("kWrong").value = "";
+      document.getElementById("kRight").value = "";
+      document.getElementById("kNote").value = "";
+      clearDraftsFor(["kTitle", "kWrong", "kRight", "kNote"]);
+    }
+
+    function toggleMastered(id) {
+      const item = state.knowledge.find(k => k.id === id);
+      if (item) {
+        item.mastered = !item.mastered;
+        saveState();
+        renderKnowledgeList();
+      }
+    }
+
+    function deleteKnowledge(id) {
+      if (confirm("确定要删除这条知识卡片吗？")) {
+        state.knowledge = state.knowledge.filter(k => k.id !== id);
+        saveState();
+        renderKnowledgeList();
+      }
+    }
+
+    function renderLogs() {
+      const container = document.getElementById("logsContainer");
+      container.innerHTML = "";
+
+      let totalHours = 0;
+      state.logs.forEach(l => {
+        totalHours += parseFloat(l.hours || 0);
+      });
+
+      document.getElementById("logTotalHours").innerText = `累计打卡：${state.logs.length} 次 (${totalHours.toFixed(1)} 小时)`;
+
+      if (state.logs.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-[var(--muted-foreground,#64748b)] text-xs border border-dashed border-[var(--card-border,#e2e8f0)] rounded-xl">
+            还没有学习记录，看完翁恺老师今天的一讲后，来这里打下你的第一个印记吧！ ✨
+          </div>
+        `;
+        return;
+      }
+
+      const sorted = [...state.logs].reverse();
+      sorted.forEach((log) => {
+        const card = `
+          <div class="bg-[var(--card,#ffffff)] border border-[var(--card-border,#e2e8f0)] rounded-xl p-4 shadow-sm space-y-2 relative group">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-[var(--foreground,#0f172a)]">${log.date}</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 font-medium text-xs">⏱️ ${log.startTime && log.endTime ? `${log.startTime} ~ ${log.endTime} · ` : ''}${log.hours} 小时</span>
+                <span class="text-xs">${log.mood}</span>
+              </div>
+              <button onclick="deleteLog('${log.id}')" class="text-xs text-[var(--muted-foreground,#64748b)] hover:text-rose-500 opacity-60 group-hover:opacity-100 transition-opacity">删除</button>
+            </div>
+            <div class="font-bold text-sm text-[var(--foreground,#0f172a)]">${escapeHtml(log.title)}</div>
+            ${log.detail ? `<div class="text-xs text-[var(--muted-foreground,#64748b)] leading-relaxed bg-[var(--content,#f1f5f9)] p-2.5 rounded-lg">${escapeHtml(log.detail)}</div>` : ''}
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    function saveLog(e) {
+      e.preventDefault();
+      const date = document.getElementById("logDate").value;
+      const startTime = document.getElementById("logStartTime").value;
+      const endTime = document.getElementById("logEndTime").value;
+      const hours = document.getElementById("logHours").value;
+      const mood = document.getElementById("logMood").value;
+      const title = document.getElementById("logTitle").value.trim();
+      const detail = document.getElementById("logDetail").value.trim();
+
+      const newLog = {
+        id: "log_" + Date.now(),
+        date,
+        startTime: startTime || "",
+        endTime: endTime || "",
+        hours,
+        mood,
+        title,
+        detail
+      };
+
+      state.logs.push(newLog);
+      saveState();
+      renderLogs();
+
+      document.getElementById("logTitle").value = "";
+      document.getElementById("logDetail").value = "";
+      document.getElementById("logStartTime").value = "";
+      document.getElementById("logEndTime").value = "";
+      clearDraftsFor(["logTitle", "logDetail", "logStartTime", "logEndTime"]);
+      triggerSaveVisual();
+    }
+
+    function deleteLog(id) {
+      if (confirm("确定要删除这条打卡记录吗？")) {
+        state.logs = state.logs.filter(l => l.id !== id);
+        saveState();
+        renderLogs();
+      }
+    }
+
+    // ============================================================
+    // 多备忘便签管理逻辑 (Sticky Notes System)
+    // ============================================================
+    function selectMemoColor(color) {
+      document.getElementById("memoColor").value = color;
+      const allBtns = document.querySelectorAll(".memo-color-btn");
+      allBtns.forEach(btn => {
+        btn.classList.remove("border-amber-500", "border-blue-500", "border-emerald-500", "border-purple-500", "ring-2", "scale-110");
+        btn.classList.add("border-transparent");
+      });
+
+      const activeBtn = document.getElementById("colorBtn-" + color);
+      if (activeBtn) {
+        activeBtn.classList.remove("border-transparent");
+        activeBtn.classList.add("scale-110", "ring-2");
+        if (color === "yellow") activeBtn.classList.add("border-amber-500", "ring-amber-400/40");
+        if (color === "blue") activeBtn.classList.add("border-blue-500", "ring-blue-400/40");
+        if (color === "green") activeBtn.classList.add("border-emerald-500", "ring-emerald-400/40");
+        if (color === "purple") activeBtn.classList.add("border-purple-500", "ring-purple-400/40");
+      }
+    }
+
+    function addMemo() {
+      const input = document.getElementById("memoInput");
+      const content = input.value.trim();
+      if (!content) {
+        alert("请先输入便签内容！");
+        input.focus();
+        return;
+      }
+
+      const color = document.getElementById("memoColor").value || "yellow";
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${month}-${day} ${hours}:${mins}`;
+
+      if (!Array.isArray(state.memos)) {
+        state.memos = [];
+      }
+
+      const newMemo = {
+        id: "memo_" + Date.now(),
+        content,
+        color,
+        createdAt: timeStr
+      };
+
+      state.memos.unshift(newMemo);
+      saveState();
+      renderMemos();
+
+      input.value = "";
+      try { localStorage.removeItem("journal_draft_memoInput"); } catch(e){}
+      triggerSaveVisual();
+    }
+
+    function deleteMemo(id) {
+      if (!Array.isArray(state.memos)) return;
+      state.memos = state.memos.filter(m => m.id !== id);
+      saveState();
+      renderMemos();
+      triggerSaveVisual();
+    }
+
+    function copyMemo(id, btnEl) {
+      const memo = (state.memos || []).find(m => m.id === id);
+      if (!memo) return;
+      navigator.clipboard.writeText(memo.content).then(() => {
+        if (btnEl) {
+          const original = btnEl.innerHTML;
+          btnEl.innerHTML = "<span>✓</span> 已复制";
+          setTimeout(() => { btnEl.innerHTML = original; }, 1500);
+        }
+      }).catch(err => {
+        console.error("Copy failed", err);
+      });
+    }
+
+    function clearMemoInput() {
+      const input = document.getElementById("memoInput");
+      input.value = "";
+      try { localStorage.removeItem("journal_draft_memoInput"); } catch(e){}
+      input.focus();
+    }
+
+    function clearAllMemos() {
+      if (!state.memos || state.memos.length === 0) return;
+      if (confirm(`确定要清空全部 ${state.memos.length} 条便签吗？`)) {
+        state.memos = [];
+        saveState();
+        renderMemos();
+        triggerSaveVisual();
+      }
+    }
+
+    const MEMO_COLOR_STYLES = {
+      yellow: {
+        card: "bg-amber-50/90 dark:bg-amber-950/30 border-amber-200/90 dark:border-amber-800/50 text-amber-950 dark:text-amber-100",
+        tag: "bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200",
+        label: "💡 灵感"
+      },
+      blue: {
+        card: "bg-blue-50/90 dark:bg-blue-950/30 border-blue-200/90 dark:border-blue-800/50 text-blue-950 dark:text-blue-100",
+        tag: "bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200",
+        label: "❓ 疑问"
+      },
+      green: {
+        card: "bg-emerald-50/90 dark:bg-emerald-950/30 border-emerald-200/90 dark:border-emerald-800/50 text-emerald-950 dark:text-emerald-100",
+        tag: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200",
+        label: "📋 待办"
+      },
+      purple: {
+        card: "bg-purple-50/90 dark:bg-purple-950/30 border-purple-200/90 dark:border-purple-800/50 text-purple-950 dark:text-purple-100",
+        tag: "bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200",
+        label: "🔑 重点"
+      }
+    };
+
+    function renderMemos() {
+      const container = document.getElementById("memosContainer");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const memos = state.memos || [];
+      
+      const badge = document.getElementById("memosCountBadge");
+      if (badge) badge.innerText = memos.length;
+
+      const titleBadge = document.getElementById("memoCountTitleBadge");
+      if (titleBadge) titleBadge.innerText = `共 ${memos.length} 条`;
+
+      if (memos.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-10 text-[var(--muted-foreground,#64748b)] text-xs border border-dashed border-[var(--card-border,#e2e8f0)] rounded-xl space-y-1">
+            <div class="text-xl">📌</div>
+            <div>便签墙还是空的，随时在上方写下你的第一张随手便签吧！</div>
+          </div>
+        `;
+        return;
+      }
+
+      memos.forEach(memo => {
+        const style = MEMO_COLOR_STYLES[memo.color] || MEMO_COLOR_STYLES.yellow;
+        const card = `
+          <div class="${style.card} border rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-2.5 transition-all hover:shadow relative group">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${style.tag}">${style.label}</span>
+                <span class="text-[11px] opacity-70">${memo.createdAt || ''}</span>
+              </div>
+              <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                <button type="button" onclick="copyMemo('${memo.id}', this)" class="text-[11px] px-1.5 py-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors" title="复制内容">
+                  📋 复制
+                </button>
+                <button type="button" onclick="deleteMemo('${memo.id}')" class="text-[11px] px-1.5 py-0.5 rounded hover:bg-rose-500/10 hover:text-rose-600 transition-colors" title="删除便签">
+                  🗑️
+                </button>
+              </div>
+            </div>
+
+            <div class="text-xs sm:text-[13px] leading-relaxed whitespace-pre-wrap break-words font-medium">
+              ${escapeHtml(memo.content)}
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    // 绑定 Ctrl+Enter 快捷键提交便签
+    function initMemoShortcuts() {
+      const input = document.getElementById("memoInput");
+      if (input) {
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            addMemo();
+          }
+        });
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".tab-btn").forEach(el => {
+        el.classList.remove("bg-[var(--primary,#0284c7)]", "text-white", "shadow-sm");
+        el.classList.add("text-[var(--muted-foreground,#64748b)]");
+      });
+
+      const activeSection = document.getElementById("tab-" + tabName);
+      if (activeSection) activeSection.classList.remove("hidden");
+
+      const activeBtn = document.getElementById("tabBtn-" + tabName);
+      if (activeBtn) {
+        activeBtn.classList.add("bg-[var(--primary,#0284c7)]", "text-white", "shadow-sm");
+        activeBtn.classList.remove("text-[var(--muted-foreground,#64748b)]");
+      }
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `embedded_journal_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function resetDataPrompt() {
+      if (confirm("⚠️ 确定要重置所有勾选状态、打卡记录和知识卡片吗？")) {
+        try {
+          for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            if (k && k.startsWith("wk_chk_")) {
+              localStorage.removeItem(k);
+            }
+          }
+        } catch(e){}
+        state = { checkedIds: [], logs: [], memo: "", knowledge: [...DEFAULT_KNOWLEDGE] };
+        saveState();
+        renderWengkaiChapters();
+        renderFutureStages();
+        renderLogs();
+        renderKnowledgeList();
+        document.getElementById("quickMemo").value = "";
+        clearDraftsFor(DRAFT_FIELDS);
+      }
+    }
+
+    
+    // ============================================================
+    // 学习时间记录、专注计时器与起止时间联动逻辑
+    // ============================================================
+    let timerInterval = null;
+    let timerState = {
+      isRunning: false,
+      startTimestamp: null,
+      startTimeStr: ""
+    };
+
+    function initStudyTimer() {
+      try {
+        const saved = localStorage.getItem("wk_active_timer");
+        if (saved) {
+          timerState = JSON.parse(saved);
+          if (timerState.isRunning && timerState.startTimestamp) {
+            resumeStudyTimer();
+          }
+        }
+      } catch (e) {
+        console.error("Timer restore failed", e);
+      }
+    }
+
+    function startStudyTimer() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      timerState.startTimestamp = Date.now();
+      timerState.startTimeStr = `${h}:${m}`;
+      timerState.isRunning = true;
+      try { localStorage.setItem("wk_active_timer", JSON.stringify(timerState)); } catch(e){}
+
+      const sInput = document.getElementById("logStartTime");
+      if (sInput && !sInput.value) {
+        sInput.value = timerState.startTimeStr;
+        try { localStorage.setItem("journal_draft_logStartTime", timerState.startTimeStr); } catch(e){}
+      }
+
+      resumeStudyTimer();
+    }
+
+    function resumeStudyTimer() {
+      const startBtn = document.getElementById("timerStartBtn");
+      const finishBtn = document.getElementById("timerFinishBtn");
+      const resetBtn = document.getElementById("timerResetBtn");
+      const statusBadge = document.getElementById("timerStatusBadge");
+      const textTip = document.getElementById("timerStartTimeText");
+      const pulseDot = document.getElementById("timerPulseDot");
+
+      if (startBtn) startBtn.classList.add("hidden");
+      if (finishBtn) finishBtn.classList.remove("hidden");
+      if (resetBtn) resetBtn.classList.remove("hidden");
+
+      if (statusBadge) {
+        statusBadge.innerText = "🟢 正在专注学习中";
+        statusBadge.className = "text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 animate-pulse";
+      }
+
+      if (textTip) {
+        textTip.innerText = `本次专注开始于 ${timerState.startTimeStr}。心无旁骛看视频、敲代码吧，随时可点击右侧结束打卡！`;
+      }
+
+      if (pulseDot) {
+        pulseDot.classList.add("ring-4", "ring-emerald-400/40", "bg-emerald-50", "dark:bg-emerald-950/40");
+      }
+
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+      timerInterval = setInterval(updateTimerDisplay, 1000);
+    }
+
+    function updateTimerDisplay() {
+      if (!timerState.startTimestamp) return;
+      const elapsedMs = Date.now() - timerState.startTimestamp;
+      const totalSeconds = Math.floor(elapsedMs / 1000);
+      const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+
+      const display = document.getElementById("timerDisplay");
+      if (display) {
+        display.innerText = `${hours}:${mins}:${secs}`;
+      }
+    }
+
+    function finishStudyTimer() {
+      if (!timerState.startTimestamp) return;
+      const now = new Date();
+      const endH = String(now.getHours()).padStart(2, '0');
+      const endM = String(now.getMinutes()).padStart(2, '0');
+      const endTimeStr = `${endH}:${endM}`;
+
+      const elapsedMs = Date.now() - timerState.startTimestamp;
+      const elapsedMinutes = Math.max(1, Math.round(elapsedMs / (1000 * 60)));
+      const elapsedHours = (elapsedMinutes / 60).toFixed(1);
+
+      const todayStr = now.toISOString().slice(0, 10);
+      document.getElementById("logDate").value = todayStr;
+      document.getElementById("logStartTime").value = timerState.startTimeStr;
+      document.getElementById("logEndTime").value = endTimeStr;
+      document.getElementById("logHours").value = elapsedHours;
+
+      try {
+        localStorage.setItem("journal_draft_logDate", todayStr);
+        localStorage.setItem("journal_draft_logStartTime", timerState.startTimeStr);
+        localStorage.setItem("journal_draft_logEndTime", endTimeStr);
+        localStorage.setItem("journal_draft_logHours", elapsedHours);
+      } catch(e){}
+
+      const doneStartTime = timerState.startTimeStr;
+      resetStudyTimer();
+
+      const titleInput = document.getElementById("logTitle");
+      if (titleInput) {
+        titleInput.focus();
+        titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      alert(`🎉 学习打卡就绪！\n本次专注时段：${doneStartTime} ~ ${endTimeStr}（共 ${elapsedHours} 小时 / ${elapsedMinutes} 分钟）。\n已自动填入下方打卡表单，写下今日核心收获后即可提交！`);
+    }
+
+    function resetStudyTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerState = {
+        isRunning: false,
+        startTimestamp: null,
+        startTimeStr: ""
+      };
+      try { localStorage.removeItem("wk_active_timer"); } catch(e){}
+
+      const startBtn = document.getElementById("timerStartBtn");
+      const finishBtn = document.getElementById("timerFinishBtn");
+      const resetBtn = document.getElementById("timerResetBtn");
+      const statusBadge = document.getElementById("timerStatusBadge");
+      const textTip = document.getElementById("timerStartTimeText");
+      const display = document.getElementById("timerDisplay");
+      const pulseDot = document.getElementById("timerPulseDot");
+
+      if (startBtn) startBtn.classList.remove("hidden");
+      if (finishBtn) finishBtn.classList.add("hidden");
+      if (resetBtn) resetBtn.classList.add("hidden");
+
+      if (display) display.innerText = "00:00:00";
+      if (statusBadge) {
+        statusBadge.innerText = "未开始计时";
+        statusBadge.className = "text-[10px] px-2 py-0.5 rounded-full font-medium bg-slate-200/80 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
+      }
+      if (textTip) {
+        textTip.innerText = "准备好开始今天的 C 语言学习了吗？点击右侧一键开始计时！";
+      }
+      if (pulseDot) {
+        pulseDot.className = "w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-xl shrink-0 shadow-sm transition-all";
+      }
+    }
+
+    function setLogTimeToNow(inputId) {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${h}:${m}`;
+      const el = document.getElementById(inputId);
+      if (el) {
+        el.value = timeStr;
+        try { localStorage.setItem("journal_draft_" + inputId, timeStr); } catch(e){}
+        autoCalcLogHours();
+        triggerSaveVisual();
+      }
+    }
+
+    function autoCalcLogHours() {
+      const start = document.getElementById("logStartTime").value;
+      const end = document.getElementById("logEndTime").value;
+      if (!start || !end) return;
+
+      const [sH, sM] = start.split(":").map(Number);
+      const [eH, eM] = end.split(":").map(Number);
+
+      let startMinutes = sH * 60 + sM;
+      let endMinutes = eH * 60 + eM;
+
+      if (endMinutes < startMinutes) {
+        endMinutes += 24 * 60;
+      }
+
+      const diffMinutes = endMinutes - startMinutes;
+      const hours = Math.round((diffMinutes / 60) * 10) / 10;
+      if (hours > 0) {
+        const hoursStr = hours.toFixed(1);
+        const hoursEl = document.getElementById("logHours");
+        if (hoursEl) {
+          hoursEl.value = hoursStr;
+          try { localStorage.setItem("journal_draft_logHours", hoursStr); } catch(e){}
+          triggerSaveVisual();
+        }
+      }
+    }
+
+    window.onload = function() {
+      loadState();
+      
+      const today = new Date().toISOString().slice(0, 10);
+      const logDateEl = document.getElementById("logDate");
+      if (logDateEl && !logDateEl.value) {
+        logDateEl.value = today;
+      }
+
+      if (state.memo) {
+        document.getElementById("quickMemo").value = state.memo;
+      }
+
+      renderWengkaiChapters();
+      renderSignalsChapters();
+      renderFutureStages();
+      renderLogs();
+      renderKnowledgeList();
+      updateKnowledgeStats();
+      renderMemos();
+      initMemoShortcuts();
+      
+      // 🌟 核心修复：页面加载时立即计算并展示通关总进度！
+      updateProgress();
+
+      initStudyTimer();
+      initRealtimeDraftListeners();
+    };
+
+  </script>
+</body>
+</html>
