@@ -2755,6 +2755,7 @@ int main() {
 
     function renderLogs() {
       const container = document.getElementById("logsContainer");
+      if (!container) return;
       container.innerHTML = "";
 
       let totalHours = 0;
@@ -3683,6 +3684,9 @@ int main() {
 
     window.onload = function() {
       loadState();
+      try { initDefaultRealProgress(); } catch(e){}
+      try { renderCheckinSystem(); } catch(e){}
+      try { initPortalCheckinEvents(); } catch(e){}
       
       const today = new Date().toISOString().slice(0, 10);
       const logDateEl = document.getElementById("logDate");
